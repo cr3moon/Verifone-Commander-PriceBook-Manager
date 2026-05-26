@@ -63,7 +63,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp
             else
             {
 #pragma warning disable CA2000 // Dispose objects before losing scope
-                var httpRequestSender = new HttpClientHttpRequestSender();
+                var httpRequestSender = new HttpClientHttpRequestSender(() => this.settings.AllowUntrustedCertificates);
 #pragma warning restore CA2000 // Dispose objects before losing scope
 
                 credentialsProvider = new SapphireCredentialProvider(
@@ -133,6 +133,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp
             this.settings.UseMocks = parsed.UseMocks;
             this.settings.Hostname = parsed.Hostname;
             this.settings.Username = parsed.Username;
+            this.settings.AllowUntrustedCertificates = parsed.AllowUntrustedCertificates;
         }
 
         private void SaveSettings()

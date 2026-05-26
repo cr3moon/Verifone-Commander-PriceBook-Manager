@@ -22,6 +22,16 @@
                        TextWrapping="WrapWholeWords" />
         </StackPanel>
 
+        <StackPanel Margin="{StaticResource VerticalMargin_NotFirstElement}"
+                    Width="{StaticResource GeneralTextBoxWidth}"
+                    HorizontalAlignment="Left">
+            <CheckBox Content="Allow untrusted / self-signed certificates (insecure)"
+                      IsChecked="{x:Bind ViewModel.AllowUntrustedCertificates, Mode=TwoWay}" />
+            <TextBlock Text="Enable only when the POS controller uses a self-signed or IP-only certificate. This disables TLS certificate validation for all connections."
+                       TextWrapping="WrapWholeWords"
+                       Opacity="0.7" />
+        </StackPanel>
+
         <StackPanel Margin="{StaticResource VerticalMargin_NotFirstElement}">
             <Button Content="Open App Data Folder"
                     Name="OpenAppDataFolderButton"
