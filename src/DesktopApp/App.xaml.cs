@@ -10,7 +10,6 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp
     using System.IO;
     using System.Threading.Tasks;
     using CommunityToolkit.Mvvm.Messaging;
-    using CommunityToolkit.WinUI;
     using Microsoft.Extensions.Logging;
     using Microsoft.UI.Dispatching;
     using Microsoft.UI.Xaml;
@@ -156,7 +155,24 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp
 
             public Task DispatchAsync(Action action)
             {
-                return this.dispatcherQueue.EnqueueAsync(action);
+                var tcs = new TaskCompletionSource();
+                if (!this.dispatcherQueue.TryEnqueue(() =>
+                {
+                    try
+                    {
+                        action();
+                        tcs.SetResult();
+                    }
+                    catch (Exception ex)
+                    {
+                        tcs.SetException(ex);
+                    }
+                }))
+                {
+                    tcs.SetException(new InvalidOperationException("Failed to enqueue the operation on the DispatcherQueue."));
+                }
+
+                return tcs.Task;
             }
         }
     }
