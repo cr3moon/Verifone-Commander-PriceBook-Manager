@@ -9,23 +9,38 @@ Distributed by **Exact Technology Partners** (legal entity Futurevest ETP, LLC).
 
 ---
 
-## Current state (2026-05-26)
+## Current state (2026-05-27)
 
-- **Branch:** `migrate/net8-winappsdk-2.1` — **PR #1 OPEN** (awaiting user merge to `main`).
-- Fully migrated, rebranded, self-contained, and **production-signed**. Builds clean; Core.Tests 9/9.
-- Deliverable (signed, no-prereq MSIX) staged at `C:\dev\PriceBookManager-Deploy\`.
-- Installed + verified on this machine running on the bundled 2.1.3 runtime.
+- **Branch:** `feature/bulk-and-live-catalog` — cross-app feature merge **implemented** (4 stages,
+  pushed). PR #1 (.NET 8 migration) is **merged to `main`**.
+- The .NET 8 / WinApp SDK 2.1.3 base is migrated, rebranded, self-contained, **production-signed**.
+- Builds clean (only pre-existing `SA1638` filename-case + MSIX signing-cert warnings); **Core.Tests 68/68**.
+- ⚠️ **Not yet runtime-verified**: the new UI (Items grid, bulk delete, import) compiles and the pure
+  logic is unit-tested, but the WinUI pages have not been exercised against a live controller or in
+  mock mode. Manual run recommended before release (see "Verifying the new features").
 
-## What's next — cross-app feature merge (the reason for the next session)
+## What's next — verify, then merge
 
-Bring capability into THIS app from the sibling app `verifone-commander-import-export`:
-**bulk import, stronger barcode handling on ingest, a live item view filterable by
-department/fields (from the live system, not files), bulk PLU delete**, possibly more.
-Start with an **analysis** of the most efficient approach (build-on-which / port-vs-rebuild),
-then implement. **Full brief + recon: `docs/feature-merge/cross-app-merge-brief.md`.**
+The cross-app feature merge is code-complete on `feature/bulk-and-live-catalog`. Remaining:
+1. **Runtime-verify** the new pages (below), ideally with `Settings.UseMocks` and then a live Commander.
+2. Open/merge a PR to `main`; produce a fresh signed MSIX (see signing notes) for release.
 
-Branch plan: after PR #1 merges to `main`, branch from `main` (suggested
-`feature/bulk-and-live-catalog`) for the implementation. The analysis itself is read-only.
+Implemented this round (from sibling app `verifone-commander-import-export`):
+- **Barcode logic** — `UpcUtilities` ported into `Core` (GTIN-14, H2-safe), wired into Edit + import.
+- **Live Items page** — full PLU catalog from cache, filter by department / text / flags.
+- **Bulk delete** — multi-select on the Items page → confirm dialog → live `DeletePriceLookUpAsync`.
+- **Bulk import** — fixed-template CSV → preview/validate → live `uPLUs`.
+
+Full brief + recon: `docs/feature-merge/cross-app-merge-brief.md`.
+
+## Verifying the new features
+
+- Run with mocks: set `UseMocks` (Settings) so `MockSapphireClient` supplies PLUs/departments, log in,
+  then exercise **Items** (filter, select, Delete selected → confirm) and **Import** (a small CSV with
+  header `upc,modifier,description,department,price`).
+- Edit page now accepts UPC-A/EAN-13/GTIN-14 (1–14 digits), shows the canonical GTIN-14, and warns
+  (non-blocking) on risky number systems / bad check digits — it no longer appends a check digit to a
+  pasted 12-digit UPC-A.
 
 ---
 
@@ -33,16 +48,26 @@ Branch plan: after PR #1 merges to `main`, branch from `main` (suggested
 
 | Project | Role |
 |---|---|
-| `src/Core` | `SapphireClient` (HTTP/NAXML to Commander), models, `HttpClientHttpRequestSender`, credential provider. No UI. |
-| `src/DesktopApp` | WinUI 3 + CommunityToolkit.Mvvm. `CachingSapphireClient`, pages (Account/Search/Edit/BulkOperations/Settings), MSIX packaging. |
+| `src/Core` | `SapphireClient` (HTTP/NAXML to Commander), models, `HttpClientHttpRequestSender`, credential provider. `UpcUtilities` (UPC/GTIN-14 classify/normalize, H2-safe). `Import/` (`CsvReader` + `PluImportParser`). No UI. |
+| `src/DesktopApp` | WinUI 3 + CommunityToolkit.Mvvm. `CachingSapphireClient`, pages (Account/Search/**Items**/Edit/BulkOperations/**Import**/Settings), MSIX packaging. |
 | `src/Console` | Diagnostic harness (file-less, hits live API). |
-| `src/Core.Tests` | xUnit over `Ean13Helper` + `ModelConverter`. |
+| `src/Core.Tests` | xUnit over `Ean13Helper`, `ModelConverter`, `UpcUtilities`, `CsvReader`, `PluImportParser` (68 tests). |
 
 - **Live API:** `SapphireClient` posts `cmd=validate` (login → cookie), `cmd=vPLUs`/`uPLUs`, `cmd=vposcfg`, etc. **PLU delete** = `uPLUs` body with a `<deletePLU><upc/><upcModifier/></deletePLU>` element, keyed on **EAN-13 + 3-digit modifier**.
 - **MVVM:** parent `MainNavigationVm` holds one shared `Settings` instance, passed to page VMs; settings persist to `settings.json` on window close.
 
 ## Key decisions
 
+- **2026-05-27 cross-app merge — build on THIS app, copy-port the logic:** harvested the sibling
+  app's pure logic by **copying into `Core`** (not a shared netstandard2.0 lib — the .NET 4.8 sibling
+  is a frozen source, not co-developed). The sibling's WinForms UI was **rebuilt in WinUI**, not ported.
+- **2026-05-27 GTIN-14 is the canonical PLU key:** the stored `long Ean13` is the numeric GTIN-14
+  (the wire already writes `upc` as `D14`). Edit + import accept UPC-A/EAN-13/GTIN-14 and **never
+  recompute a check digit on a complete barcode** (the "H2" guard in `UpcUtilities`). The old
+  Edit-page behavior (append a check digit to a 12-digit entry) was a footgun and was removed.
+- **2026-05-27 import = fixed-template CSV (v1):** columns matched by header name
+  (`upc,modifier,description,department,price`); column-mapping UX deferred. Live deletes/imports
+  always require an explicit confirmation dialog.
 - **2026-05-26 .NET 8, not 10 (for now):** staying on .NET 8 LTS this round; **.NET 10 LTS bump deferred** (research in `docs/migration/`). .NET 8 EOL ~Nov 2026, so 10 is the eventual target.
 - **WinApp SDK 2.1.3** (stable; 1.x EOL). Dropped `CommunityToolkit.WinUI` (no 2.x build); inlined its one `EnqueueAsync` use.
 - **Self-contained MSIX** (`SelfContained` + `WindowsAppSDKSelfContained`): bundles .NET 8 + WinApp 2.1 runtimes → customer installs nothing else. ~83 MB package / ~209 MB installed.
@@ -62,7 +87,7 @@ Branch plan: after PR #1 merges to `main`, branch from `main` (suggested
 
 ## Documentation index
 
-- `docs/feature-merge/cross-app-merge-brief.md` — **NEXT WORK**: cross-app analysis + feature targets + recon of the other app.
+- `docs/feature-merge/cross-app-merge-brief.md` — **IMPLEMENTED** on `feature/bulk-and-live-catalog`: cross-app analysis + feature targets + recon of the other app.
 - `docs/migration/dot-net-8-migration.md` — .NET 8 migration plan (**IMPLEMENTED** on this branch).
 - `docs/migration/Porting a .NET 6 ... .NET 10 LTS.md` — future .NET 10 LTS research (deferred).
 - `docs/security/network-security-review.md` — network/TLS review (the cert-bypass concern; addressed via the user toggle).
