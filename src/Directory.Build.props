@@ -14,9 +14,9 @@
     <Product>Verifone Commander Price Book Manager</Product>
     <Copyright>© Futurevest ETP, LLC. All rights reserved.</Copyright>
     <Authors>Exact Technology Partners</Authors>
-    <Version>1.1.0</Version>
-    <FileVersion>1.1.0.0</FileVersion>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <Version>1.1.1</Version>
+    <FileVersion>1.1.1.0</FileVersion>
+    <AssemblyVersion>1.1.1.0</AssemblyVersion>
   </PropertyGroup>
 
 </Project>
