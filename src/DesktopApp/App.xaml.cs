@@ -10,7 +10,6 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp
     using System.IO;
     using System.Threading.Tasks;
     using CommunityToolkit.Mvvm.Messaging;
-    using CommunityToolkit.WinUI;
     using Microsoft.Extensions.Logging;
     using Microsoft.UI.Dispatching;
     using Microsoft.UI.Xaml;
@@ -64,7 +63,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp
             else
             {
 #pragma warning disable CA2000 // Dispose objects before losing scope
-                var httpRequestSender = new HttpClientHttpRequestSender();
+                var httpRequestSender = new HttpClientHttpRequestSender(() => this.settings.AllowUntrustedCertificates);
 #pragma warning restore CA2000 // Dispose objects before losing scope
 
                 credentialsProvider = new SapphireCredentialProvider(
@@ -134,6 +133,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp
             this.settings.UseMocks = parsed.UseMocks;
             this.settings.Hostname = parsed.Hostname;
             this.settings.Username = parsed.Username;
+            this.settings.AllowUntrustedCertificates = parsed.AllowUntrustedCertificates;
         }
 
         private void SaveSettings()
@@ -156,7 +156,24 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp
 
             public Task DispatchAsync(Action action)
             {
-                return this.dispatcherQueue.EnqueueAsync(action);
+                var tcs = new TaskCompletionSource();
+                if (!this.dispatcherQueue.TryEnqueue(() =>
+                {
+                    try
+                    {
+                        action();
+                        tcs.SetResult();
+                    }
+                    catch (Exception ex)
+                    {
+                        tcs.SetException(ex);
+                    }
+                }))
+                {
+                    tcs.SetException(new InvalidOperationException("Failed to enqueue the operation on the DispatcherQueue."));
+                }
+
+                return tcs.Task;
             }
         }
     }

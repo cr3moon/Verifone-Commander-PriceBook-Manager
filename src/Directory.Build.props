@@ -1,0 +1,22 @@
+<Project>
+
+  <!--
+    Solution-wide assembly / PE version-resource metadata.
+
+    These drive the binaries' Properties -> Details fields and satisfy the
+    Exact Technology Partners code-signing convention:
+      CompanyName   = "Exact Technology Partners"   (DBA)
+      LegalCopyright starts with "(c) Futurevest ETP, LLC"  (legal entity)
+    See azure-code-signing/docs/10-pe-metadata.md.
+  -->
+  <PropertyGroup>
+    <Company>Exact Technology Partners</Company>
+    <Product>Verifone Commander Price Book Manager</Product>
+    <Copyright>© Futurevest ETP, LLC. All rights reserved.</Copyright>
+    <Authors>Exact Technology Partners</Authors>
+    <Version>1.0.0</Version>
+    <FileVersion>1.0.0.0</FileVersion>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+  </PropertyGroup>
+
+</Project>

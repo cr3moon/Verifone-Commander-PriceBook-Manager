@@ -239,7 +239,9 @@ namespace VerifoneCommander.PriceBookManager.Core.Tests
   </domain:PLU>
 </domain:PLUs>";
 
-            Assert.Equal(expectedString.Trim(), element.ToString());
+            // Normalize line endings: the expected literal's endings depend on how the
+            // file was checked out (LF vs CRLF), while XElement.ToString() always emits CRLF.
+            Assert.Equal(expectedString.Trim().ReplaceLineEndings("\n"), element.ToString().ReplaceLineEndings("\n"));
         }
 
         [Fact]

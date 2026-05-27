@@ -32,7 +32,7 @@ namespace VerifoneCommander.PriceBookManager.Console
 
             try
             {
-                using HttpClientHttpRequestSender requestSender = new();
+                using HttpClientHttpRequestSender requestSender = new(() => true);
 
                 var credentialsProvider = new SapphireCredentialProvider(
                     requestSender,

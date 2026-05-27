@@ -8,6 +8,7 @@ namespace VerifoneCommander.PriceBookManager.Core
 {
     using System;
     using System.Net.Http;
+    using System.Net.Security;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -16,12 +17,18 @@ namespace VerifoneCommander.PriceBookManager.Core
         private readonly HttpClientHandler httpClientHandler;
         private readonly HttpClient httpClient;
 
-        public HttpClientHttpRequestSender()
+        public HttpClientHttpRequestSender(Func<bool> allowUntrustedCertificates)
         {
+            _ = allowUntrustedCertificates ?? throw new ArgumentNullException(nameof(allowUntrustedCertificates));
+
             this.httpClientHandler = new HttpClientHandler()
             {
-                // Required for custom certificate generated for the POS systems
-                ServerCertificateCustomValidationCallback = (_, _, _, _) => true,
+                // POS systems (e.g. Verifone Commander) commonly use self-signed, IP-only
+                // certificates. Validate normally unless the user has explicitly opted in
+                // to allow untrusted certificates (the callback is evaluated per request,
+                // so the setting takes effect without restarting the app).
+                ServerCertificateCustomValidationCallback = (_, _, _, sslPolicyErrors) =>
+                    sslPolicyErrors == SslPolicyErrors.None || allowUntrustedCertificates(),
             };
 
             this.httpClient = new HttpClient(this.httpClientHandler);

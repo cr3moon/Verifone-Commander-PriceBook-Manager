@@ -46,5 +46,11 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
         public override int SymbolCode => 0xE115;
 
         public ValidatedTextVm Hostname { get; }
+
+        public bool AllowUntrustedCertificates
+        {
+            get => this.settings.AllowUntrustedCertificates;
+            set => this.settings.AllowUntrustedCertificates = value;
+        }
     }
 }

@@ -13,5 +13,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.Models
         public string Username { get; set; } = string.Empty;
 
         public bool UseMocks { get; set; }
+
+        public bool AllowUntrustedCertificates { get; set; }
     }
 }
