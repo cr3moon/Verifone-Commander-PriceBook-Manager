@@ -93,6 +93,8 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp
 
         public static IAppViewModelResolver ViewModelResolver { get; private set; }
 
+        public static Window MainWindow { get; private set; }
+
         public static string AppDataFolderPath => Windows.Storage.ApplicationData.Current.LocalFolder.Path;
 
         /// <summary>
@@ -103,6 +105,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp
         {
             this.window = new MainWindow();
             this.window.Closed += this.Window_Closed;
+            MainWindow = this.window;
 
             this.window.Activate();
         }

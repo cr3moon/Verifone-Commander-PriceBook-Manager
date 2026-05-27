@@ -68,6 +68,12 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
                 logger,
                 sapphireClient);
 
+            this.ImportPage = new ImportPageVm(
+                uiThreadDispatcher,
+                messenger,
+                logger,
+                sapphireClient);
+
             this.SettingsPage = new SettingsPageVm(
                 uiThreadDispatcher,
                 messenger,
@@ -99,6 +105,8 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
         public ItemsPageVm ItemsPage { get; private set; }
 
+        public ImportPageVm ImportPage { get; private set; }
+
         public SettingsPageVm SettingsPage { get; private set; }
 
         void IRecipient<LoginStateChangedMessage>.Receive(LoginStateChangedMessage message)
@@ -109,6 +117,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
                 this.HeaderPages.Add(this.ItemsPage);
                 this.HeaderPages.Add(this.EditPage);
                 this.HeaderPages.Add(this.BulkOperationsPage);
+                this.HeaderPages.Add(this.ImportPage);
 
                 this.CurrentPage = this.SearchPlusPage;
             }
@@ -120,6 +129,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
                 this.HeaderPages.Remove(this.ItemsPage);
                 this.HeaderPages.Remove(this.EditPage);
                 this.HeaderPages.Remove(this.BulkOperationsPage);
+                this.HeaderPages.Remove(this.ImportPage);
             }
         }
 

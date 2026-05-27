@@ -47,6 +47,10 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp
             {
                 return this.mainNavigationVm.ItemsPage as T;
             }
+            else if (typeof(T) == typeof(ImportPageVm))
+            {
+                return this.mainNavigationVm.ImportPage as T;
+            }
             else if (typeof(T) == typeof(SettingsPageVm))
             {
                 return this.mainNavigationVm.SettingsPage as T;
