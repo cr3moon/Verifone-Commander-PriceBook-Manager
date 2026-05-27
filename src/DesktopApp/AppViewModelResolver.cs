@@ -43,6 +43,10 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp
             {
                 return this.mainNavigationVm.SearchPlusPage as T;
             }
+            else if (typeof(T) == typeof(ItemsPageVm))
+            {
+                return this.mainNavigationVm.ItemsPage as T;
+            }
             else if (typeof(T) == typeof(SettingsPageVm))
             {
                 return this.mainNavigationVm.SettingsPage as T;

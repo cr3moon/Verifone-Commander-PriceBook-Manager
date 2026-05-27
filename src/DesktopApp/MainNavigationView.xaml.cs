@@ -41,6 +41,10 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp
             {
                 this.NavViewFrame.Navigate(typeof(SearchPage));
             }
+            else if (args.SelectedItem.GetType() == typeof(ItemsPageVm))
+            {
+                this.NavViewFrame.Navigate(typeof(ItemsPage));
+            }
             else if (args.SelectedItem.GetType() == typeof(SettingsPageVm))
             {
                 this.NavViewFrame.Navigate(typeof(SettingsPage));

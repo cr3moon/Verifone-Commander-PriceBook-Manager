@@ -62,6 +62,12 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
                 logger,
                 sapphireClient);
 
+            this.ItemsPage = new ItemsPageVm(
+                uiThreadDispatcher,
+                messenger,
+                logger,
+                sapphireClient);
+
             this.SettingsPage = new SettingsPageVm(
                 uiThreadDispatcher,
                 messenger,
@@ -91,6 +97,8 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
         public SearchPageVm SearchPlusPage { get; private set; }
 
+        public ItemsPageVm ItemsPage { get; private set; }
+
         public SettingsPageVm SettingsPage { get; private set; }
 
         void IRecipient<LoginStateChangedMessage>.Receive(LoginStateChangedMessage message)
@@ -98,6 +106,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
             if (message.State == LoginState.LoggedIn)
             {
                 this.HeaderPages.Add(this.SearchPlusPage);
+                this.HeaderPages.Add(this.ItemsPage);
                 this.HeaderPages.Add(this.EditPage);
                 this.HeaderPages.Add(this.BulkOperationsPage);
 
@@ -108,6 +117,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
                 this.CurrentPage = this.AccountPage;
 
                 this.HeaderPages.Remove(this.SearchPlusPage);
+                this.HeaderPages.Remove(this.ItemsPage);
                 this.HeaderPages.Remove(this.EditPage);
                 this.HeaderPages.Remove(this.BulkOperationsPage);
             }
