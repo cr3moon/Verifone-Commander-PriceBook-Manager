@@ -7,38 +7,33 @@ WHAT THIS IS
   Windows App SDK 2.1 runtime are bundled inside the package, so the
   target PC needs NO other downloads or runtime installs.
 
+  The package is digitally signed by Futurevest ETP, LLC (DBA Exact
+  Technology Partners) with a publicly-trusted certificate via Azure
+  Artifact Signing. No certificate import is required.
+
 REQUIREMENTS
   - Windows 10 version 2004 (build 19041) or newer, 64-bit
-  - That's it. No .NET install, no Windows App Runtime install.
+  - That's it. No .NET install, no Windows App Runtime install, no cert import.
 
 FILES IN THIS FOLDER
   - VerifoneCommander.PriceBookManager.DesktopApp_<version>_x64.msix
-        The application package (~83 MB; ~209 MB once installed).
-  - PriceBookManager-DevCert.cer
-        The PUBLIC signing certificate. It must be trusted on the PC so
-        Windows will allow the package to install. (No private key here.)
+        The signed application package (~83 MB; ~209 MB once installed).
   - Install.ps1
-        Installer: trusts the certificate (one-time, admin) then installs
-        the app for the current user.
+        Convenience installer (same as double-clicking the .msix).
+  - *.release-manifest.json
+        Audit record: hashes, signer, timestamp. Not needed to install.
 
 ------------------------------------------------------------
- INSTALL  (easy way)
+ INSTALL
 ------------------------------------------------------------
-  1. Copy this whole folder to the target PC.
-  2. Right-click Install.ps1  ->  "Run with PowerShell".
-       (or:  powershell -ExecutionPolicy Bypass -File .\Install.ps1 )
-  3. Approve the one Administrator prompt (that's the certificate trust).
-  4. Launch "Verifone Commander Price Book Manager" from the Start menu.
+  Easiest:
+    Double-click the .msix and choose Install.
 
-------------------------------------------------------------
- INSTALL  (manual way)
-------------------------------------------------------------
-  1. Trust the signing cert  (one-time, in an *Administrator* PowerShell):
-       Import-Certificate -FilePath .\PriceBookManager-DevCert.cer `
-         -CertStoreLocation Cert:\LocalMachine\TrustedPeople
+  Or (scripted):
+    Right-click Install.ps1 -> "Run with PowerShell"
+      (or:  powershell -ExecutionPolicy Bypass -File .\Install.ps1 )
 
-  2. Install the app  (normal PowerShell, no admin):
-       Add-AppxPackage -Path .\VerifoneCommander.PriceBookManager.DesktopApp_<version>_x64.msix
+  Then launch "Verifone Commander Price Book Manager" from the Start menu.
 
 ------------------------------------------------------------
  FIRST RUN - connecting to the Commander controller
@@ -48,16 +43,14 @@ FILES IN THIS FOLDER
     Settings -> check "Allow untrusted / self-signed certificates"
   then enter the controller hostname/IP on the Account page and log in.
 
-  NOTE: this in-app setting is SEPARATE from the certificate trust above.
-    - PriceBookManager-DevCert.cer  = lets Windows INSTALL the app.
-    - "Allow untrusted certificates" = lets the app CONNECT to the
-      Commander server despite its self-signed cert.
+  (This in-app setting concerns the CONNECTION to the Commander server -
+  it is unrelated to the app package's own signature.)
 
 ------------------------------------------------------------
  UPDATING
 ------------------------------------------------------------
-  To install a newer version, just run Install.ps1 again (or Add-AppxPackage
-  the new .msix). The certificate only needs trusting once.
+  Install a newer version the same way (double-click the new .msix or run
+  Install.ps1 again).
 
 ------------------------------------------------------------
  UNINSTALL
