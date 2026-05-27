@@ -1,0 +1,19 @@
+Verifone Commander Price Book Manager
+Copyright (c) Futurevest ETP, LLC (DBA Exact Technology Partners)
+
+-------------------------------------------------------------------------------
+This product is a fork of, and incorporates software from:
+
+    Verifone-Commander-PriceBook-Manager
+    Copyright (c) 2023 Shubham Gogna
+    Licensed under the MIT License.
+
+The original MIT License and copyright notice are retained in the LICENSE file,
+as required by that license.
+-------------------------------------------------------------------------------
+
+Modifications by Exact Technology Partners include, among others:
+  - Migration to .NET 8 and Windows App SDK 2.1
+  - Self-contained packaging (bundled runtimes; no prerequisites)
+  - User-controlled acceptance of self-signed / untrusted TLS certificates
+  - Product and publisher rebranding
