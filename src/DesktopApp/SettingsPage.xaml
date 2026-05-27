@@ -37,7 +37,7 @@
                     HorizontalAlignment="Left">
             <CheckBox Content="Use mock data instead of a live POS"
                       IsChecked="{x:Bind ViewModel.UseMocks, Mode=TwoWay}" />
-            <TextBlock Text="Populates the app with built-in sample PLUs and departments so you can try the Items, bulk-delete, and import features without a controller. Restart the app to apply a change to this setting."
+            <TextBlock Text="Populates the app with built-in sample PLUs and departments so you can try the Items, bulk-delete, and import features without a controller. Changing this takes effect immediately and returns you to the login screen; in mock mode any login works."
                        TextWrapping="WrapWholeWords"
                        Opacity="0.7" />
             <TextBlock Text="{x:Bind ViewModel.ActiveModeText}"

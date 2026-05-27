@@ -10,11 +10,11 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
     using CommunityToolkit.Mvvm.Messaging;
     using Microsoft.Extensions.Logging;
     using VerifoneCommander.PriceBookManager.DesktopApp.Models;
+    using VerifoneCommander.PriceBookManager.DesktopApp.ViewModels.Models;
 
     public class SettingsPageVm : PageVm
     {
         private readonly Settings settings;
-        private readonly bool startupUseMocks;
 
         public SettingsPageVm(
             IUiThreadDispatcher uiThreadDispatcher,
@@ -24,7 +24,6 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
             : base(uiThreadDispatcher, messenger, logger)
         {
             this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
-            this.startupUseMocks = App.StartupUseMocks;
 
             this.Hostname = new ValidatedTextVm(
                 v =>
@@ -58,12 +57,25 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
         public bool UseMocks
         {
             get => this.settings.UseMocks;
-            set => this.settings.UseMocks = value;
+            set
+            {
+                if (this.settings.UseMocks == value)
+                {
+                    return;
+                }
+
+                this.settings.UseMocks = value;
+                this.OnPropertyChanged(nameof(this.ActiveModeText));
+
+                // Switching takes effect immediately: end the session so the newly
+                // selected backend is used cleanly on the next login.
+                this.Messenger.Send(new ModeChangedMessage(value));
+            }
         }
 
-        // Describes the mode the running session is actually in (fixed at startup),
-        // so the operator never mistakes a live session for a mock one.
-        public string ActiveModeText => this.startupUseMocks
+        // Reflects the data source the app is currently using (updates as soon as the
+        // toggle flips), so the operator never mistakes a live session for a mock one.
+        public string ActiveModeText => this.settings.UseMocks
             ? "This session is running on built-in MOCK data — changes are not sent to a controller."
             : "This session is connected to the LIVE POS — edits, deletes, and imports affect the controller.";
     }

@@ -207,7 +207,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
                 if (localFail == 0)
                 {
-                    var target = App.StartupUseMocks ? "mock data" : "the live POS";
+                    var target = App.IsMockMode ? "mock data" : "the live POS";
                     this.SetInfoBar(InfoBarSeverity.Success, $"Imported {localSuccess} item(s) to {target}.");
                 }
                 else

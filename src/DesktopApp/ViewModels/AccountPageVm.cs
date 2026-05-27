@@ -18,7 +18,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
     using VerifoneCommander.PriceBookManager.DesktopApp.Models;
     using VerifoneCommander.PriceBookManager.DesktopApp.ViewModels.Models;
 
-    public partial class AccountPageVm : PageVm
+    public partial class AccountPageVm : PageVm, IRecipient<ModeChangedMessage>
     {
         private readonly Settings settings;
         private readonly IModifiableSapphireCredentialsProvider credentialProvider;
@@ -75,6 +75,8 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
             this.LoginCommand = new AsyncRelayCommand(this.LoginAsync);
             this.LogoutCommand = new RelayCommand(this.Logout);
+
+            this.Messenger.Register<ModeChangedMessage>(this);
         }
 
         public override string Name => "Account";
@@ -94,6 +96,29 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
         public bool HasLoginError => !string.IsNullOrEmpty(this.LoginError);
 
+        /// <summary>
+        /// In mock mode the login screen is just a gate over canned data, so log in
+        /// automatically (credentials are ignored). Called when the Account page is
+        /// shown — at startup and after a mock/live switch.
+        /// </summary>
+        public Task EnsureMockSessionAsync()
+        {
+            if (!this.settings.UseMocks || this.LoginState != LoginState.LoggedOut)
+            {
+                return Task.CompletedTask;
+            }
+
+            return this.PerformLoginAsync("mock", "mock", saveUsername: false, default);
+        }
+
+        void IRecipient<ModeChangedMessage>.Receive(ModeChangedMessage message)
+        {
+            // The mock/live setting changed: end the session so the newly selected
+            // backend is used cleanly. Logout resets all pages; the user logs back in
+            // (mock auto-logs in via EnsureMockSessionAsync when the page reappears).
+            this.Logout();
+        }
+
         private async Task LoginAsync(
             CancellationToken cancellationToken)
         {
@@ -109,10 +134,28 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
                 return;
             }
 
+            await this.PerformLoginAsync(
+                this.Username.Text,
+                this.Password.Text,
+                saveUsername: true,
+                cancellationToken).ConfigureAwait(false);
+        }
+
+        private async Task PerformLoginAsync(
+            string username,
+            string password,
+            bool saveUsername,
+            CancellationToken cancellationToken)
+        {
+            if (this.LoginState != LoginState.LoggedOut)
+            {
+                return;
+            }
+
             this.credentialProvider.SetLoginCredentials(
                 this.settings.Hostname,
-                this.Username.Text,
-                this.Password.Text);
+                username,
+                password);
 
             await this.DispatchOnUiThreadAsync(() =>
             {
@@ -141,8 +184,11 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
                 this.LoginError = string.Empty;
                 this.LoginState = LoginState.LoggedIn;
 
-                // Save the current username since it was valid for login
-                this.settings.Username = this.Username.Text;
+                if (saveUsername)
+                {
+                    // Save the current username since it was valid for login
+                    this.settings.Username = username;
+                }
             }).ConfigureAwait(false);
         }
 

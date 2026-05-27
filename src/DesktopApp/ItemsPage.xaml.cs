@@ -28,7 +28,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp
                 return;
             }
 
-            var target = App.StartupUseMocks ? "MOCK data (no controller)" : "the LIVE POS controller";
+            var target = App.IsMockMode ? "MOCK data (no controller)" : "the LIVE POS controller";
             var dialog = new ContentDialog
             {
                 XamlRoot = this.XamlRoot,
