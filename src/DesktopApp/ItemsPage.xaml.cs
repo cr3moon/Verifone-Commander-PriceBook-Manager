@@ -28,11 +28,12 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp
                 return;
             }
 
+            var target = App.StartupUseMocks ? "MOCK data (no controller)" : "the LIVE POS controller";
             var dialog = new ContentDialog
             {
                 XamlRoot = this.XamlRoot,
                 Title = "Delete selected items?",
-                Content = $"This permanently deletes {count} item(s) from the live POS controller. " +
+                Content = $"This permanently deletes {count} item(s) from {target}. " +
                           "This cannot be undone.",
                 PrimaryButtonText = "Delete",
                 CloseButtonText = "Cancel",

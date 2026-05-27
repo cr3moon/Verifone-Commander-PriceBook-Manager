@@ -55,6 +55,11 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp
             IModifiableSapphireCredentialsProvider credentialsProvider;
             ISapphireClient sapphireClient;
 
+            // The mock/live choice is fixed for the process: the whole client graph is
+            // built from it here. Changing the setting at runtime only takes effect on
+            // the next launch, so we record what this session actually started with.
+            StartupUseMocks = this.settings.UseMocks;
+
             if (this.settings.UseMocks)
             {
                 credentialsProvider = new MockCredentialProvider();
@@ -95,6 +100,9 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp
 
         public static Window MainWindow { get; private set; }
 
+        /// <summary>Gets a value indicating whether this process started in mock-data mode (set once at startup).</summary>
+        public static bool StartupUseMocks { get; private set; }
+
         public static string AppDataFolderPath => Windows.Storage.ApplicationData.Current.LocalFolder.Path;
 
         /// <summary>
@@ -131,7 +139,22 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp
                 return;
             }
 
-            var parsed = JsonConvert.DeserializeObject<Settings>(File.ReadAllText(settingsFilePath));
+            Settings parsed;
+            try
+            {
+                parsed = JsonConvert.DeserializeObject<Settings>(File.ReadAllText(settingsFilePath));
+            }
+            catch (Exception)
+            {
+                // Corrupt or unreadable settings file — fall back to defaults rather
+                // than crashing at startup. (Logging isn't available this early.)
+                return;
+            }
+
+            if (parsed == null)
+            {
+                return;
+            }
 
             this.settings.UseMocks = parsed.UseMocks;
             this.settings.Hostname = parsed.Hostname;

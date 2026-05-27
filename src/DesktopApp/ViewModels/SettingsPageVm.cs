@@ -14,6 +14,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
     public class SettingsPageVm : PageVm
     {
         private readonly Settings settings;
+        private readonly bool startupUseMocks;
 
         public SettingsPageVm(
             IUiThreadDispatcher uiThreadDispatcher,
@@ -23,6 +24,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
             : base(uiThreadDispatcher, messenger, logger)
         {
             this.settings = settings ?? throw new ArgumentNullException(nameof(settings));
+            this.startupUseMocks = App.StartupUseMocks;
 
             this.Hostname = new ValidatedTextVm(
                 v =>
@@ -52,5 +54,17 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
             get => this.settings.AllowUntrustedCertificates;
             set => this.settings.AllowUntrustedCertificates = value;
         }
+
+        public bool UseMocks
+        {
+            get => this.settings.UseMocks;
+            set => this.settings.UseMocks = value;
+        }
+
+        // Describes the mode the running session is actually in (fixed at startup),
+        // so the operator never mistakes a live session for a mock one.
+        public string ActiveModeText => this.startupUseMocks
+            ? "This session is running on built-in MOCK data — changes are not sent to a controller."
+            : "This session is connected to the LIVE POS — edits, deletes, and imports affect the controller.";
     }
 }

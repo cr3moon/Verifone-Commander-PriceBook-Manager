@@ -32,6 +32,20 @@
                        Opacity="0.7" />
         </StackPanel>
 
+        <StackPanel Margin="{StaticResource VerticalMargin_NotFirstElement}"
+                    Width="{StaticResource GeneralTextBoxWidth}"
+                    HorizontalAlignment="Left">
+            <CheckBox Content="Use mock data instead of a live POS"
+                      IsChecked="{x:Bind ViewModel.UseMocks, Mode=TwoWay}" />
+            <TextBlock Text="Populates the app with built-in sample PLUs and departments so you can try the Items, bulk-delete, and import features without a controller. Restart the app to apply a change to this setting."
+                       TextWrapping="WrapWholeWords"
+                       Opacity="0.7" />
+            <TextBlock Text="{x:Bind ViewModel.ActiveModeText}"
+                       TextWrapping="WrapWholeWords"
+                       Margin="0,8,0,0"
+                       FontWeight="SemiBold" />
+        </StackPanel>
+
         <StackPanel Margin="{StaticResource VerticalMargin_NotFirstElement}">
             <Button Content="Open App Data Folder"
                     Name="OpenAppDataFolderButton"

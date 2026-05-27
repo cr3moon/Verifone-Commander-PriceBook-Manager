@@ -386,7 +386,8 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
                 if (localFailCount == 0)
                 {
-                    this.SetInfoBar(InfoBarSeverity.Success, $"Deleted {deleted.Count} item(s) from the live POS.");
+                    var target = App.StartupUseMocks ? "mock data" : "the live POS";
+                    this.SetInfoBar(InfoBarSeverity.Success, $"Deleted {deleted.Count} item(s) from {target}.");
                 }
                 else
                 {

@@ -180,6 +180,17 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
         void IRecipient<LoginStateChangedMessage>.Receive(LoginStateChangedMessage message)
         {
+            if (message.State == LoginState.LoggedOut)
+            {
+                // Don't let a PLU loaded in the previous session linger in the form —
+                // after re-login (possibly to a different controller) a stale save or
+                // delete would target the wrong record. Receive runs on the UI thread.
+                this.ClearVm();
+                this.DepartmentNames.Clear();
+                this.departmentInfoDict = new Dictionary<string, DepartmentInfo>();
+                return;
+            }
+
             if (message.State != LoginState.LoggedIn)
             {
                 return;

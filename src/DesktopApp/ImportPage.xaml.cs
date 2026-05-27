@@ -52,11 +52,12 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp
                 return;
             }
 
+            var target = App.StartupUseMocks ? "MOCK data (no controller)" : "the LIVE POS controller";
             var dialog = new ContentDialog
             {
                 XamlRoot = this.XamlRoot,
-                Title = "Import to the live POS?",
-                Content = $"This writes {count} item(s) to the live POS controller, " +
+                Title = "Import these items?",
+                Content = $"This writes {count} item(s) to {target}, " +
                           "creating or overwriting each PLU. Continue?",
                 PrimaryButtonText = "Import",
                 CloseButtonText = "Cancel",
