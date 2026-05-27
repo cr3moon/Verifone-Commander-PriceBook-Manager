@@ -92,9 +92,12 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
             try
             {
                 var departments = await this.sapphireClient.GetDepartmentsAsync(default).ConfigureAwait(false);
+
+                // Case-insensitive: a human-authored CSV may not match the controller's
+                // department-name casing exactly.
                 var departmentsByName = departments
-                    .GroupBy(d => d.Name, StringComparer.Ordinal)
-                    .ToDictionary(g => g.Key, g => g.First(), StringComparer.Ordinal);
+                    .GroupBy(d => d.Name, StringComparer.OrdinalIgnoreCase)
+                    .ToDictionary(g => g.Key, g => g.First(), StringComparer.OrdinalIgnoreCase);
 
                 var csvRows = CsvReader.Parse(content);
                 result = PluImportParser.Parse(csvRows, departmentsByName);

@@ -32,6 +32,12 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
         private bool suppressFilter;
         private bool suppressSelectionRecount;
 
+        // Bumped whenever a load starts or the view is cleared (logout). A load only
+        // applies its results if its captured generation is still the latest, so an
+        // out-of-order load can't overwrite newer state (e.g. resurrect rows after a
+        // delete, or repopulate after logout).
+        private int loadGeneration;
+
         [ObservableProperty]
         private ObservableCollection<ItemRowVm> items = new ObservableCollection<ItemRowVm>();
 
@@ -165,6 +171,8 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
         private async Task LoadFromCacheAsync(CancellationToken cancellationToken)
         {
+            var generation = Interlocked.Increment(ref this.loadGeneration);
+
             await this.DispatchOnUiThreadAsync(() => this.IsBusy = true).ConfigureAwait(false);
 
             //// For thread safety: No access to bindable object properties beyond this point.
@@ -207,6 +215,13 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
             await this.DispatchOnUiThreadAsync(() =>
             {
+                // A newer load or a logout started while we were fetching — discard
+                // these stale results (the newer operation owns the state and IsBusy).
+                if (generation != Volatile.Read(ref this.loadGeneration))
+                {
+                    return;
+                }
+
                 this.suppressFilter = true;
 
                 this.allItems = rows;
@@ -230,6 +245,9 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
         private void Clear()
         {
+            // Supersede any in-flight load so it won't repopulate after logout.
+            Interlocked.Increment(ref this.loadGeneration);
+
             this.allItems = new List<ItemRowVm>();
             this.Items = new ObservableCollection<ItemRowVm>();
             this.DepartmentNames = new ObservableCollection<string>();

@@ -111,8 +111,12 @@ namespace VerifoneCommander.PriceBookManager.Core.Import
 
             var error = false;
 
-            // UPC: reject only the truly unusable classes; never recompute a check
-            // digit on a complete barcode (H2-safe). Store the canonical GTIN-14.
+            // UPC: reject only the truly unusable classes (blank / non-digit / >14).
+            // We zero-pad to 14 and store that value verbatim — we never invent a
+            // check digit (H2-safe). A complete UPC-A/EAN-13/GTIN-14 therefore keeps
+            // its own check digit; a short stem (<=11 digits, no valid check) is stored
+            // as-entered and flagged with a Warning rather than silently "fixed" — the
+            // operator should supply complete barcodes for scannable items.
             long ean13 = 0;
             var classification = UpcUtilities.ClassifyUpc(rawUpc);
             if (classification.IsReject)
