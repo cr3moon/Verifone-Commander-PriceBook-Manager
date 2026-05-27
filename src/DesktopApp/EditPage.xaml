@@ -51,9 +51,9 @@
 
                 <TextBox Grid.Column="0"
                             x:Name="EanTextBox"
-                            Header="EAN"
+                            Header="UPC"
                             Text="{x:Bind ViewModel.Ean.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            PlaceholderText="Enter a EAN-13 code"
+                            PlaceholderText="UPC-A, EAN-13, or GTIN-14"
                             GotFocus="EanTextBox_GotFocus" />
                 <TextBox Grid.Column="2"
                             Header="Modifier"

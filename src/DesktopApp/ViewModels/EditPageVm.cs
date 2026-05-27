@@ -81,40 +81,29 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
             this.Ean = new ValidatedTextVm(
                 validationFunc: v =>
                 {
-                    if (string.IsNullOrEmpty(v))
+                    if (string.IsNullOrWhiteSpace(v))
                     {
-                        return "EAN cannot be empty";
+                        return "UPC cannot be empty";
                     }
 
-                    v = v.Trim();
-
-                    if (!long.TryParse(v, out long parsedEan13))
+                    // Accept any 1-14 digit code (UPC-A, EAN-13, GTIN-14, or a short
+                    // internal PLU) — this is exactly Commander's PLU-code rule. The
+                    // value is stored as its GTIN-14 numeric form (see ModelConverter,
+                    // which writes the upc zero-padded to 14). We deliberately do NOT
+                    // recompute check digits here: a complete barcode carries its own,
+                    // and recomputing it corrupts the scan code (the "H2" bug).
+                    var classification = UpcUtilities.ClassifyUpc(v.Trim());
+                    switch (classification.Class)
                     {
-                        return "EAN must be some number";
+                        case UpcUtilities.UpcClass.NonNumeric:
+                            return "UPC must contain only digits";
+                        case UpcUtilities.UpcClass.TooLong:
+                            return "UPC must be 1-14 digits";
+                        default:
+                            return string.Empty;
                     }
-
-                    if (v.Length != Ean13Helper.Ean13Length)
-                    {
-                        return $"EAN must be {Ean13Helper.Ean13Length} digits";
-                    }
-
-                    if (!Ean13Helper.CanBeEan13(parsedEan13))
-                    {
-                        return "EAN must be in the valid EAN range";
-                    }
-
-                    var ean13WithoutCheckDigit = parsedEan13 / 10;
-                    var recomputedEan13 = Ean13Helper.ConvertToEan13WithCheckDigit(ean13WithoutCheckDigit);
-
-                    if (parsedEan13 != recomputedEan13)
-                    {
-                        return "EAN check-digit does not match";
-                    }
-
-                    return string.Empty;
                 },
-                initialValue: string.Empty,
-                afterTextChangeFunc: this.AddEanCheckDigitToText);
+                initialValue: string.Empty);
 
             this.Modifier = new ValidatedTextVm(
                 validationFunc: v =>
@@ -338,7 +327,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
                     this.SetInfoBar(
                         InfoBarSeverity.Error,
-                        $"Unable to find EAN-13 '{ean13:D13}' with modifier '{modifier:D3}'");
+                        $"Unable to find UPC '{ean13:D14}' with modifier '{modifier:D3}'");
                 }).ConfigureAwait(false);
 
                 return;
@@ -378,7 +367,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
                 this.SetInfoBar(
                     InfoBarSeverity.Success,
-                    $"Loaded EAN-13 '{ean13:D13}' with modifier '{modifier:D3}'");
+                    $"Loaded UPC '{ean13:D14}' with modifier '{modifier:D3}'");
             }).ConfigureAwait(false);
         }
 
@@ -397,10 +386,20 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
             var description = this.Description.Text;
             var selectedDepartmentName = this.SelectedDepartmentName;
 
-            var ean13 = long.Parse(this.Ean.Text);
+            var eanText = this.Ean.Text.Trim();
+            var ean13 = long.Parse(eanText);
             var modifier = int.Parse(this.Modifier.Text);
 
             //// For thread safety: No access to bindable object properties beyond this point.
+
+            // Non-blocking advisory: flag risky number-system codes (random-weight,
+            // coupon) and codes whose check digit does not validate. The save still
+            // proceeds — Commander accepts these and the operator decides.
+            var classification = UpcUtilities.ClassifyUpc(eanText);
+            var advisory = UpcUtilities.RiskNote(classification.Risk)
+                ?? (classification.Class == UpcUtilities.UpcClass.AmbiguousInvalid
+                    ? "This code's check digit does not validate — verify it scans correctly."
+                    : null);
 
             var department = await this.sapphireClient.GetDepartmentByNameAsync(
                 selectedDepartmentName,
@@ -466,9 +465,18 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
                     taxRateNames,
                     ageValidationNames);
 
-                this.SetInfoBar(
-                    InfoBarSeverity.Success,
-                    $"Saved EAN-13 '{ean13:D13}' with modifier '{modifier:D3}'");
+                if (advisory != null)
+                {
+                    this.SetInfoBar(
+                        InfoBarSeverity.Warning,
+                        $"Saved UPC '{ean13:D14}' (modifier '{modifier:D3}') — ⚠ {advisory}");
+                }
+                else
+                {
+                    this.SetInfoBar(
+                        InfoBarSeverity.Success,
+                        $"Saved UPC '{ean13:D14}' with modifier '{modifier:D3}'");
+                }
             }).ConfigureAwait(false);
         }
 
@@ -497,7 +505,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
                 this.SetInfoBar(
                     InfoBarSeverity.Success,
-                    $"Deleted EAN-13 '{ean13:D13}' with modifier '{modifier:D3}'");
+                    $"Deleted UPC '{ean13:D14}' with modifier '{modifier:D3}'");
             }).ConfigureAwait(false);
         }
 
@@ -522,7 +530,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
             HashSet<string> taxRateNames,
             HashSet<string> ageValidationNames)
         {
-            this.Ean.Text = plu.Ean13.ToString("D13");
+            this.Ean.Text = plu.Ean13.ToString("D14");
             this.Modifier.Text = plu.Modifier.ToString();
             this.Description.Text = plu.Description;
             this.SelectedDepartmentName = departmentName;
@@ -544,29 +552,6 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
             this.SellUnit = 1;
             this.TaxableRebateAmount = 0;
             this.MaxQuantityPerTransaction = 0;
-        }
-
-        private void AddEanCheckDigitToText()
-        {
-            if (this.Ean.Text == null)
-            {
-                return;
-            }
-
-            var text = this.Ean.Text.Trim();
-
-            if (text.Length != 12)
-            {
-                return;
-            }
-
-            if (!long.TryParse(text, out var parsedEan13WithoutCheckDigit))
-            {
-                return;
-            }
-
-            var recomputedEan13 = Ean13Helper.ConvertToEan13WithCheckDigit(parsedEan13WithoutCheckDigit);
-            this.Ean.Text = recomputedEan13.ToString("D13");
         }
 
         private class DepartmentInfo
