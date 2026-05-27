@@ -1,5 +1,13 @@
 # Network Security Review — Verifone Commander Price Book Manager
 
+> **Status update (2026-05-26):** **Finding 1 (TLS bypass)** is now a
+> **secure-by-default, user-controlled setting** — `Settings.AllowUntrustedCertificates`
+> (default off). Validation only relaxes when the operator explicitly enables it on the
+> Settings page for the self-signed / IP-only Commander controller; the previous
+> *unconditional, silent* bypass is gone. Residual risk when the toggle is ON is accepted
+> by design (the controller has no FQDN / valid cert). **Findings #3 (response-size DoS),
+> #4 (fail-open fault detection), and #5 (default-coercion) remain OPEN.**
+
 **Date:** 2026-05-25
 **Scope:** Network-based security risks — data exfiltration, remote outbound / command-and-control (C2) channels, and the trust model of the one network connection the app makes.
 **Subject:** WinUI desktop app + console tool + Core library that communicates with a Verifone Commander "Sapphire" POS HTTP API over the local network.

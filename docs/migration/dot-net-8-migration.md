@@ -1,5 +1,12 @@
 ## Final migration research: .NET 6 → .NET 8 for this project
 
+> **Status: IMPLEMENTED (2026-05-26)** on branch `migrate/net8-winappsdk-2.1` (PR #1).
+> Done: .NET 6→8 (all projects), WinApp SDK 1.4→2.1.3, RID `win10-x64`→`win-x64`,
+> self-contained MSIX, rebrand + production signing. Went **direct to 2.1.3** (skipped the
+> doc's optional 1.8.x staging). **Deferred:** CI workflow (`main.yml`) update to
+> `setup-dotnet@v4/v5` + 8.0.x, nullable enablement, StyleCop SA1638. The eventual
+> **.NET 10 LTS** bump is tracked separately (see the .NET 10 porting doc in this folder).
+
 This project should be migrated from **.NET 6 to .NET 8** because .NET 6 is now out of support. Microsoft’s .NET support policy lists .NET 6 end of support as **November 12, 2024**; once a .NET version is out of support, Microsoft no longer provides security updates or technical support for it. ([Microsoft][1])
 
 For this repository, the migration is mostly a **project-file, package, tooling, and validation effort**, not a large application rewrite. The uploaded inventory shows four projects:
