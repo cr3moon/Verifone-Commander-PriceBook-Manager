@@ -9,6 +9,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.ComponentModel;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -29,6 +30,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
         private List<ItemRowVm> allItems = new List<ItemRowVm>();
         private bool suppressFilter;
+        private bool suppressSelectionRecount;
 
         [ObservableProperty]
         private ObservableCollection<ItemRowVm> items = new ObservableCollection<ItemRowVm>();
@@ -50,10 +52,15 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(RefreshCommand))]
+        [NotifyCanExecuteChangedFor(nameof(DeleteSelectedCommand))]
         private bool isBusy;
 
         [ObservableProperty]
         private int totalCount;
+
+        [ObservableProperty]
+        [NotifyCanExecuteChangedFor(nameof(DeleteSelectedCommand))]
+        private int selectedCount;
 
         public ItemsPageVm(
             IUiThreadDispatcher uiThreadDispatcher,
@@ -65,6 +72,11 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
             this.sapphireClient = sapphireClient ?? throw new ArgumentNullException(nameof(sapphireClient));
 
             this.RefreshCommand = new AsyncRelayCommand(this.RefreshAsync, () => !this.IsBusy);
+            this.SelectAllCommand = new RelayCommand(this.SelectAllFiltered);
+            this.ClearSelectionCommand = new RelayCommand(this.ClearSelection);
+            this.DeleteSelectedCommand = new AsyncRelayCommand(
+                this.DeleteSelectedAsync,
+                () => this.SelectedCount > 0 && !this.IsBusy);
 
             this.Messenger.Register<LoginStateChangedMessage>(this);
         }
@@ -75,6 +87,18 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
         public override int SymbolCode => 0xE8A9;
 
         public IRelayCommand RefreshCommand { get; }
+
+        public IRelayCommand SelectAllCommand { get; }
+
+        public IRelayCommand ClearSelectionCommand { get; }
+
+        public IRelayCommand DeleteSelectedCommand { get; }
+
+        public bool CanDelete => this.SelectedCount > 0 && !this.IsBusy;
+
+        public string DeleteButtonText => this.SelectedCount > 0
+            ? $"Delete selected ({this.SelectedCount})"
+            : "Delete selected";
 
         public string Summary => this.IsBusy
             ? "Loading…"
@@ -101,9 +125,19 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
         partial void OnAgeRestrictedOnlyChanged(bool value) => this.ApplyFilter();
 
-        partial void OnIsBusyChanged(bool value) => this.OnPropertyChanged(nameof(this.Summary));
+        partial void OnIsBusyChanged(bool value)
+        {
+            this.OnPropertyChanged(nameof(this.Summary));
+            this.OnPropertyChanged(nameof(this.CanDelete));
+        }
 
         partial void OnTotalCountChanged(int value) => this.OnPropertyChanged(nameof(this.Summary));
+
+        partial void OnSelectedCountChanged(int value)
+        {
+            this.OnPropertyChanged(nameof(this.CanDelete));
+            this.OnPropertyChanged(nameof(this.DeleteButtonText));
+        }
 
         private async Task RefreshAsync(CancellationToken cancellationToken)
         {
@@ -159,6 +193,11 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
                 .ThenBy(x => x.Modifier)
                 .ToList();
 
+            foreach (var row in rows)
+            {
+                row.PropertyChanged += this.OnRowSelectionChanged;
+            }
+
             var sortedDepartmentNames = departments
                 .Select(d => d.Name)
                 .Where(n => !string.IsNullOrEmpty(n))
@@ -172,6 +211,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
                 this.allItems = rows;
                 this.TotalCount = rows.Count;
+                this.SelectedCount = 0;
 
                 this.DepartmentNames = new ObservableCollection<string>(
                     new[] { AllDepartmentsOption }.Concat(sortedDepartmentNames));
@@ -198,6 +238,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
             this.FoodStampsOnly = false;
             this.AgeRestrictedOnly = false;
             this.TotalCount = 0;
+            this.SelectedCount = 0;
         }
 
         private void ApplyFilter()
@@ -236,6 +277,106 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
             this.Items = new ObservableCollection<ItemRowVm>(query);
             this.OnPropertyChanged(nameof(this.Summary));
+        }
+
+        private void OnRowSelectionChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (!this.suppressSelectionRecount && e.PropertyName == nameof(ItemRowVm.IsSelected))
+            {
+                this.SelectedCount = this.allItems.Count(x => x.IsSelected);
+            }
+        }
+
+        private void SelectAllFiltered()
+        {
+            this.suppressSelectionRecount = true;
+            foreach (var row in this.Items)
+            {
+                row.IsSelected = true;
+            }
+
+            this.suppressSelectionRecount = false;
+            this.SelectedCount = this.allItems.Count(x => x.IsSelected);
+        }
+
+        private void ClearSelection()
+        {
+            this.suppressSelectionRecount = true;
+            foreach (var row in this.allItems)
+            {
+                row.IsSelected = false;
+            }
+
+            this.suppressSelectionRecount = false;
+            this.SelectedCount = 0;
+        }
+
+        private async Task DeleteSelectedAsync(CancellationToken cancellationToken)
+        {
+            // Selection persists across filtering, so delete every selected row,
+            // including any currently hidden by the active filter.
+            var selected = this.allItems.Where(x => x.IsSelected).ToList();
+            if (selected.Count == 0)
+            {
+                return;
+            }
+
+            await this.DispatchOnUiThreadAsync(() => this.IsBusy = true).ConfigureAwait(false);
+
+            //// For thread safety: No access to bindable object properties beyond this point.
+
+            var deleted = new List<ItemRowVm>();
+            var failCount = 0;
+
+            foreach (var row in selected)
+            {
+                try
+                {
+                    await this.sapphireClient.DeletePriceLookUpAsync(
+                        row.Ean13,
+                        row.Modifier,
+                        cancellationToken).ConfigureAwait(false);
+                    deleted.Add(row);
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.LogError(ex, "Failed to delete UPC {Upc} modifier {Modifier}", row.Ean13, row.Modifier);
+                    failCount++;
+                }
+
+                var done = deleted.Count + failCount;
+                await this.DispatchOnUiThreadAsync(() =>
+                    this.SetInfoBar(InfoBarSeverity.Informational, $"Deleting… {done}/{selected.Count}")).ConfigureAwait(false);
+            }
+
+            var deletedSet = new HashSet<ItemRowVm>(deleted);
+            var localFailCount = failCount;
+
+            await this.DispatchOnUiThreadAsync(() =>
+            {
+                foreach (var row in deleted)
+                {
+                    row.PropertyChanged -= this.OnRowSelectionChanged;
+                }
+
+                this.allItems = this.allItems.Where(x => !deletedSet.Contains(x)).ToList();
+                this.TotalCount = this.allItems.Count;
+                this.SelectedCount = this.allItems.Count(x => x.IsSelected);
+                this.ApplyFilter();
+
+                this.IsBusy = false;
+
+                if (localFailCount == 0)
+                {
+                    this.SetInfoBar(InfoBarSeverity.Success, $"Deleted {deleted.Count} item(s) from the live POS.");
+                }
+                else
+                {
+                    this.SetInfoBar(
+                        InfoBarSeverity.Warning,
+                        $"Deleted {deleted.Count} item(s); {localFailCount} failed (see log).");
+                }
+            }).ConfigureAwait(false);
         }
     }
 

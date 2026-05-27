@@ -55,11 +55,22 @@
             </Button>
         </StackPanel>
 
-        <!-- Summary -->
-        <TextBlock Grid.Row="2"
-                   Margin="{StaticResource VerticalMargin_NotFirstElement}"
-                   Style="{ThemeResource CaptionTextBlockStyle}"
-                   Text="{x:Bind ViewModel.Summary, Mode=OneWay}" />
+        <!-- Selection actions + summary -->
+        <StackPanel Grid.Row="2"
+                    Orientation="Horizontal"
+                    Spacing="12"
+                    Margin="{StaticResource VerticalMargin_NotFirstElement}"
+                    VerticalAlignment="Center">
+            <Button Content="Select all" Command="{x:Bind ViewModel.SelectAllCommand}" />
+            <Button Content="Clear" Command="{x:Bind ViewModel.ClearSelectionCommand}" />
+            <Button x:Name="DeleteSelectedButton"
+                    Content="{x:Bind ViewModel.DeleteButtonText, Mode=OneWay}"
+                    IsEnabled="{x:Bind ViewModel.CanDelete, Mode=OneWay}"
+                    Click="DeleteSelectedButton_Click" />
+            <TextBlock VerticalAlignment="Center"
+                       Style="{ThemeResource CaptionTextBlockStyle}"
+                       Text="{x:Bind ViewModel.Summary, Mode=OneWay}" />
+        </StackPanel>
 
         <!-- Column headers -->
         <Border Grid.Row="3"

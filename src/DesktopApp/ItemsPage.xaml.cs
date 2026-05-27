@@ -6,6 +6,8 @@
 
 namespace VerifoneCommander.PriceBookManager.DesktopApp
 {
+    using System;
+    using Microsoft.UI.Xaml;
     using Microsoft.UI.Xaml.Controls;
     using VerifoneCommander.PriceBookManager.DesktopApp.ViewModels;
 
@@ -17,5 +19,33 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp
         }
 
         public ItemsPageVm ViewModel { get; } = App.ViewModelResolver.Resolve<ItemsPageVm>();
+
+        private async void DeleteSelectedButton_Click(object sender, RoutedEventArgs e)
+        {
+            var count = this.ViewModel.SelectedCount;
+            if (count == 0)
+            {
+                return;
+            }
+
+            var dialog = new ContentDialog
+            {
+                XamlRoot = this.XamlRoot,
+                Title = "Delete selected items?",
+                Content = $"This permanently deletes {count} item(s) from the live POS controller. " +
+                          "This cannot be undone.",
+                PrimaryButtonText = "Delete",
+                CloseButtonText = "Cancel",
+                DefaultButton = ContentDialogButton.Close,
+            };
+
+            // IAsyncOperation has no ConfigureAwait; awaiting it resumes on the UI thread.
+            var result = await dialog.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
+            {
+                this.ViewModel.DeleteSelectedCommand.Execute(null);
+            }
+        }
     }
 }
