@@ -1,0 +1,686 @@
+========================================================================================
+SEQUENTIAL / PATTERN AUDIT — likely hand-entered UPCs
+========================================================================================
+  HIGH: 51
+  MEDIUM: 124
+  LOW: 132
+  Total flagged: 307  /  Total PLUs analyzed: 1035
+
+========================================================================================
+HIGH CONFIDENCE — almost certainly hand-entered
+========================================================================================
+
+-- Dept 1000 GROCERY  (9 item(s)) --
+   00000980175286  sig= 9  Barilla Pasta                                 
+      · only 9 significant digits (real UPC-As have 11+)
+   00027800065700  sig=11  KS FS FUD                                     
+      · adjacent UPC at +1 (gap=1 sequence)
+   00027800065701  sig=11  FUDGE STRIPES                                 
+      · adjacent UPC at +1 (gap=1 sequence)
+   00044000060120  sig=11  Oreo Golden                                   
+      · adjacent UPC at +1 (gap=1 sequence)
+   00044000060121  sig=11  OREO GOLDEN                                   
+      · adjacent UPC at +1 (gap=1 sequence)
+   00078742352960  sig=11  GV Veg Oil                                    
+      · adjacent UPC at +1 (gap=1 sequence)
+   00078742352961  sig=11  GV VEGETABLE OIL                              
+      · adjacent UPC at +1 (gap=1 sequence)
+   00078742370810  sig=11  GV EF ORG                                     
+      · adjacent UPC at +1 (gap=1 sequence)
+   00078742370811  sig=11  GV COMPLETE PANCAKE                           
+      · adjacent UPC at +1 (gap=1 sequence)
+
+-- Dept 1001 BEVERAGE NA  (3 item(s)) --
+   00000883920100  sig= 9  12 oz Celcius Peach Mgo                       
+      · only 9 significant digits (real UPC-As have 11+)
+   99999999999998  sig=14  ZZ FILE-IMPORT TEST DEL-CONTROL               
+      · adjacent UPC at +1 (gap=1 sequence)
+   99999999999999  sig=14  ZZ FILE-IMPORT TEST ADD                       
+      · adjacent UPC at +1 (gap=1 sequence)
+
+-- Dept 1003 HOUSEHOLD  (1 item(s)) --
+   00000124364245  sig= 9  Plastic Cutlery 24 Combo pack                 
+      · only 9 significant digits (real UPC-As have 11+)
+
+-- Dept 1012 CANDY  (11 item(s)) --
+   00000000228910  sig= 6  Extra Peppermint (ALT-xls)                    
+      · only 6 significant digits (real UPC-As have 11+)
+   00000000228980  sig= 6  Extra Polar Ice (ALT-xls)                     
+      · only 6 significant digits (real UPC-As have 11+)
+   00000000228990  sig= 6  Extra Spearmint (ALT-xls)                     
+      · only 6 significant digits (real UPC-As have 11+)
+   00000000342400  sig= 6  Hersheys Milk Choc bar (ALT-xls)              
+      · only 6 significant digits (real UPC-As have 11+)
+   00000000342410  sig= 6  Hersheys with almonds (ALT-xls)               
+      · only 6 significant digits (real UPC-As have 11+)
+   00000000342460  sig= 6  KitKat (ALT-xls)                              
+      · only 6 significant digits (real UPC-As have 11+)
+   00000000402660  sig= 6  Skittles Sour (ALT-xls)                       
+      · only 6 significant digits (real UPC-As have 11+)
+   00000000987332  sig= 6  zNOT SOLD - Kinder Joy                          [NOT SOLD]
+      · only 6 significant digits (real UPC-As have 11+)
+   00000003444000  sig= 7  Reeses (ALT-xls)                              
+      · only 7 significant digits (real UPC-As have 11+)
+   00007339001404  sig=10  Mentos Fresh Mint                             
+      · adjacent UPC at +1 (gap=1 sequence)
+   00007339001405  sig=10  Mentos Spearmint                              
+      · adjacent UPC at +1 (gap=1 sequence)
+
+-- Dept 1013 SNACKS  (26 item(s)) --
+   00000816326094  sig= 9  BOULDER AVO OIL SEA SALT                      
+      · only 9 significant digits (real UPC-As have 11+)
+   00000816326149  sig= 9  Boulder Chip-Avocado Oil- Malt Vinegar        
+      · only 9 significant digits (real UPC-As have 11+)
+      · adjacent UPC at +1 (gap=1 sequence)
+   00000816326150  sig= 9  Boulder Chip - Olive Oil                      
+      · only 9 significant digits (real UPC-As have 11+)
+      · adjacent UPC at +1 (gap=1 sequence)
+   00000990291758  sig= 9  Ruffles Orginal 15 oz                         
+      · only 9 significant digits (real UPC-As have 11+)
+   00000990291824  sig= 9  Ruffles Queso                                 
+      · only 9 significant digits (real UPC-As have 11+)
+   00000990291861  sig= 9  Tostito Bites                                 
+      · only 9 significant digits (real UPC-As have 11+)
+   00000990292127  sig= 9  Baked Lays 15oz                               
+      · only 9 significant digits (real UPC-As have 11+)
+      · adjacent UPC at +1 (gap=1 sequence)
+   00000990292128  sig= 9  Lays BBQ 15 oz                                
+      · only 9 significant digits (real UPC-As have 11+)
+      · adjacent UPC at +1 (gap=1 sequence)
+   00000990292134  sig= 9  Lays Orginal 15 oz                            
+      · only 9 significant digits (real UPC-As have 11+)
+   00000990292136  sig= 9  Lays Limon                                    
+      · only 9 significant digits (real UPC-As have 11+)
+   00000990292151  sig= 9  Dorito NACF                                   
+      · only 9 significant digits (real UPC-As have 11+)
+   00000990292158  sig= 9  Dorito CLRNF                                  
+      · only 9 significant digits (real UPC-As have 11+)
+   00000990292194  sig= 9  Funyuns                                       
+      · only 9 significant digits (real UPC-As have 11+)
+      · adjacent UPC at +1 (gap=1 sequence)
+   00000990292195  sig= 9  Cheetos CRCHF                                 
+      · only 9 significant digits (real UPC-As have 11+)
+      · adjacent UPC at +1 (gap=1 sequence)
+   00000990292217  sig= 9  Cheetos Flaming Hot                           
+      · only 9 significant digits (real UPC-As have 11+)
+      · adjacent UPC at +1 (gap=1 sequence)
+   00000990292218  sig= 9  Cheetos Limon                                 
+      · only 9 significant digits (real UPC-As have 11+)
+      · adjacent UPC at +1 (gap=1 sequence)
+   00000990341730  sig= 9  Chesters Fries                                
+      · only 9 significant digits (real UPC-As have 11+)
+   00002840001254  sig=10  Vickies Kettle Chips- S/Ving                  
+      · adjacent UPC at +1 (gap=1 sequence)
+   00002840001255  sig=10  Vickies Kettle Chips-Jalepeno                 
+      · adjacent UPC at +1 (gap=1 sequence)
+   00002840004790  sig=10  Cheetos Crunchy                               
+      · adjacent UPC at +1 (gap=1 sequence)
+   00002840004791  sig=10  Cheetos Flaming Hot                           
+      · adjacent UPC at +1 (gap=1 sequence)
+      · adjacent UPC at +1 (gap=1 sequence)
+   00002840004792  sig=10  Cheetos Flaming Hot lime                      
+      · adjacent UPC at +1 (gap=1 sequence)
+      · adjacent UPC at +1 (gap=1 sequence)
+   00002840004793  sig=10  Fritos Original                               
+      · adjacent UPC at +1 (gap=1 sequence)
+   00003800084551  sig=10  Pringles 1.4 oz Orginial                      
+      · adjacent UPC at +1 (gap=1 sequence)
+   00003800084552  sig=10  Pringles 1.4 oz Sour Cream                    
+      · adjacent UPC at +1 (gap=1 sequence)
+      · adjacent UPC at +1 (gap=1 sequence)
+   00003800084553  sig=10  Pringles 1.4 oz Cheddar                       
+      · adjacent UPC at +1 (gap=1 sequence)
+
+-- Dept 9995 OPEN MERCHANDISE  (1 item(s)) --
+   00000000099998  sig= 5  ITEM F                                        
+      · only 5 significant digits (real UPC-As have 11+)
+
+========================================================================================
+MEDIUM CONFIDENCE — eyeball for context
+========================================================================================
+
+-- Dept 1000 GROCERY  (51 item(s)) --
+   00011210000010  sig=11  Tabasco                                       
+      · pair with shared description prefix 'TABASCO'
+   00011210000018  sig=11  TABASCO CLASSIC HOT SC                        
+      · pair with shared description prefix 'TABASCO'
+   00014100085478  sig=11  GOLDFISH CHEDDAR                              
+      · tight cluster of 3 (gaps [2, 5])
+   00014100085480  sig=11  PF Goldfish                                   
+      · tight cluster of 3 (gaps [2, 5])
+   00014100085485  sig=11  GOLDFISH FLV BLT XTRA CH                      
+      · tight cluster of 3 (gaps [2, 5])
+   00024600010980  sig=11  Salt & Pepper Shaker                          
+      · pair with shared description prefix 'SALT'
+   00024600010986  sig=11  SALT AND PEPPER SHAKER                        
+      · pair with shared description prefix 'SALT'
+   00025500304010  sig=11  Folgers Coffee- Reg 9.6oz                     
+      · pair with shared description prefix 'FOLGERS'
+   00025500304020  sig=11  Folgers Coffee - DEC                          
+      · pair with shared description prefix 'FOLGERS'
+   00027800065550  sig=11  Vienna Fngs                                   
+      · pair with shared description prefix 'VIENNA'
+   00027800065558  sig=11  VIENNA FINGERS                                
+      · pair with shared description prefix 'VIENNA'
+   00027800066430  sig=11  Mother Circus Cookies                         
+      · pair with shared description prefix 'MOTHER'
+   00027800066432  sig=11  MOTHER CIRCUS ANIMAL CK                       
+      · pair with shared description prefix 'MOTHER'
+   00033200011300  sig=11  Baking Soda                                   
+      · pair with shared description prefix 'BAKING'
+   00033200011309  sig=11  BAKING SODA                                   
+      · pair with shared description prefix 'BAKING'
+   00038000222550  sig=11  Pop Tart Blueberry                            
+      · pair with shared description prefix 'POP'
+   00038000222559  sig=11  POP TARTS BLUEBERRY                           
+      · pair with shared description prefix 'POP'
+   00038000222710  sig=11  Pop Tart Strawberry                           
+      · pair with shared description prefix 'POP'
+   00038000222719  sig=11  POP TARTS STRAWBERRY                          
+      · pair with shared description prefix 'POP'
+   00041565268940  sig=11  Pace Restaurant                               
+      · pair with shared description prefix 'PACE'
+   00041565268948  sig=11  PACE SALSA REST STYLE                         
+      · pair with shared description prefix 'PACE'
+   00044000031130  sig=11  Ritz                                          
+      · pair with shared description prefix 'RITZ'
+   00044000031138  sig=11  RITZ FRESH STACKS ORG                         
+      · pair with shared description prefix 'RITZ'
+   00044000032190  sig=11  Chips Ahoy                                    
+      · pair with shared description prefix 'CHIPS'
+   00044000032197  sig=11  CHIPS AHOY ORG                                
+      · pair with shared description prefix 'CHIPS'
+   00046000811010  sig=11  Old El Paso Taco Shells 12                    
+      · pair with shared description prefix 'OLD'
+   00046000811017  sig=11  OLD EL PASO TACO SHELLS                       
+      · pair with shared description prefix 'OLD'
+   00049733091010  sig=11  Cholula ORG                                   
+      · pair with shared description prefix 'CHOLULA'
+   00049733091015  sig=11  CHOLULA HOT SAUCE ORG                         
+      · pair with shared description prefix 'CHOLULA'
+   00064144030310  sig=11  Pam Reg SPR                                   
+      · pair with shared description prefix 'PAM'
+   00064144030316  sig=11  PAM ORG SPRAY                                 
+      · pair with shared description prefix 'PAM'
+   00071100005500  sig=11  HV Org Ranch                                  
+      · pair with shared description prefix 'HV'
+   00071100005509  sig=11  HV RANCH 8FL OZ                               
+      · pair with shared description prefix 'HV'
+   00078742014610  sig=11  GV Wow Amer                                   
+      · pair with shared description prefix 'GV'
+   00078742014616  sig=11  GV CHEESE WOW AMERICAN                        
+      · pair with shared description prefix 'GV'
+   00078742014690  sig=11  GV Wow Ched                                   
+      · pair with shared description prefix 'GV'
+   00078742014692  sig=11  GV CHEESE WOW CHEDDAR                         
+      · pair with shared description prefix 'GV'
+   00078742020430  sig=11  GV Van WFR                                    
+      · pair with shared description prefix 'GV'
+   00078742020433  sig=11  GV VANILLA WAFERS                             
+      · pair with shared description prefix 'GV'
+   00078742127422  sig=11  GV SLICED PPR JACK 8OZ                        
+      · pair with shared description prefix 'GV'
+   00078742127439  sig=11  GV SLICED SWISS 8OZ                           
+      · pair with shared description prefix 'GV'
+   00078742232970  sig=11  GV Hamburger                                  
+      · pair with shared description prefix 'GV'
+   00078742232973  sig=11  GV DILL PICKLES 16FLOZ                        
+      · pair with shared description prefix 'GV'
+   00078742370090  sig=11  GV BTR Pancake                                
+      · pair with shared description prefix 'GV'
+   00078742370095  sig=11  GV PANCAKE SYRUP                              
+      · pair with shared description prefix 'GV'
+   00078742427860  sig=11  GV CLC 0017                                   
+      · pair with shared description prefix 'GV'
+   00078742427867  sig=11  GV OLIVE OIL                                  
+      · pair with shared description prefix 'GV'
+   00078742429560  sig=11  GV Worcester                                  
+      · pair with shared description prefix 'GV'
+   00078742429564  sig=11  GV WORCESTERSHIRE SC                          
+      · pair with shared description prefix 'GV'
+   00078742434030  sig=11  GV Sugar                                      
+      · pair with shared description prefix 'GV'
+   00078742434032  sig=11  GV CAN GRAN SUGAR                             
+      · pair with shared description prefix 'GV'
+
+-- Dept 1001 BEVERAGE NA  (8 item(s)) --
+   00012000809941  sig=11  12 OZ CAN- 12 PK PEPSI                        
+      · pair with shared description prefix '12'
+   00012000809965  sig=11  12 OZ CAN- 12 PK MDEW                         
+      · pair with shared description prefix '12'
+   00810019263224  sig=12  BLACK RIFLE DBL SHOT ESPRESSO                 
+      · pair with shared description prefix 'BLACK'
+   00810019263231  sig=12  BLACK RIFLE DOUBLE SHOT 11OZ                  
+      · pair with shared description prefix 'BLACK'
+   00889392001549  sig=12  12 oz Celcius Kiwi Strwbry                    
+      · pair with shared description prefix '12'
+   00889392001563  sig=12  12 oz Celcius Wtmn lmd                        
+      · pair with shared description prefix '12'
+   00889392002355  sig=12  12 oz Celcius FF PNK Lem                      
+      · pair with shared description prefix '12'
+   00889392002379  sig=12  12 oz Celcius FF Drft LME                     
+      · pair with shared description prefix '12'
+
+-- Dept 1003 HOUSEHOLD  (2 item(s)) --
+   00030772109260  sig=11  Dawn Ultra                                    
+      · pair with shared description prefix 'DAWN'
+   00030772109267  sig=11  DAWN DISH                                     
+      · pair with shared description prefix 'DAWN'
+
+-- Dept 1006 FISHING APPAREL  (8 item(s)) --
+   00078041142966  sig=11  FISHERMAN EYEWEAR- BLK                        
+      · pair with shared description prefix 'FISHERMAN'
+   00078041142973  sig=11  FISHERMAN EYEWEAR WR AR                       
+      · pair with shared description prefix 'FISHERMAN'
+   00088989354703  sig=11  CROAKIES RAINBOW                              
+      · pair with shared description prefix 'CROAKIES'
+   00088989354710  sig=11  CROAKIES BROWN FISH SKIN                      
+      · pair with shared description prefix 'CROAKIES'
+   00088989463733  sig=11  CROAKIES BROWN TROUT                          
+      · pair with shared description prefix 'CROAKIES'
+   00088989463757  sig=11  CROAKIES RAINBOW TROUT                        
+      · pair with shared description prefix 'CROAKIES'
+   00888907032344  sig=12  BUFF DESERT SAND                              
+      · pair with shared description prefix 'BUFF'
+   00888907032351  sig=12  BUFF BROWN TROUT                              
+      · pair with shared description prefix 'BUFF'
+
+-- Dept 1007 FLIES AND SUPPLIES  (24 item(s)) --
+   00020495000170  sig=11  COTTON CORDELL SMOKEY JOE                     
+      · pair with shared description prefix 'COTTON'
+   00020495000187  sig=11  COTTON CORDELL RED FIN RBW                    
+      · pair with shared description prefix 'COTTON'
+   00023634011419  sig=11  PTR MAR 6-PMSP-R-1/4 OZ                       
+      · pair with shared description prefix 'PTR'
+   00023634011426  sig=11  PTR MAR 6-PMSP-Y-1/4 OZ                       
+      · pair with shared description prefix 'PTR'
+   00023634012157  sig=11  PTHR MAR 9-PMRSAL-G 3/8                       
+      · pair with shared description prefix 'PTHR'
+   00023634012164  sig=11  PTHR MAR 9-PMRSAL-S-3/8                       
+      · pair with shared description prefix 'PTHR'
+   00028632238141  sig=11  PWR BT BTCHY2                                 
+      · pair with shared description prefix 'PWR'
+   00028632238158  sig=11  PWR BT NATURAL                                
+      · pair with shared description prefix 'PWR'
+   00028632652206  sig=11  PWR BAIT 3" CHR SHAD                          
+      · pair with shared description prefix 'PWR'
+   00028632652220  sig=11  PWR BT PBBSS3-PRE                             
+      · pair with shared description prefix 'PWR'
+   00039523120179  sig=11  Z-RAY RAINBOW TROUT                           
+      · pair with shared description prefix 'Z'
+   00039523120186  sig=11  Z-RAY 1/4 OZ FIRE TIGER                       
+      · pair with shared description prefix 'Z'
+   00042083378096  sig=11  STREN 10 LB 330 YD                            
+      · pair with shared description prefix 'STREN'
+   00042083378102  sig=11  STREN 12LB 330YD                              
+      · pair with shared description prefix 'STREN'
+   00654296111027  sig=12  TROUT MAGNET BULLDOG                          
+      · pair with shared description prefix 'TROUT'
+   00654296111034  sig=12  TROUT MAGNET COTT0N CANDY                     
+      · pair with shared description prefix 'TROUT'
+   00654296876711  sig=12  TROUT MAGNET BUBBLEGUM                        
+      · pair with shared description prefix 'TROUT'
+   00654296876735  sig=12  TROUT MAGNET OP CHART                         
+      · pair with shared description prefix 'TROUT'
+   00719339069489  sig=12  BOO YAH BYB38605 WHT WHT                      
+      · pair with shared description prefix 'BOO'
+   00719339069519  sig=12  BOO YAH BYB38608 BK BK                        
+      · pair with shared description prefix 'BOO'
+   00719799009988  sig=12  GLACIER SUN GLOVE S/M                         
+      · pair with shared description prefix 'GLACIER'
+   00719799009995  sig=12  GLACIER SUN GLOVE L/XL                        
+      · pair with shared description prefix 'GLACIER'
+   00851174003218  sig=12  ARNIES 503                                    
+      · pair with shared description prefix 'ARNIES'
+   00851174003232  sig=12  ARNIES 504                                    
+      · pair with shared description prefix 'ARNIES'
+
+-- Dept 1008 JEWELRY  (2 item(s)) --
+   00090091301117  sig=11  WALKING PHEASANT PIN                          
+      · pair with shared description prefix 'WALKING'
+   00090091301131  sig=11  WALKING PHEASANT PAINTED                      
+      · pair with shared description prefix 'WALKING'
+
+-- Dept 1012 CANDY  (6 item(s)) --
+   00022000008985  sig=11  Extra Polar Ice                               
+      · pair with shared description prefix 'EXTRA'
+   00022000008992  sig=11  Extra Spearmint                               
+      · pair with shared description prefix 'EXTRA'
+   00034000002405  sig=11  Hersheys Milk Choc bar                        
+      · pair with shared description prefix 'HERSHEYS'
+   00034000002412  sig=11  Hersheys with almonds                         
+      · pair with shared description prefix 'HERSHEYS'
+   00073390014049  sig=11  Mentos Fresh Mint                             
+      · pair with shared description prefix 'MENTOS'
+   00073390014056  sig=11  Mentos Spearmint                              
+      · pair with shared description prefix 'MENTOS'
+
+-- Dept 1013 SNACKS  (23 item(s)) --
+   00002840004795  sig=10  Fritos BBQ                                    
+      · tight cluster of 5 (gaps [1, 1, 1, 2])
+   00002840007054  sig=10  Doritos Cool Ranch                            
+      · pair with shared description prefix 'DORITOS'
+   00002840007056  sig=10  Doritos Nacho Cheese                          
+      · pair with shared description prefix 'DORITOS'
+   00008163261498  sig=10  Boulder Chip-Avocado Oil- Malt Vinegar        
+      · pair with shared description prefix 'BOULDER'
+   00008163261504  sig=10  Boulder Chip - Olive Oil                      
+      · pair with shared description prefix 'BOULDER'
+   00009902921345  sig=10  Lays Orginal 15 oz                            
+      · pair with shared description prefix 'LAYS'
+   00009902921369  sig=10  Lays Limon                                    
+      · pair with shared description prefix 'LAYS'
+   00009902922175  sig=10  Cheetos Flaming Hot                           
+      · pair with shared description prefix 'CHEETOS'
+   00009902922182  sig=10  Cheetos Limon                                 
+      · pair with shared description prefix 'CHEETOS'
+   00028400012546  sig=11  Vickies Kettle Chips- S/Ving                  
+      · pair with shared description prefix 'VICKIES'
+   00028400012553  sig=11  Vickies Kettle Chips-Jalepeno                 
+      · pair with shared description prefix 'VICKIES'
+   00028400070546  sig=11  Doritos Cool Ranch                            
+      · pair with shared description prefix 'DORITOS'
+   00028400070560  sig=11  Doritos Nacho Cheese                          
+      · pair with shared description prefix 'DORITOS'
+   00708163261497  sig=12  BOULDER AVO OIL MVSS                          
+      · pair with shared description prefix 'BOULDER'
+   00708163261503  sig=12  BOULDER OLIVE OIL SS                          
+      · pair with shared description prefix 'BOULDER'
+   00850053892370  sig=12  EDAMAME SEA SALT .8OZ                         
+      · pair with shared description prefix 'EDAMAME'
+   00850053892387  sig=12  EDAMAME RANCH .8OZ                            
+      · pair with shared description prefix 'EDAMAME'
+   00888109010683  sig=12  HOSTESS TWINKIE                               
+      · pair with shared description prefix 'HOSTESS'
+   00888109010690  sig=12  HOSTESS CUPCAKE                               
+      · pair with shared description prefix 'HOSTESS'
+   00888109050085  sig=12  HOSTESS 3 PK CHOC DONUT                       
+      · pair with shared description prefix 'HOSTESS'
+   00888109050115  sig=12  HOSTESS 3 PK POWD DONUT                       
+      · pair with shared description prefix 'HOSTESS'
+   00888109250874  sig=12  HOSTESS DANISH CREAM CH                       
+      · pair with shared description prefix 'HOSTESS'
+   00888109250904  sig=12  HOSTESS DANISH BERRIES                        
+      · pair with shared description prefix 'HOSTESS'
+
+========================================================================================
+LOW CONFIDENCE — may be legitimate manufacturer SKU runs
+========================================================================================
+
+-- Dept 1000 GROCERY  (12 item(s)) --
+   00016000141540  sig=11  CTC Cup                                       
+      · looser cluster of 3 (gaps [10, 10])
+   00016000141550  sig=11  Cereal Cup- Honey Nut                         
+      · looser cluster of 3 (gaps [10, 10])
+   00016000141560  sig=11  LC Cup                                        
+      · looser cluster of 3 (gaps [10, 10])
+   00021000026870  sig=11  Kraft Mayo                                    
+      · looser cluster of 3 (gaps [6, 14])
+   00021000026876  sig=11  KRAFT MAYO                                    
+      · looser cluster of 3 (gaps [6, 14])
+   00021000026890  sig=11  KF Tartar                                     
+      · looser cluster of 3 (gaps [6, 14])
+   00160001415408  sig=12  CTC Cup                                       
+      · looser cluster of 3 (gaps [99, 99])
+   00160001415507  sig=12  Cereal Cup- Honey Nut                         
+      · looser cluster of 3 (gaps [99, 99])
+   00160001415606  sig=12  LC Cup                                        
+      · looser cluster of 3 (gaps [99, 99])
+   00440000601102  sig=12  Oreo Cookie                                   
+      · looser cluster of 3 (gaps [99, 99])
+   00440000601201  sig=12  Oreo Golden                                   
+      · looser cluster of 3 (gaps [99, 99])
+   00440000601300  sig=12  Oreo DS                                       
+      · looser cluster of 3 (gaps [99, 99])
+
+-- Dept 1001 BEVERAGE NA  (28 item(s)) --
+   00012000286179  sig=11  18.5 oz Lit PLF EXSWT                         
+      · looser cluster of 5 (gaps [7, 7, 16, 14])
+   00012000286186  sig=11  18.5 oz Lit PLF  SWL                          
+      · looser cluster of 5 (gaps [7, 7, 16, 14])
+   00012000286193  sig=11  18.5 oz Lit PLF SWT                           
+      · looser cluster of 5 (gaps [7, 7, 16, 14])
+   00012000286209  sig=11  PURE LEAF UNSWEETENED                         
+      · looser cluster of 5 (gaps [7, 7, 16, 14])
+   00012000286223  sig=11  18.5 oz Lit PLF  RAZ-O                        
+      · looser cluster of 5 (gaps [7, 7, 16, 14])
+   00012000712982  sig=11  SMALL FOUNTAIN DRINK                          
+      · looser cluster of 3 (gaps [20, 17])
+   00012000713002  sig=11  MED FOUNTAIN DRINK                            
+      · looser cluster of 3 (gaps [20, 17])
+   00012000713019  sig=11  LRG FOUNTAIN DRINK                            
+      · looser cluster of 3 (gaps [20, 17])
+   00052000135084  sig=11  28 0Z GAT LME CUCMBR                          
+      · looser cluster of 7 (gaps [54, 7, 7, 17, 7, 14])
+   00052000135138  sig=11  28 0Z GAT FT PNCH                             
+      · looser cluster of 7 (gaps [54, 7, 7, 17, 7, 14])
+   00052000135145  sig=11  28 0Z GAT ORG                                 
+      · looser cluster of 7 (gaps [54, 7, 7, 17, 7, 14])
+   00052000135152  sig=11  28 0Z GAT LL                                  
+      · looser cluster of 7 (gaps [54, 7, 7, 17, 7, 14])
+   00052000135169  sig=11  28 0Z GAT FRC GRP                             
+      · looser cluster of 7 (gaps [54, 7, 7, 17, 7, 14])
+   00052000135176  sig=11  28 0Z GAT BLU                                 
+      · looser cluster of 7 (gaps [54, 7, 7, 17, 7, 14])
+   00052000135190  sig=11  28 0Z GAT GLCR FRZ                            
+      · looser cluster of 7 (gaps [54, 7, 7, 17, 7, 14])
+   00120002861796  sig=12  18.5 oz Lit PLF EXSWT                         
+      · looser cluster of 3 (gaps [68, 68])
+   00120002861864  sig=12  18.5 oz Lit PLF  SWL                          
+      · looser cluster of 3 (gaps [68, 68])
+   00120002861932  sig=12  18.5 oz Lit PLF SWT                           
+      · looser cluster of 3 (gaps [68, 68])
+   00520001351388  sig=12  28 0Z GAT FT PNCH                             
+      · looser cluster of 3 (gaps [68, 68])
+   00520001351456  sig=12  28 0Z GAT ORG                                 
+      · looser cluster of 3 (gaps [68, 68])
+   00520001351524  sig=12  28 0Z GAT LL                                  
+      · looser cluster of 3 (gaps [68, 68])
+   00818094005746  sig=12  16 oz Rockstar PNCHD                          
+      · looser cluster of 7 (gaps [7, 24, 7, 7, 16, 7])
+   00818094005753  sig=12  16 oz Rockstar SF                             
+      · looser cluster of 7 (gaps [7, 24, 7, 7, 16, 7])
+   00818094005777  sig=12  16 oz Rockstar ENRG 8                         
+      · looser cluster of 7 (gaps [7, 24, 7, 7, 16, 7])
+   00818094005784  sig=12  16 oz Rockstar RCVRY                          
+      · looser cluster of 7 (gaps [7, 24, 7, 7, 16, 7])
+   00818094005791  sig=12  16 oz Rockstar RECVRY ORG 8                   
+      · looser cluster of 7 (gaps [7, 24, 7, 7, 16, 7])
+   00818094005807  sig=12  16 oz Rockstar PRZR SLVIC                     
+      · looser cluster of 7 (gaps [7, 24, 7, 7, 16, 7])
+   00818094005814  sig=12  16 oz Rockstar PRZR PN 8                      
+      · looser cluster of 7 (gaps [7, 24, 7, 7, 16, 7])
+
+-- Dept 1006 FISHING APPAREL  (1 item(s)) --
+   00888907032399  sig=12  BUFF RAINBOW TROUT                            
+      · looser cluster of 3 (gaps [7, 48])
+
+-- Dept 1007 FLIES AND SUPPLIES  (57 item(s)) --
+   00023634011143  sig=11  PTHR MAR 4-PMAG 1/8                           
+      · looser cluster of 3 (gaps [7, 24])
+   00023634011150  sig=11  PNTR MAR 4-PMAS 1/8                           
+      · looser cluster of 3 (gaps [7, 24])
+   00023634011174  sig=11  PTR MAR 6-PMAS-1/4 OZ                         
+      · looser cluster of 3 (gaps [7, 24])
+   00023634011365  sig=11  PTR MAR 4-PMSP-R-1/8 OZ                       
+      · looser cluster of 4 (gaps [7, 47, 7])
+   00023634011372  sig=11  PTHR MAR 4-PMSP-Y-1/8                         
+      · looser cluster of 4 (gaps [7, 47, 7])
+   00023634012058  sig=11  PNTHR MAR 4-PMRSAL-1/8                        
+      · looser cluster of 4 (gaps [44, 55, 7])
+   00023634012102  sig=11  PTR MAR 6-PMRSAL-G                            
+      · looser cluster of 4 (gaps [44, 55, 7])
+   00023634017060  sig=11  PTHR MAR 2-PMRFL-1/16                         
+      · looser cluster of 3 (gaps [17, 7])
+   00023634017077  sig=11  PTHR MAR 4-PMRFL-1/8                          
+      · looser cluster of 3 (gaps [17, 7])
+   00023634017084  sig=11  PTR MAR 6-PMRFL--1/4 OZ                       
+      · looser cluster of 3 (gaps [17, 7])
+   00023634510363  sig=11  PTHR MAR 4-PMH-RTH 1/8                        
+      · looser cluster of 3 (gaps [7, 17])
+   00023634510370  sig=11  PMR MAR 6-PMH-RTH-1/4 OZ                      
+      · looser cluster of 3 (gaps [7, 17])
+   00023634510387  sig=11  PTHR MAR 9-PMH-RTH 3/8                        
+      · looser cluster of 3 (gaps [7, 17])
+   00028632094501  sig=11  PWR BT CORN YLW                               
+      · looser cluster of 3 (gaps [24, 31])
+   00028632094525  sig=11  POWR BT NYMPH BTNYG2                          
+      · looser cluster of 3 (gaps [24, 31])
+   00028632094556  sig=11  PWR BT R W B 8TBG-CA                          
+      · looser cluster of 3 (gaps [24, 31])
+   00028632226384  sig=11  ATOMIC TEASER PCATS116-CHS                    
+      · looser cluster of 4 (gaps [54, 14, 17])
+   00028632226438  sig=11  ATOMIC TEASER PCATS116-GCH                    
+      · looser cluster of 4 (gaps [54, 14, 17])
+   00028632226452  sig=11  ATOMIC TEASER PCATS116-PW                     
+      · looser cluster of 4 (gaps [54, 14, 17])
+   00028632226469  sig=11  POW BT ATMC PCATS116-PLA                      
+      · looser cluster of 4 (gaps [54, 14, 17])
+   00028632257753  sig=11  BERK FISHING GLOVE                            
+      · looser cluster of 3 (gaps [24, 37])
+   00028632257777  sig=11  BERKLEY FILET KNIFE 7"                        
+      · looser cluster of 3 (gaps [24, 37])
+   00028632257814  sig=11  SPRING ROD HOLDER 01H19CQ                     
+      · looser cluster of 3 (gaps [24, 37])
+   00028632522165  sig=11  PWR BT SALMON EGG                             
+      · looser cluster of 4 (gaps [7, 17, 13])
+   00028632522172  sig=11  PWR BT BQTSSMP2                               
+      · looser cluster of 4 (gaps [7, 17, 13])
+   00028632522189  sig=11  PWR BT GARLIC CHR BGTGC2                      
+      · looser cluster of 4 (gaps [7, 17, 13])
+   00028632522202  sig=11  PWR BT BGTGY2                                 
+      · looser cluster of 4 (gaps [7, 17, 13])
+   00028632651513  sig=11  POWERBAIT PBHFMT3-BGW                         
+      · looser cluster of 5 (gaps [24, 7, 7, 54])
+   00028632651537  sig=11  POWERBAIT PBHFMT3-FRC                         
+      · looser cluster of 5 (gaps [24, 7, 7, 54])
+   00028632651544  sig=11  POWERBAIT PBHFMT3-FRN                         
+      · looser cluster of 5 (gaps [24, 7, 7, 54])
+   00028632651551  sig=11  POWER BAIT PBHFMT3-GL                         
+      · looser cluster of 5 (gaps [24, 7, 7, 54])
+   00028632651605  sig=11  POWERBAIT PBHFMT3-WBG                         
+      · looser cluster of 5 (gaps [24, 7, 7, 54])
+   00028632652282  sig=11  PWR BAIT 4" CHR SWIM SHAD PBBSS4-CS           
+      · looser cluster of 3 (gaps [14, 62])
+   00037069171815  sig=11  GITZIT WHITE                                  
+      · looser cluster of 4 (gaps [7, 24, 7])
+   00037069171822  sig=11  GITZIT LIL TGH GUY MINNOW                     
+      · looser cluster of 4 (gaps [7, 24, 7])
+   00037069171846  sig=11  GITZIT PERCH                                  
+      · looser cluster of 4 (gaps [7, 24, 7])
+   00037069171853  sig=11  GITZIT GOLD                                   
+      · looser cluster of 4 (gaps [7, 24, 7])
+   00042083378065  sig=11  STREN 4LB 330 YD                              
+      · looser cluster of 3 (gaps [31, 6])
+   00042083378935  sig=11  STREN 4LB SOPS4-26                            
+      · looser cluster of 5 (gaps [7, 17, 7, 7])
+   00042083378942  sig=11  STREN 6LB SOPS6-26                            
+      · looser cluster of 5 (gaps [7, 17, 7, 7])
+   00042083378959  sig=11  STREN 8LB SOPS8-26                            
+      · looser cluster of 5 (gaps [7, 17, 7, 7])
+   00042083378966  sig=11  STREN 10LB SOPS10-26                          
+      · looser cluster of 5 (gaps [7, 17, 7, 7])
+   00042083378973  sig=11  STREN 12LB SOPS12-26                          
+      · looser cluster of 5 (gaps [7, 17, 7, 7])
+   00047708001861  sig=11  EAGLE CLAW SNELLS                             
+      · looser cluster of 4 (gaps [24, 7, 54])
+   00047708001885  sig=11  EAGLE CLAW 8                                  
+      · looser cluster of 4 (gaps [24, 7, 54])
+   00047708001892  sig=11  EAGLE CLAW 10                                 
+      · looser cluster of 4 (gaps [24, 7, 54])
+   00047708001946  sig=11  EAGLE CLAW 3/0                                
+      · looser cluster of 4 (gaps [24, 7, 54])
+   00048515103144  sig=11  KASTMASTER SW10T/CHS                          
+      · looser cluster of 3 (gaps [7, 17])
+   00048515103151  sig=11  KASTMASTER SW10T/GG                           
+      · looser cluster of 3 (gaps [7, 17])
+   00048515103168  sig=11  KASTMASTER SW10/RT                            
+      · looser cluster of 3 (gaps [7, 17])
+   00613421237131  sig=12  SPLIT SHOT RFL Aa301r-aaa                     
+      · looser cluster of 5 (gaps [24, 7, 17, 7])
+   00613421237155  sig=12  SPLIT SHOT RFL AA301R-1                       
+      · looser cluster of 5 (gaps [24, 7, 17, 7])
+   00613421237162  sig=12  SPLIT SHOT RFL AA301R-4                       
+      · looser cluster of 5 (gaps [24, 7, 17, 7])
+   00613421237179  sig=12  SPLIT SHOT RFL AA301-6                        
+      · looser cluster of 5 (gaps [24, 7, 17, 7])
+   00613421237186  sig=12  SPLIT SHOT RFL AA301R-8                       
+      · looser cluster of 5 (gaps [24, 7, 17, 7])
+   00654296876773  sig=12  TROUT MAGNET PINK                             
+      · looser cluster of 3 (gaps [24, 38])
+   00851174003263  sig=12  ARNIES 504                                    
+      · looser cluster of 3 (gaps [14, 31])
+
+-- Dept 1008 JEWELRY  (2 item(s)) --
+   00090091301018  sig=11  PHEASANT PIN                                  
+      · looser cluster of 4 (gaps [14, 85, 14])
+   00090091301032  sig=11  FLYING PHEASANT PAINTED PIN                   
+      · looser cluster of 4 (gaps [14, 85, 14])
+
+-- Dept 1012 CANDY  (5 item(s)) --
+   00004111600534  sig=10  Push Pop                                      
+      · looser cluster of 3 (gaps [58, 42])
+   00004111600592  sig=10  Juicy drop pop                                
+      · looser cluster of 3 (gaps [58, 42])
+   00004111600634  sig=10  Bottle Pop                                    
+      · looser cluster of 3 (gaps [58, 42])
+   00022000008916  sig=11  Extra Peppermint                              
+      · looser cluster of 3 (gaps [69, 7])
+   00034000002467  sig=11  KitKat                                        
+      · looser cluster of 3 (gaps [7, 55])
+
+-- Dept 1013 SNACKS  (27 item(s)) --
+   00002840000024  sig=10  Frito Bean Dip Jalapeno                       
+      · looser cluster of 4 (gaps [42, 12, 56])
+   00002840000066  sig=10  Funyuns                                       
+      · looser cluster of 4 (gaps [42, 12, 56])
+   00002840000078  sig=10  Frito Bean Dip ORG                            
+      · looser cluster of 4 (gaps [42, 12, 56])
+   00002840000134  sig=10  Cheetos Puffs Small                           
+      · looser cluster of 4 (gaps [42, 12, 56])
+   00009902921277  sig=10  Baked Lays 15oz                               
+      · looser cluster of 4 (gaps [7, 61, 24])
+   00009902921284  sig=10  Lays BBQ 15 oz                                
+      · looser cluster of 4 (gaps [7, 61, 24])
+   00028400047906  sig=11  Cheetos Crunchy                               
+      · looser cluster of 5 (gaps [7, 7, 17, 14])
+   00028400047913  sig=11  Cheetos Flaming Hot                           
+      · looser cluster of 5 (gaps [7, 7, 17, 14])
+   00028400047920  sig=11  Cheetos Flaming Hot lime                      
+      · looser cluster of 5 (gaps [7, 7, 17, 14])
+   00028400047937  sig=11  Fritos Original                               
+      · looser cluster of 5 (gaps [7, 7, 17, 14])
+   00028400047951  sig=11  Fritos BBQ                                    
+      · looser cluster of 5 (gaps [7, 7, 17, 14])
+   00028400720168  sig=11  LAYS BBQ LRG                                  
+      · looser cluster of 8 (gaps [31, 37, 7, 7, 48, 6, 99])
+   00028400720199  sig=11  LAYS SC & ONION LRG                           
+      · looser cluster of 8 (gaps [31, 37, 7, 7, 48, 6, 99])
+   00028400720236  sig=11  RUFFLES POTATO CHIPS LG                       
+      · looser cluster of 8 (gaps [31, 37, 7, 7, 48, 6, 99])
+   00028400720243  sig=11  RUFFLES QUESO LRG                             
+      · looser cluster of 8 (gaps [31, 37, 7, 7, 48, 6, 99])
+   00028400720250  sig=11  BAKED LAYS 110Z                               
+      · looser cluster of 8 (gaps [31, 37, 7, 7, 48, 6, 99])
+   00028400720298  sig=11  DORITIOS NACHO CHEESE LG                      
+      · looser cluster of 8 (gaps [31, 37, 7, 7, 48, 6, 99])
+   00028400720304  sig=11  COOL RANCH DORITOS LG                         
+      · looser cluster of 8 (gaps [31, 37, 7, 7, 48, 6, 99])
+   00028400720403  sig=11  FUNYUNS                                       
+      · looser cluster of 8 (gaps [31, 37, 7, 7, 48, 6, 99])
+   00029000017931  sig=11  PLANTERS REG PEANUTS                          
+      · looser cluster of 3 (gaps [17, 7])
+   00029000017948  sig=11  PLANTERS HR PEANUTS                           
+      · looser cluster of 3 (gaps [17, 7])
+   00029000017955  sig=11  PLANTERS STD CASHEW                           
+      · looser cluster of 3 (gaps [17, 7])
+   00038000845512  sig=11  Pringles 1.4 oz Orginial                      
+      · looser cluster of 3 (gaps [17, 7])
+   00038000845529  sig=11  Pringles 1.4 oz Sour Cream                    
+      · looser cluster of 3 (gaps [17, 7])
+   00038000845536  sig=11  Pringles 1.4 oz Cheddar                       
+      · looser cluster of 3 (gaps [17, 7])
+   00888109250843  sig=12  HOSTESS DANISH APPLE                          
+      · looser cluster of 4 (gaps [31, 30, 31])
+   00888109250935  sig=12  HOSTESS DANISH BB                             
+      · looser cluster of 4 (gaps [31, 30, 31])
