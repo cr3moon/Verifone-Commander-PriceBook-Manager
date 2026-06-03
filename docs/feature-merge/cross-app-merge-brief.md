@@ -1,6 +1,12 @@
 # Cross-App Feature Merge — Brief & Analysis Starting Point
 
-**Status: PLANNING (created 2026-05-26).** Next session starts here.
+**Status: IMPLEMENTED (4 stages complete, runtime-verified 2026-06-03).** Code on
+`feature/bulk-and-live-catalog` / PR #2. Plus 4 post-RC iteration rounds added
+runtime mock/live switching, mock auto-login, specific UPC issue labels with
+severity color-coding, Sold/NotSold/All and UPC-status filter dropdowns with
+counts, and the Possible-Duplicates detection + side panel. Currently iterating
+on **1.1.4.0 RC**; deploy kit holds **1.1.1.0 Production**. See `CLAUDE.md` for
+the authoritative current state.
 
 ## Goal
 
