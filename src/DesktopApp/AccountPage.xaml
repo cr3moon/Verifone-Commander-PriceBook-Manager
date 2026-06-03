@@ -17,7 +17,8 @@
             <TextBox Header="Username"
                      PlaceholderText="Enter your username"
                      Text="{x:Bind ViewModel.Username.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     IsEnabled="{x:Bind ViewModel.IsLoggedOut, Mode=OneWay}" />
+                     IsEnabled="{x:Bind ViewModel.IsLoggedOut, Mode=OneWay}"
+                     KeyDown="LoginInput_KeyDown" />
             <TextBlock Text="{x:Bind ViewModel.Username.Error, Mode=OneWay}"
                        Visibility="{x:Bind ViewModel.Username.HasError, Mode=OneWay}"
                        Foreground="{ThemeResource SystemErrorTextColor}"
@@ -31,7 +32,8 @@
             <PasswordBox Header="Password"
                      PlaceholderText="Enter your password"
                      Password="{x:Bind ViewModel.Password.Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     IsEnabled="{x:Bind ViewModel.IsLoggedOut, Mode=OneWay}" />
+                     IsEnabled="{x:Bind ViewModel.IsLoggedOut, Mode=OneWay}"
+                     KeyDown="LoginInput_KeyDown" />
             <TextBlock Text="{x:Bind ViewModel.Password.Error, Mode=OneWay}"
                    Visibility="{x:Bind ViewModel.Password.HasError, Mode=OneWay}"
                    Foreground="{ThemeResource SystemErrorTextColor}"
