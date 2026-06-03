@@ -322,6 +322,54 @@ namespace VerifoneCommander.PriceBookManager.Core
             return c;
         }
 
+        // Short status label for UI display (column tag / inline indicator). Returns
+        // null when the code is fine (CompleteValid + no risk). Combines risk and a
+        // non-validating check digit with " · ". The longer tooltip text comes from
+        // RiskNote and the classifier's own Note.
+        public static string GetIssueLabel(UpcClassification classification)
+        {
+            if (classification == null)
+            {
+                return null;
+            }
+
+            string riskLabel = null;
+            switch (classification.Risk)
+            {
+                case UpcRisk.RandomWeight:
+                    riskLabel = "Random-weight";
+                    break;
+                case UpcRisk.Coupon:
+                    riskLabel = "Coupon (NS=" + classification.NumberSystemDigit + ")";
+                    break;
+                case UpcRisk.Ndc:
+                    riskLabel = "NDC";
+                    break;
+                case UpcRisk.InStore:
+                    riskLabel = "In-store";
+                    break;
+            }
+
+            bool badCheck = classification.Class == UpcClass.AmbiguousInvalid;
+
+            if (riskLabel == null && !badCheck)
+            {
+                return null;
+            }
+
+            if (riskLabel == null)
+            {
+                return "Bad check digit";
+            }
+
+            if (!badCheck)
+            {
+                return riskLabel;
+            }
+
+            return riskLabel + " · Bad check digit";
+        }
+
         // Human-readable risk note (null when no risk). Phrasing matches the
         // confirmation dialog / run report.
         public static string RiskNote(UpcRisk r)

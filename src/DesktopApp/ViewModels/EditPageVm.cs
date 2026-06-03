@@ -69,6 +69,13 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
         [NotifyCanExecuteChangedFor(nameof(DeleteCommand))]
         private bool canExecuteCommands = true;
 
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(HasUpcStatus))]
+        private string upcStatusText;
+
+        [ObservableProperty]
+        private string upcStatusTooltip;
+
         public EditPageVm(
             IUiThreadDispatcher uiThreadDispatcher,
             IMessenger messenger,
@@ -103,7 +110,8 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
                             return string.Empty;
                     }
                 },
-                initialValue: string.Empty);
+                initialValue: string.Empty,
+                afterTextChangeFunc: this.UpdateUpcStatus);
 
             this.Modifier = new ValidatedTextVm(
                 validationFunc: v =>
@@ -177,6 +185,8 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
         public IRelayCommand SaveCommand { get; }
 
         public IRelayCommand DeleteCommand { get; }
+
+        public bool HasUpcStatus => !string.IsNullOrEmpty(this.UpcStatusText);
 
         void IRecipient<LoginStateChangedMessage>.Receive(LoginStateChangedMessage message)
         {
@@ -563,6 +573,51 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
             this.SellUnit = 1;
             this.TaxableRebateAmount = 0;
             this.MaxQuantityPerTransaction = 0;
+        }
+
+        private void UpdateUpcStatus()
+        {
+            // Mirrors the Items page audit so the operator sees the specific issue
+            // (e.g. "Coupon (NS=5)", "Random-weight", "Bad check digit") live as they
+            // edit. Never mutates the upc value — display only.
+            var text = this.Ean?.Text?.Trim() ?? string.Empty;
+
+            if (string.IsNullOrEmpty(text) || text.Length > 14 || !text.All(char.IsDigit))
+            {
+                this.UpcStatusText = null;
+                this.UpcStatusTooltip = null;
+                return;
+            }
+
+            // Short internal PLUs (≤5 significant digits) are legitimate, not flagged.
+            var significantDigits = text.TrimStart('0').Length;
+            if (significantDigits <= 5)
+            {
+                this.UpcStatusText = null;
+                this.UpcStatusTooltip = null;
+                return;
+            }
+
+            var classification = UpcUtilities.ClassifyUpc(text);
+            var label = UpcUtilities.GetIssueLabel(classification);
+            if (label == null)
+            {
+                this.UpcStatusText = null;
+                this.UpcStatusTooltip = null;
+                return;
+            }
+
+            this.UpcStatusText = label;
+            var riskNote = UpcUtilities.RiskNote(classification.Risk);
+            if (classification.Class == UpcUtilities.UpcClass.AmbiguousInvalid)
+            {
+                this.UpcStatusTooltip = (riskNote != null ? riskNote + "  " : string.Empty) +
+                    "UPC check digit does not validate — verify the item scans.";
+            }
+            else
+            {
+                this.UpcStatusTooltip = riskNote;
+            }
         }
 
         private class DepartmentInfo

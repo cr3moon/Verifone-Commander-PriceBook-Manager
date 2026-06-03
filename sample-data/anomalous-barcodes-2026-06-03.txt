@@ -1,0 +1,492 @@
+========================================================================================
+ANOMALOUS-BARCODE AUDIT — Verifone Commander PriceBook (sample-data backup)
+========================================================================================
+Total PLUs analyzed: 1035    Anomalous: 220
+
+Classification counts:
+  VALID       815
+  SHORT         1
+  BADCHK      154
+  RW           18
+  COUPON5      18
+  COUPON9       5
+  NDC           7
+  INSTORE      17
+
+========================================================================================
+VIEW 1 — GROUPED BY DEPARTMENT (item line includes the barcode issue type)
+========================================================================================
+
+-- Dept 1000 GROCERY  (114 anomalies) --
+  upc=00003000311820  mod=000  [Bad check digit]  CWY CC 8
+  upc=00004400029910  mod=000  [Bad check digit]  Chips Ahoy
+  upc=00005100023283  mod=000  [Bad check digit]  Spagettios
+  upc=00011210000010  mod=000  [Bad check digit]  Tabasco
+  upc=00013000001130  mod=000  [Bad check digit]  Heinz Ketchup
+  upc=00014100085390  mod=000  [Bad check digit]  PF Goldfish
+  upc=00014100085470  mod=000  [Bad check digit]  PF Goldfish
+  upc=00014100085480  mod=000  [Bad check digit]  PF Goldfish
+  upc=00014100085530  mod=000  [Bad check digit]  PF Goldfish
+  upc=00015800030110  mod=000  [Bad check digit]  CH Gran
+  upc=00016000141540  mod=000  [Bad check digit]  CTC Cup
+  upc=00016000141550  mod=000  [Bad check digit]  Cereal Cup- Honey Nut
+  upc=00016000141560  mod=000  [Bad check digit]  LC Cup
+  upc=00021000002820  mod=000  [Bad check digit]  Salad Dressing
+  upc=00021000026870  mod=000  [Bad check digit]  Kraft Mayo
+  upc=00021000323070  mod=000  [Bad check digit]  Caesar Dressing
+  upc=00021000644250  mod=000  [Bad check digit]  Zsty Italian
+  upc=00021000644730  mod=000  [Bad check digit]  1000 Island
+  upc=00024100106850  mod=000  [Bad check digit]  Cheese IT ORG
+  upc=00024100116600  mod=000  [Bad check digit]  Cheese Its Extra Crispy
+  upc=00024600010980  mod=000  [Bad check digit]  Salt & Pepper Shaker
+  upc=00025500304010  mod=000  [Bad check digit]  Folgers Coffee- Reg 9.6oz
+  upc=00025500304020  mod=000  [Bad check digit]  Folgers Coffee - DEC
+  upc=00027000381430  mod=000  [Bad check digit]  Hunt Ketchup
+  upc=00027800063940  mod=000  [Bad check digit]  KS Coconut
+  upc=00027800065550  mod=000  [Bad check digit]  Vienna Fngs
+  upc=00027800065700  mod=000  [Bad check digit]  KS FS FUD
+  upc=00027800065710  mod=000  [Bad check digit]  KS FS GRA
+  upc=00027800066430  mod=000  [Bad check digit]  Mother Circus Cookies
+  upc=00030000311840  mod=000  [Bad check digit]  Quaker Chwy
+  upc=00033200011300  mod=000  [Bad check digit]  Baking Soda
+  upc=00038000222550  mod=000  [Bad check digit]  Pop Tart Blueberry
+  upc=00038000222710  mod=000  [Bad check digit]  Pop Tart Strawberry
+  upc=00041500000990  mod=000  [Bad check digit]  FRN Dijon
+  upc=00041500007000  mod=000  [Bad check digit]  French Mustard
+  upc=00041500805020  mod=000  [Bad check digit]  Reds Hot Sauce
+  upc=00041565268940  mod=000  [Bad check digit]  Pace Restaurant
+  upc=00044000000570  mod=000  [Bad check digit]  Saltines
+  upc=00044000031130  mod=000  [Bad check digit]  Ritz
+  upc=00044000032190  mod=000  [Bad check digit]  Chips Ahoy
+  upc=00044000035450  mod=000  [Bad check digit]  Ritz- Cheese
+  upc=00044000046540  mod=000  [Bad check digit]  Fig Newtons
+  upc=00044000060110  mod=000  [Bad check digit]  Oreo Cookie
+  upc=00044000060120  mod=000  [Bad check digit]  Oreo Golden
+  upc=00044000060130  mod=000  [Bad check digit]  Oreo DS
+  upc=00046000811010  mod=000  [Bad check digit]  Old El Paso Taco Shells 12
+  upc=00049733091010  mod=000  [Bad check digit]  Cholula ORG
+  upc=00051500000650  mod=000  [Bad check digit]  Peanut Butter
+  upc=00051500255160  mod=000  [Bad check digit]  JIF Peanut Butter
+  upc=00052000011220  mod=000  [Bad check digit]  Pork N Beans
+  upc=00064144030310  mod=000  [Bad check digit]  Pam Reg SPR
+  upc=00071100005500  mod=000  [Bad check digit]  HV Org Ranch
+  upc=00071190479470  mod=000  [Bad check digit]  KNB SBRD 3.5oz
+  upc=00071998000010  mod=000  [Bad check digit]  Creole 8oz
+  upc=00073731004150  mod=000  [Bad check digit]  Flour Tortilla
+  upc=00076397105110  mod=000  [Bad check digit]  Jalepenos
+  upc=00078300069900  mod=000  [Bad check digit]  CF ORG 20 CT
+  upc=00078742014610  mod=000  [Bad check digit]  GV Wow Amer
+  upc=00078742014690  mod=000  [Bad check digit]  GV Wow Ched
+  upc=00078742020430  mod=000  [Bad check digit]  GV Van WFR
+  upc=00078742120730  mod=000  [Bad check digit]  GV Whole Corn BU
+  upc=00078742232970  mod=000  [Bad check digit]  GV Hamburger
+  upc=00078742236040  mod=000  [Bad check digit]  ORG Creamer
+  upc=00078742254600  mod=000  [Bad check digit]  Chili powder
+  upc=00078742254650  mod=000  [Bad check digit]  Garlic Powder
+  upc=00078742352960  mod=000  [Bad check digit]  GV Veg Oil
+  upc=00078742370090  mod=000  [Bad check digit]  GV BTR Pancake
+  upc=00078742370810  mod=000  [Bad check digit]  GV EF ORG
+  upc=00078742427860  mod=000  [Bad check digit]  GV CLC 0017
+  upc=00078742429560  mod=000  [Bad check digit]  GV Worcester
+  upc=00078742434030  mod=000  [Bad check digit]  GV Sugar
+  upc=00089000000100  mod=000  [Bad check digit]  Gogo Apple Squeeze
+  upc=00600699003280  mod=000  [Bad check digit]  JP 12Z MARS (ALT-xls)
+  upc=00515000006506  mod=000  [Coupon (NS=5)]  Peanut Butter
+  upc=00515002551608  mod=000  [Coupon (NS=5)]  JIF Peanut Butter
+  upc=00520000112201  mod=000  [Coupon (NS=5)]  Pork N Beans
+  upc=00415000009906  mod=000  [In-store (NS=4)]  FRN Dijon
+  upc=00415000070005  mod=000  [In-store (NS=4)]  French Mustard
+  upc=00415008050207  mod=000  [In-store (NS=4)]  Reds Hot Sauce
+  upc=00415652689402  mod=000  [In-store (NS=4)]  Pace Restaurant
+  upc=00440000005702  mod=000  [In-store (NS=4)]  Saltines
+  upc=00440000311308  mod=000  [In-store (NS=4)]  Ritz
+  upc=00440000321901  mod=000  [In-store (NS=4)]  Chips Ahoy
+  upc=00440000354404  mod=000  [In-store (NS=4)]  Ritz- PB
+  upc=00440000354503  mod=000  [In-store (NS=4)]  Ritz- Cheese
+  upc=00440000465407  mod=000  [In-store (NS=4)]  Fig Newtons
+  upc=00440000601102  mod=000  [In-store (NS=4)]  Oreo Cookie
+  upc=00440000601201  mod=000  [In-store (NS=4)]  Oreo Golden
+  upc=00440000601300  mod=000  [In-store (NS=4)]  Oreo DS
+  upc=00440000692308  mod=000  [In-store (NS=4)]  Wheat Thins
+  upc=00460008110109  mod=000  [In-store (NS=4)]  Old El Paso Taco Shells 12
+  upc=00497330910107  mod=000  [In-store (NS=4)]  Cholula ORG
+  upc=00300003118406  mod=000  [NDC (NS=3)]  Quaker Chwy
+  upc=00332000113009  mod=000  [NDC (NS=3)]  Baking Soda
+  upc=00380002225503  mod=000  [NDC (NS=3)]  Pop Tart Blueberry
+  upc=00380002227101  mod=000  [NDC (NS=3)]  Pop Tart Strawberry
+  upc=00380006357002  mod=000  [NDC (NS=3)]  Cereal Cup- Frosted Flakes
+  upc=00210000028205  mod=000  [Random-weight (NS=2)]  Salad Dressing
+  upc=00210000268700  mod=000  [Random-weight (NS=2)]  Kraft Mayo
+  upc=00210000268908  mod=000  [Random-weight (NS=2)]  KF Tartar
+  upc=00210003230704  mod=000  [Random-weight (NS=2)]  Caesar Dressing
+  upc=00210006442500  mod=000  [Random-weight (NS=2)]  Zsty Italian
+  upc=00210006447307  mod=000  [Random-weight (NS=2)]  1000 Island
+  upc=00241001068501  mod=000  [Random-weight (NS=2)]  Cheese IT ORG
+  upc=00241001166009  mod=000  [Random-weight (NS=2)]  Cheese Its Extra Crispy
+  upc=00246000109804  mod=000  [Random-weight (NS=2)]  Salt & Pepper Shaker
+  upc=00255003040106  mod=000  [Random-weight (NS=2)]  Folgers Coffee- Reg 9.6oz
+  upc=00255003040205  mod=000  [Random-weight (NS=2)]  Folgers Coffee - DEC
+  upc=00270003814304  mod=000  [Random-weight (NS=2)]  Hunt Ketchup
+  upc=00278000639401  mod=000  [Random-weight (NS=2)]  KS Coconut
+  upc=00278000655500  mod=000  [Random-weight (NS=2)]  Vienna Fngs
+  upc=00278000657009  mod=000  [Random-weight (NS=2)]  KS FS FUD
+  upc=00278000657108  mod=000  [Random-weight (NS=2)]  KS FS GRA
+  upc=00278000664304  mod=000  [Random-weight (NS=2)]  Mother Circus Cookies
+
+-- Dept 1001 BEVERAGE NA  (20 anomalies) --
+  upc=00000883920100  mod=000  [Bad check digit]  12 oz Celcius Peach Mgo
+  upc=00810030051002  mod=000  [Bad check digit]  12 oz Alani CSMCSTDST (ALT-xls)
+  upc=00520000479120  mod=000  [Coupon (NS=5)]  20oz Gatorade STW KW
+  upc=00520000490088  mod=000  [Coupon (NS=5)]  20oz Gatorade CHE LM
+  upc=00520000508202  mod=000  [Coupon (NS=5)]  20oz Gatorade MXD BRY
+  upc=00520000528798  mod=000  [Coupon (NS=5)]  20oz Gatorade LME CUCM
+  upc=00520000549960  mod=000  [Coupon (NS=5)]  20oz Gatorade GLC FRZ
+  upc=00520000635472  mod=000  [Coupon (NS=5)]  20oz Gatorade  PNP MGO
+  upc=00520000660818  mod=000  [Coupon (NS=5)]  20oz Gatorade TRP CCNT
+  upc=00520000677984  mod=000  [Coupon (NS=5)]  28 0Z GAT LMD LS
+  upc=00520001350848  mod=000  [Coupon (NS=5)]  28 0Z GAT LME CUCMBR
+  upc=00520001351388  mod=000  [Coupon (NS=5)]  28 0Z GAT FT PNCH
+  upc=00520001351456  mod=000  [Coupon (NS=5)]  28 0Z GAT ORG
+  upc=00520001351524  mod=000  [Coupon (NS=5)]  28 0Z GAT LL
+  upc=00520001351692  mod=000  [Coupon (NS=5)]  28 0Z GAT FRC GRP
+  upc=00520001351760  mod=000  [Coupon (NS=5)]  28 0Z GAT BLU
+  upc=00520001351906  mod=000  [Coupon (NS=5)]  28 0Z GAT GLCR FRZ
+  upc=00980001003562  mod=000  [Coupon (NS=9)]  18.5 oz Lit PLF  ZS SWT
+  upc=99999999999998  mod=000  [Coupon (NS=9)]  ZZ FILE-IMPORT TEST DEL-CONTROL
+  upc=99999999999999  mod=000  [Coupon (NS=9)]  ZZ FILE-IMPORT TEST ADD
+
+-- Dept 1002 HEALTH AND BEAUTY  (1 anomaly) --
+  upc=00073010004540  mod=000  [Bad check digit]  Tampax Pearl
+
+-- Dept 1003 HOUSEHOLD  (21 anomalies) --
+  upc=00000124364245  mod=000  [Bad check digit]  Plastic Cutlery 24 Combo pack
+  upc=00001090058207  mod=000  [Bad check digit]  RW Foil 25 SQ FT
+  upc=00001258700080  mod=000  [Bad check digit]  Glad Strong Trash Bags
+  upc=00001258755052  mod=000  [Bad check digit]  Glad Storage- Quart
+  upc=00001258757263  mod=000  [Bad check digit]  Glad Storage-Sandwich
+  upc=00002310011116  mod=000  [Bad check digit]  Pedigree Dog Food Can
+  upc=00003700035038  mod=000  [Bad check digit]  Tissues
+  upc=00005320007224  mod=000  [Bad check digit]  Scotch Brite Sponges mulit pak
+  upc=00007331017350  mod=000  [Bad check digit]  Toilet Paper rolls
+  upc=00030772109260  mod=000  [Bad check digit]  Dawn Ultra
+  upc=00078742233560  mod=000  [Bad check digit]  GRT Value Napkins
+  upc=00078742331340  mod=000  [Bad check digit]  Party Cup
+  upc=00078742349280  mod=000  [Bad check digit]  GV PLS CMPT
+  upc=00078742349290  mod=000  [Bad check digit]  GV PlS BOWL
+  upc=00078742349500  mod=000  [Bad check digit]  GV Freezer Bags - Quart
+  upc=00078742349520  mod=000  [Bad check digit]  GV Freezer Bags- Gallon
+  upc=00894480002290  mod=000  [Bad check digit]  Trash Bags- 30 gallon (ALT-xls)
+  upc=00894480002530  mod=000  [Bad check digit]  Trash Bags- 13 gallon (ALT-xls)
+  upc=08944800022904  mod=000  [Coupon (NS=9)]  Trash Bags- 30 gallon
+  upc=08944800025301  mod=000  [Coupon (NS=9)]  Trash Bags- 13 gallon
+  upc=00307721092605  mod=000  [NDC (NS=3)]  Dawn Ultra
+
+-- Dept 1007 FLIES AND SUPPLIES  (2 anomalies) --
+  upc=00435176212078  mod=000  [In-store (NS=4)]  UNCLE JOSH SHINERS
+  upc=00286326500350  mod=000  [Random-weight (NS=2)]  POWR BAIT PBHPG2-PS
+
+-- Dept 1012 CANDY  (25 anomalies) --
+  upc=00000000228910  mod=000  [Bad check digit]  Extra Peppermint (ALT-xls)
+  upc=00000000228980  mod=000  [Bad check digit]  Extra Polar Ice (ALT-xls)
+  upc=00000000228990  mod=000  [Bad check digit]  Extra Spearmint (ALT-xls)
+  upc=00000000342400  mod=000  [Bad check digit]  Hersheys Milk Choc bar (ALT-xls)
+  upc=00000000342410  mod=000  [Bad check digit]  Hersheys with almonds (ALT-xls)
+  upc=00000000342460  mod=000  [Bad check digit]  KitKat (ALT-xls)
+  upc=00000000402660  mod=000  [Bad check digit]  Skittles Sour (ALT-xls)
+  upc=00000003444000  mod=000  [Bad check digit]  Reeses (ALT-xls)
+  upc=00001070080722  mod=000  [Bad check digit]  Payday
+  upc=00004000000032  mod=000  [Bad check digit]  M&Ms
+  upc=00004000000051  mod=000  [Bad check digit]  Starburst Original
+  upc=00004000000160  mod=000  [Bad check digit]  Skittles Org
+  upc=00004000000970  mod=000  [Bad check digit]  Starburst Fave Reds
+  upc=00004000042208  mod=000  [Bad check digit]  3 Musketeers
+  upc=00004000042431  mod=000  [Bad check digit]  Snickers
+  upc=00004111600534  mod=000  [Bad check digit]  Push Pop
+  upc=00004111600592  mod=000  [Bad check digit]  Juicy drop pop
+  upc=00004111600634  mod=000  [Bad check digit]  Bottle Pop
+  upc=00004111602636  mod=000  [Bad check digit]  Ring Pop
+  upc=00007060276900  mod=000  [Bad check digit]  Big Hunk
+  upc=00007339000838  mod=000  [Bad check digit]  Airheads Strings
+  upc=00007339001404  mod=000  [Bad check digit]  Mentos Fresh Mint
+  upc=00007339001405  mod=000  [Bad check digit]  Mentos Spearmint
+  upc=00009990010087  mod=000  [Bad check digit]  Butterfinger
+  upc=00344000004003  mod=000  [NDC (NS=3)]  Reeses
+
+-- Dept 1013 SNACKS  (36 anomalies) --
+  upc=00000816326094  mod=000  [Bad check digit]  BOULDER AVO OIL SEA SALT
+  upc=00000816326149  mod=000  [Bad check digit]  Boulder Chip-Avocado Oil- Malt Vinegar
+  upc=00000816326150  mod=000  [Bad check digit]  Boulder Chip - Olive Oil
+  upc=00000990291758  mod=000  [Bad check digit]  Ruffles Orginal 15 oz
+  upc=00000990291824  mod=000  [Bad check digit]  Ruffles Queso
+  upc=00000990291861  mod=000  [Bad check digit]  Tostito Bites
+  upc=00000990292127  mod=000  [Bad check digit]  Baked Lays 15oz
+  upc=00000990292128  mod=000  [Bad check digit]  Lays BBQ 15 oz
+  upc=00000990292134  mod=000  [Bad check digit]  Lays Orginal 15 oz
+  upc=00000990292136  mod=000  [Bad check digit]  Lays Limon
+  upc=00000990292151  mod=000  [Bad check digit]  Dorito NACF
+  upc=00000990292158  mod=000  [Bad check digit]  Dorito CLRNF
+  upc=00000990292194  mod=000  [Bad check digit]  Funyuns
+  upc=00000990292217  mod=000  [Bad check digit]  Cheetos Flaming Hot
+  upc=00000990341730  mod=000  [Bad check digit]  Chesters Fries
+  upc=00001708287351  mod=000  [Bad check digit]  Jack Links Beef
+  upc=00002620010192  mod=000  [Bad check digit]  Slim Jim mini
+  upc=00002840000024  mod=000  [Bad check digit]  Frito Bean Dip Jalapeno
+  upc=00002840000078  mod=000  [Bad check digit]  Frito Bean Dip ORG
+  upc=00002840000291  mod=000  [Bad check digit]  Ruffles Cheddar Sour Cream
+  upc=00002840000300  mod=000  [Bad check digit]  Lays Potato BBQ
+  upc=00002840000997  mod=000  [Bad check digit]  Vickies Kettle Chips- Sea Salt
+  upc=00002840001043  mod=000  [Bad check digit]  Vickies Kettle Chips-BBQ
+  upc=00002840001255  mod=000  [Bad check digit]  Vickies Kettle Chips-Jalepeno
+  upc=00002840004790  mod=000  [Bad check digit]  Cheetos Crunchy
+  upc=00002840004791  mod=000  [Bad check digit]  Cheetos Flaming Hot
+  upc=00002840004792  mod=000  [Bad check digit]  Cheetos Flaming Hot lime
+  upc=00002840004793  mod=000  [Bad check digit]  Fritos Original
+  upc=00002840004795  mod=000  [Bad check digit]  Fritos BBQ
+  upc=00002840007054  mod=000  [Bad check digit]  Doritos Cool Ranch
+  upc=00002840007056  mod=000  [Bad check digit]  Doritos Nacho Cheese
+  upc=00002840009156  mod=000  [Bad check digit]  Lays Potato Classic
+  upc=00002840021701  mod=000  [Bad check digit]  Doritos Nacho Cheese Flaming hot
+  upc=00002840072574  mod=000  [Bad check digit]  Vickies Kettle Chips- Pickle
+  upc=00003800084551  mod=000  [Bad check digit]  Pringles 1.4 oz Orginial
+  upc=00003800084552  mod=000  [Bad check digit]  Pringles 1.4 oz Sour Cream
+
+-- Dept 9995 OPEN MERCHANDISE  (1 anomaly) --
+  upc=00000000099998  mod=000  [Short hand-entered]  ITEM F
+
+========================================================================================
+VIEW 2 — GROUPED BY ISSUE TYPE (item line includes the department)
+========================================================================================
+
+-- Short hand-entered  (1 item) --
+  upc=00000000099998  mod=000  [Dept 9995 OPEN MERCHANDISE]  ITEM F
+
+-- Bad check digit  (154 items) --
+  upc=00003000311820  mod=000  [Dept 1000 GROCERY]  CWY CC 8
+  upc=00004400029910  mod=000  [Dept 1000 GROCERY]  Chips Ahoy
+  upc=00005100023283  mod=000  [Dept 1000 GROCERY]  Spagettios
+  upc=00011210000010  mod=000  [Dept 1000 GROCERY]  Tabasco
+  upc=00013000001130  mod=000  [Dept 1000 GROCERY]  Heinz Ketchup
+  upc=00014100085390  mod=000  [Dept 1000 GROCERY]  PF Goldfish
+  upc=00014100085470  mod=000  [Dept 1000 GROCERY]  PF Goldfish
+  upc=00014100085480  mod=000  [Dept 1000 GROCERY]  PF Goldfish
+  upc=00014100085530  mod=000  [Dept 1000 GROCERY]  PF Goldfish
+  upc=00015800030110  mod=000  [Dept 1000 GROCERY]  CH Gran
+  upc=00016000141540  mod=000  [Dept 1000 GROCERY]  CTC Cup
+  upc=00016000141550  mod=000  [Dept 1000 GROCERY]  Cereal Cup- Honey Nut
+  upc=00016000141560  mod=000  [Dept 1000 GROCERY]  LC Cup
+  upc=00021000002820  mod=000  [Dept 1000 GROCERY]  Salad Dressing
+  upc=00021000026870  mod=000  [Dept 1000 GROCERY]  Kraft Mayo
+  upc=00021000323070  mod=000  [Dept 1000 GROCERY]  Caesar Dressing
+  upc=00021000644250  mod=000  [Dept 1000 GROCERY]  Zsty Italian
+  upc=00021000644730  mod=000  [Dept 1000 GROCERY]  1000 Island
+  upc=00024100106850  mod=000  [Dept 1000 GROCERY]  Cheese IT ORG
+  upc=00024100116600  mod=000  [Dept 1000 GROCERY]  Cheese Its Extra Crispy
+  upc=00024600010980  mod=000  [Dept 1000 GROCERY]  Salt & Pepper Shaker
+  upc=00025500304010  mod=000  [Dept 1000 GROCERY]  Folgers Coffee- Reg 9.6oz
+  upc=00025500304020  mod=000  [Dept 1000 GROCERY]  Folgers Coffee - DEC
+  upc=00027000381430  mod=000  [Dept 1000 GROCERY]  Hunt Ketchup
+  upc=00027800063940  mod=000  [Dept 1000 GROCERY]  KS Coconut
+  upc=00027800065550  mod=000  [Dept 1000 GROCERY]  Vienna Fngs
+  upc=00027800065700  mod=000  [Dept 1000 GROCERY]  KS FS FUD
+  upc=00027800065710  mod=000  [Dept 1000 GROCERY]  KS FS GRA
+  upc=00027800066430  mod=000  [Dept 1000 GROCERY]  Mother Circus Cookies
+  upc=00030000311840  mod=000  [Dept 1000 GROCERY]  Quaker Chwy
+  upc=00033200011300  mod=000  [Dept 1000 GROCERY]  Baking Soda
+  upc=00038000222550  mod=000  [Dept 1000 GROCERY]  Pop Tart Blueberry
+  upc=00038000222710  mod=000  [Dept 1000 GROCERY]  Pop Tart Strawberry
+  upc=00041500000990  mod=000  [Dept 1000 GROCERY]  FRN Dijon
+  upc=00041500007000  mod=000  [Dept 1000 GROCERY]  French Mustard
+  upc=00041500805020  mod=000  [Dept 1000 GROCERY]  Reds Hot Sauce
+  upc=00041565268940  mod=000  [Dept 1000 GROCERY]  Pace Restaurant
+  upc=00044000000570  mod=000  [Dept 1000 GROCERY]  Saltines
+  upc=00044000031130  mod=000  [Dept 1000 GROCERY]  Ritz
+  upc=00044000032190  mod=000  [Dept 1000 GROCERY]  Chips Ahoy
+  upc=00044000035450  mod=000  [Dept 1000 GROCERY]  Ritz- Cheese
+  upc=00044000046540  mod=000  [Dept 1000 GROCERY]  Fig Newtons
+  upc=00044000060110  mod=000  [Dept 1000 GROCERY]  Oreo Cookie
+  upc=00044000060120  mod=000  [Dept 1000 GROCERY]  Oreo Golden
+  upc=00044000060130  mod=000  [Dept 1000 GROCERY]  Oreo DS
+  upc=00046000811010  mod=000  [Dept 1000 GROCERY]  Old El Paso Taco Shells 12
+  upc=00049733091010  mod=000  [Dept 1000 GROCERY]  Cholula ORG
+  upc=00051500000650  mod=000  [Dept 1000 GROCERY]  Peanut Butter
+  upc=00051500255160  mod=000  [Dept 1000 GROCERY]  JIF Peanut Butter
+  upc=00052000011220  mod=000  [Dept 1000 GROCERY]  Pork N Beans
+  upc=00064144030310  mod=000  [Dept 1000 GROCERY]  Pam Reg SPR
+  upc=00071100005500  mod=000  [Dept 1000 GROCERY]  HV Org Ranch
+  upc=00071190479470  mod=000  [Dept 1000 GROCERY]  KNB SBRD 3.5oz
+  upc=00071998000010  mod=000  [Dept 1000 GROCERY]  Creole 8oz
+  upc=00073731004150  mod=000  [Dept 1000 GROCERY]  Flour Tortilla
+  upc=00076397105110  mod=000  [Dept 1000 GROCERY]  Jalepenos
+  upc=00078300069900  mod=000  [Dept 1000 GROCERY]  CF ORG 20 CT
+  upc=00078742014610  mod=000  [Dept 1000 GROCERY]  GV Wow Amer
+  upc=00078742014690  mod=000  [Dept 1000 GROCERY]  GV Wow Ched
+  upc=00078742020430  mod=000  [Dept 1000 GROCERY]  GV Van WFR
+  upc=00078742120730  mod=000  [Dept 1000 GROCERY]  GV Whole Corn BU
+  upc=00078742232970  mod=000  [Dept 1000 GROCERY]  GV Hamburger
+  upc=00078742236040  mod=000  [Dept 1000 GROCERY]  ORG Creamer
+  upc=00078742254600  mod=000  [Dept 1000 GROCERY]  Chili powder
+  upc=00078742254650  mod=000  [Dept 1000 GROCERY]  Garlic Powder
+  upc=00078742352960  mod=000  [Dept 1000 GROCERY]  GV Veg Oil
+  upc=00078742370090  mod=000  [Dept 1000 GROCERY]  GV BTR Pancake
+  upc=00078742370810  mod=000  [Dept 1000 GROCERY]  GV EF ORG
+  upc=00078742427860  mod=000  [Dept 1000 GROCERY]  GV CLC 0017
+  upc=00078742429560  mod=000  [Dept 1000 GROCERY]  GV Worcester
+  upc=00078742434030  mod=000  [Dept 1000 GROCERY]  GV Sugar
+  upc=00089000000100  mod=000  [Dept 1000 GROCERY]  Gogo Apple Squeeze
+  upc=00600699003280  mod=000  [Dept 1000 GROCERY]  JP 12Z MARS (ALT-xls)
+  upc=00000883920100  mod=000  [Dept 1001 BEVERAGE NA]  12 oz Celcius Peach Mgo
+  upc=00810030051002  mod=000  [Dept 1001 BEVERAGE NA]  12 oz Alani CSMCSTDST (ALT-xls)
+  upc=00073010004540  mod=000  [Dept 1002 HEALTH AND BEAUTY]  Tampax Pearl
+  upc=00000124364245  mod=000  [Dept 1003 HOUSEHOLD]  Plastic Cutlery 24 Combo pack
+  upc=00001090058207  mod=000  [Dept 1003 HOUSEHOLD]  RW Foil 25 SQ FT
+  upc=00001258700080  mod=000  [Dept 1003 HOUSEHOLD]  Glad Strong Trash Bags
+  upc=00001258755052  mod=000  [Dept 1003 HOUSEHOLD]  Glad Storage- Quart
+  upc=00001258757263  mod=000  [Dept 1003 HOUSEHOLD]  Glad Storage-Sandwich
+  upc=00002310011116  mod=000  [Dept 1003 HOUSEHOLD]  Pedigree Dog Food Can
+  upc=00003700035038  mod=000  [Dept 1003 HOUSEHOLD]  Tissues
+  upc=00005320007224  mod=000  [Dept 1003 HOUSEHOLD]  Scotch Brite Sponges mulit pak
+  upc=00007331017350  mod=000  [Dept 1003 HOUSEHOLD]  Toilet Paper rolls
+  upc=00030772109260  mod=000  [Dept 1003 HOUSEHOLD]  Dawn Ultra
+  upc=00078742233560  mod=000  [Dept 1003 HOUSEHOLD]  GRT Value Napkins
+  upc=00078742331340  mod=000  [Dept 1003 HOUSEHOLD]  Party Cup
+  upc=00078742349280  mod=000  [Dept 1003 HOUSEHOLD]  GV PLS CMPT
+  upc=00078742349290  mod=000  [Dept 1003 HOUSEHOLD]  GV PlS BOWL
+  upc=00078742349500  mod=000  [Dept 1003 HOUSEHOLD]  GV Freezer Bags - Quart
+  upc=00078742349520  mod=000  [Dept 1003 HOUSEHOLD]  GV Freezer Bags- Gallon
+  upc=00894480002290  mod=000  [Dept 1003 HOUSEHOLD]  Trash Bags- 30 gallon (ALT-xls)
+  upc=00894480002530  mod=000  [Dept 1003 HOUSEHOLD]  Trash Bags- 13 gallon (ALT-xls)
+  upc=00000000228910  mod=000  [Dept 1012 CANDY]  Extra Peppermint (ALT-xls)
+  upc=00000000228980  mod=000  [Dept 1012 CANDY]  Extra Polar Ice (ALT-xls)
+  upc=00000000228990  mod=000  [Dept 1012 CANDY]  Extra Spearmint (ALT-xls)
+  upc=00000000342400  mod=000  [Dept 1012 CANDY]  Hersheys Milk Choc bar (ALT-xls)
+  upc=00000000342410  mod=000  [Dept 1012 CANDY]  Hersheys with almonds (ALT-xls)
+  upc=00000000342460  mod=000  [Dept 1012 CANDY]  KitKat (ALT-xls)
+  upc=00000000402660  mod=000  [Dept 1012 CANDY]  Skittles Sour (ALT-xls)
+  upc=00000003444000  mod=000  [Dept 1012 CANDY]  Reeses (ALT-xls)
+  upc=00001070080722  mod=000  [Dept 1012 CANDY]  Payday
+  upc=00004000000032  mod=000  [Dept 1012 CANDY]  M&Ms
+  upc=00004000000051  mod=000  [Dept 1012 CANDY]  Starburst Original
+  upc=00004000000160  mod=000  [Dept 1012 CANDY]  Skittles Org
+  upc=00004000000970  mod=000  [Dept 1012 CANDY]  Starburst Fave Reds
+  upc=00004000042208  mod=000  [Dept 1012 CANDY]  3 Musketeers
+  upc=00004000042431  mod=000  [Dept 1012 CANDY]  Snickers
+  upc=00004111600534  mod=000  [Dept 1012 CANDY]  Push Pop
+  upc=00004111600592  mod=000  [Dept 1012 CANDY]  Juicy drop pop
+  upc=00004111600634  mod=000  [Dept 1012 CANDY]  Bottle Pop
+  upc=00004111602636  mod=000  [Dept 1012 CANDY]  Ring Pop
+  upc=00007060276900  mod=000  [Dept 1012 CANDY]  Big Hunk
+  upc=00007339000838  mod=000  [Dept 1012 CANDY]  Airheads Strings
+  upc=00007339001404  mod=000  [Dept 1012 CANDY]  Mentos Fresh Mint
+  upc=00007339001405  mod=000  [Dept 1012 CANDY]  Mentos Spearmint
+  upc=00009990010087  mod=000  [Dept 1012 CANDY]  Butterfinger
+  upc=00000816326094  mod=000  [Dept 1013 SNACKS]  BOULDER AVO OIL SEA SALT
+  upc=00000816326149  mod=000  [Dept 1013 SNACKS]  Boulder Chip-Avocado Oil- Malt Vinegar
+  upc=00000816326150  mod=000  [Dept 1013 SNACKS]  Boulder Chip - Olive Oil
+  upc=00000990291758  mod=000  [Dept 1013 SNACKS]  Ruffles Orginal 15 oz
+  upc=00000990291824  mod=000  [Dept 1013 SNACKS]  Ruffles Queso
+  upc=00000990291861  mod=000  [Dept 1013 SNACKS]  Tostito Bites
+  upc=00000990292127  mod=000  [Dept 1013 SNACKS]  Baked Lays 15oz
+  upc=00000990292128  mod=000  [Dept 1013 SNACKS]  Lays BBQ 15 oz
+  upc=00000990292134  mod=000  [Dept 1013 SNACKS]  Lays Orginal 15 oz
+  upc=00000990292136  mod=000  [Dept 1013 SNACKS]  Lays Limon
+  upc=00000990292151  mod=000  [Dept 1013 SNACKS]  Dorito NACF
+  upc=00000990292158  mod=000  [Dept 1013 SNACKS]  Dorito CLRNF
+  upc=00000990292194  mod=000  [Dept 1013 SNACKS]  Funyuns
+  upc=00000990292217  mod=000  [Dept 1013 SNACKS]  Cheetos Flaming Hot
+  upc=00000990341730  mod=000  [Dept 1013 SNACKS]  Chesters Fries
+  upc=00001708287351  mod=000  [Dept 1013 SNACKS]  Jack Links Beef
+  upc=00002620010192  mod=000  [Dept 1013 SNACKS]  Slim Jim mini
+  upc=00002840000024  mod=000  [Dept 1013 SNACKS]  Frito Bean Dip Jalapeno
+  upc=00002840000078  mod=000  [Dept 1013 SNACKS]  Frito Bean Dip ORG
+  upc=00002840000291  mod=000  [Dept 1013 SNACKS]  Ruffles Cheddar Sour Cream
+  upc=00002840000300  mod=000  [Dept 1013 SNACKS]  Lays Potato BBQ
+  upc=00002840000997  mod=000  [Dept 1013 SNACKS]  Vickies Kettle Chips- Sea Salt
+  upc=00002840001043  mod=000  [Dept 1013 SNACKS]  Vickies Kettle Chips-BBQ
+  upc=00002840001255  mod=000  [Dept 1013 SNACKS]  Vickies Kettle Chips-Jalepeno
+  upc=00002840004790  mod=000  [Dept 1013 SNACKS]  Cheetos Crunchy
+  upc=00002840004791  mod=000  [Dept 1013 SNACKS]  Cheetos Flaming Hot
+  upc=00002840004792  mod=000  [Dept 1013 SNACKS]  Cheetos Flaming Hot lime
+  upc=00002840004793  mod=000  [Dept 1013 SNACKS]  Fritos Original
+  upc=00002840004795  mod=000  [Dept 1013 SNACKS]  Fritos BBQ
+  upc=00002840007054  mod=000  [Dept 1013 SNACKS]  Doritos Cool Ranch
+  upc=00002840007056  mod=000  [Dept 1013 SNACKS]  Doritos Nacho Cheese
+  upc=00002840009156  mod=000  [Dept 1013 SNACKS]  Lays Potato Classic
+  upc=00002840021701  mod=000  [Dept 1013 SNACKS]  Doritos Nacho Cheese Flaming hot
+  upc=00002840072574  mod=000  [Dept 1013 SNACKS]  Vickies Kettle Chips- Pickle
+  upc=00003800084551  mod=000  [Dept 1013 SNACKS]  Pringles 1.4 oz Orginial
+  upc=00003800084552  mod=000  [Dept 1013 SNACKS]  Pringles 1.4 oz Sour Cream
+
+-- Random-weight (NS=2)  (18 items) --
+  upc=00210000028205  mod=000  [Dept 1000 GROCERY]  Salad Dressing
+  upc=00210000268700  mod=000  [Dept 1000 GROCERY]  Kraft Mayo
+  upc=00210000268908  mod=000  [Dept 1000 GROCERY]  KF Tartar
+  upc=00210003230704  mod=000  [Dept 1000 GROCERY]  Caesar Dressing
+  upc=00210006442500  mod=000  [Dept 1000 GROCERY]  Zsty Italian
+  upc=00210006447307  mod=000  [Dept 1000 GROCERY]  1000 Island
+  upc=00241001068501  mod=000  [Dept 1000 GROCERY]  Cheese IT ORG
+  upc=00241001166009  mod=000  [Dept 1000 GROCERY]  Cheese Its Extra Crispy
+  upc=00246000109804  mod=000  [Dept 1000 GROCERY]  Salt & Pepper Shaker
+  upc=00255003040106  mod=000  [Dept 1000 GROCERY]  Folgers Coffee- Reg 9.6oz
+  upc=00255003040205  mod=000  [Dept 1000 GROCERY]  Folgers Coffee - DEC
+  upc=00270003814304  mod=000  [Dept 1000 GROCERY]  Hunt Ketchup
+  upc=00278000639401  mod=000  [Dept 1000 GROCERY]  KS Coconut
+  upc=00278000655500  mod=000  [Dept 1000 GROCERY]  Vienna Fngs
+  upc=00278000657009  mod=000  [Dept 1000 GROCERY]  KS FS FUD
+  upc=00278000657108  mod=000  [Dept 1000 GROCERY]  KS FS GRA
+  upc=00278000664304  mod=000  [Dept 1000 GROCERY]  Mother Circus Cookies
+  upc=00286326500350  mod=000  [Dept 1007 FLIES AND SUPPLIES]  POWR BAIT PBHPG2-PS
+
+-- Coupon (NS=5)  (18 items) --
+  upc=00515000006506  mod=000  [Dept 1000 GROCERY]  Peanut Butter
+  upc=00515002551608  mod=000  [Dept 1000 GROCERY]  JIF Peanut Butter
+  upc=00520000112201  mod=000  [Dept 1000 GROCERY]  Pork N Beans
+  upc=00520000479120  mod=000  [Dept 1001 BEVERAGE NA]  20oz Gatorade STW KW
+  upc=00520000490088  mod=000  [Dept 1001 BEVERAGE NA]  20oz Gatorade CHE LM
+  upc=00520000508202  mod=000  [Dept 1001 BEVERAGE NA]  20oz Gatorade MXD BRY
+  upc=00520000528798  mod=000  [Dept 1001 BEVERAGE NA]  20oz Gatorade LME CUCM
+  upc=00520000549960  mod=000  [Dept 1001 BEVERAGE NA]  20oz Gatorade GLC FRZ
+  upc=00520000635472  mod=000  [Dept 1001 BEVERAGE NA]  20oz Gatorade  PNP MGO
+  upc=00520000660818  mod=000  [Dept 1001 BEVERAGE NA]  20oz Gatorade TRP CCNT
+  upc=00520000677984  mod=000  [Dept 1001 BEVERAGE NA]  28 0Z GAT LMD LS
+  upc=00520001350848  mod=000  [Dept 1001 BEVERAGE NA]  28 0Z GAT LME CUCMBR
+  upc=00520001351388  mod=000  [Dept 1001 BEVERAGE NA]  28 0Z GAT FT PNCH
+  upc=00520001351456  mod=000  [Dept 1001 BEVERAGE NA]  28 0Z GAT ORG
+  upc=00520001351524  mod=000  [Dept 1001 BEVERAGE NA]  28 0Z GAT LL
+  upc=00520001351692  mod=000  [Dept 1001 BEVERAGE NA]  28 0Z GAT FRC GRP
+  upc=00520001351760  mod=000  [Dept 1001 BEVERAGE NA]  28 0Z GAT BLU
+  upc=00520001351906  mod=000  [Dept 1001 BEVERAGE NA]  28 0Z GAT GLCR FRZ
+
+-- Coupon (NS=9)  (5 items) --
+  upc=00980001003562  mod=000  [Dept 1001 BEVERAGE NA]  18.5 oz Lit PLF  ZS SWT
+  upc=99999999999998  mod=000  [Dept 1001 BEVERAGE NA]  ZZ FILE-IMPORT TEST DEL-CONTROL
+  upc=99999999999999  mod=000  [Dept 1001 BEVERAGE NA]  ZZ FILE-IMPORT TEST ADD
+  upc=08944800022904  mod=000  [Dept 1003 HOUSEHOLD]  Trash Bags- 30 gallon
+  upc=08944800025301  mod=000  [Dept 1003 HOUSEHOLD]  Trash Bags- 13 gallon
+
+-- NDC (NS=3)  (7 items) --
+  upc=00300003118406  mod=000  [Dept 1000 GROCERY]  Quaker Chwy
+  upc=00332000113009  mod=000  [Dept 1000 GROCERY]  Baking Soda
+  upc=00380002225503  mod=000  [Dept 1000 GROCERY]  Pop Tart Blueberry
+  upc=00380002227101  mod=000  [Dept 1000 GROCERY]  Pop Tart Strawberry
+  upc=00380006357002  mod=000  [Dept 1000 GROCERY]  Cereal Cup- Frosted Flakes
+  upc=00307721092605  mod=000  [Dept 1003 HOUSEHOLD]  Dawn Ultra
+  upc=00344000004003  mod=000  [Dept 1012 CANDY]  Reeses
+
+-- In-store (NS=4)  (17 items) --
+  upc=00415000009906  mod=000  [Dept 1000 GROCERY]  FRN Dijon
+  upc=00415000070005  mod=000  [Dept 1000 GROCERY]  French Mustard
+  upc=00415008050207  mod=000  [Dept 1000 GROCERY]  Reds Hot Sauce
+  upc=00415652689402  mod=000  [Dept 1000 GROCERY]  Pace Restaurant
+  upc=00440000005702  mod=000  [Dept 1000 GROCERY]  Saltines
+  upc=00440000311308  mod=000  [Dept 1000 GROCERY]  Ritz
+  upc=00440000321901  mod=000  [Dept 1000 GROCERY]  Chips Ahoy
+  upc=00440000354404  mod=000  [Dept 1000 GROCERY]  Ritz- PB
+  upc=00440000354503  mod=000  [Dept 1000 GROCERY]  Ritz- Cheese
+  upc=00440000465407  mod=000  [Dept 1000 GROCERY]  Fig Newtons
+  upc=00440000601102  mod=000  [Dept 1000 GROCERY]  Oreo Cookie
+  upc=00440000601201  mod=000  [Dept 1000 GROCERY]  Oreo Golden
+  upc=00440000601300  mod=000  [Dept 1000 GROCERY]  Oreo DS
+  upc=00440000692308  mod=000  [Dept 1000 GROCERY]  Wheat Thins
+  upc=00460008110109  mod=000  [Dept 1000 GROCERY]  Old El Paso Taco Shells 12
+  upc=00497330910107  mod=000  [Dept 1000 GROCERY]  Cholula ORG
+  upc=00435176212078  mod=000  [Dept 1007 FLIES AND SUPPLIES]  UNCLE JOSH SHINERS

@@ -46,9 +46,16 @@
             <CheckBox Content="Age-restricted"
                       VerticalAlignment="Bottom"
                       IsChecked="{x:Bind ViewModel.AgeRestrictedOnly, Mode=TwoWay}" />
-            <CheckBox Content="Show not-sold items"
-                      VerticalAlignment="Bottom"
-                      IsChecked="{x:Bind ViewModel.ShowNotSold, Mode=TwoWay}" />
+            <ComboBox Header="Items"
+                      MinWidth="160"
+                      ItemsSource="{x:Bind ViewModel.NotSoldFilterOptions, Mode=OneWay}"
+                      SelectedItem="{x:Bind ViewModel.SelectedNotSoldFilter, Mode=TwoWay}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="vm:NotSoldFilterOptionVm">
+                        <TextBlock Text="{x:Bind Label, Mode=OneWay}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
             <CheckBox Content="Show only UPC issues"
                       VerticalAlignment="Bottom"
                       IsChecked="{x:Bind ViewModel.UpcIssuesOnly, Mode=TwoWay}" />

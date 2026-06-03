@@ -65,6 +65,11 @@
                         Visibility="{x:Bind ViewModel.Ean.HasError, Mode=OneWay}"
                         Foreground="{ThemeResource SystemErrorTextColor}"
                         TextWrapping="WrapWholeWords" />
+            <TextBlock Text="{x:Bind ViewModel.UpcStatusText, Mode=OneWay}"
+                        Visibility="{x:Bind ViewModel.HasUpcStatus, Mode=OneWay}"
+                        ToolTipService.ToolTip="{x:Bind ViewModel.UpcStatusTooltip, Mode=OneWay}"
+                        FontWeight="SemiBold"
+                        TextWrapping="WrapWholeWords" />
             <TextBlock Text="{x:Bind ViewModel.Modifier.Error, Mode=OneWay}"
                         Visibility="{x:Bind ViewModel.Modifier.HasError, Mode=OneWay}"
                         Foreground="{ThemeResource SystemErrorTextColor}"

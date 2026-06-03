@@ -58,7 +58,10 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
         private bool ageRestrictedOnly;
 
         [ObservableProperty]
-        private bool showNotSold;
+        private ObservableCollection<NotSoldFilterOptionVm> notSoldFilterOptions = new ObservableCollection<NotSoldFilterOptionVm>();
+
+        [ObservableProperty]
+        private NotSoldFilterOptionVm selectedNotSoldFilter;
 
         [ObservableProperty]
         private bool upcIssuesOnly;
@@ -90,6 +93,12 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
             this.DeleteSelectedCommand = new AsyncRelayCommand(
                 this.DeleteSelectedAsync,
                 () => this.SelectedCount > 0 && !this.IsBusy);
+
+            // Always default to Sold-only on app open (per the operator's workflow).
+            this.NotSoldFilterOptions.Add(new NotSoldFilterOptionVm(NotSoldFilter.Sold));
+            this.NotSoldFilterOptions.Add(new NotSoldFilterOptionVm(NotSoldFilter.NotSold));
+            this.NotSoldFilterOptions.Add(new NotSoldFilterOptionVm(NotSoldFilter.All));
+            this.SelectedNotSoldFilter = this.NotSoldFilterOptions[0];
 
             this.Messenger.Register<LoginStateChangedMessage>(this);
         }
@@ -138,7 +147,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
         partial void OnAgeRestrictedOnlyChanged(bool value) => this.ApplyFilter();
 
-        partial void OnShowNotSoldChanged(bool value) => this.ApplyFilter();
+        partial void OnSelectedNotSoldFilterChanged(NotSoldFilterOptionVm value) => this.ApplyFilter();
 
         partial void OnUpcIssuesOnlyChanged(bool value) => this.ApplyFilter();
 
@@ -205,21 +214,25 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
                     var ean14 = plu.Ean13.ToString("D14");
                     var significantDigits = ean14.TrimStart('0').Length;
                     var hasUpcIssue = false;
+                    string upcIssueLabel = null;
                     string upcIssueMessage = null;
                     if (significantDigits > 5)
                     {
                         var classification = UpcUtilities.ClassifyUpc(ean14);
-                        var riskNote = UpcUtilities.RiskNote(classification.Risk);
-                        if (classification.Class == UpcUtilities.UpcClass.AmbiguousInvalid)
+                        upcIssueLabel = UpcUtilities.GetIssueLabel(classification);
+                        if (upcIssueLabel != null)
                         {
                             hasUpcIssue = true;
-                            upcIssueMessage = (riskNote != null ? riskNote + "  " : string.Empty) +
-                                "UPC check digit does not validate — verify the item scans.";
-                        }
-                        else if (riskNote != null)
-                        {
-                            hasUpcIssue = true;
-                            upcIssueMessage = riskNote;
+                            var riskNote = UpcUtilities.RiskNote(classification.Risk);
+                            if (classification.Class == UpcUtilities.UpcClass.AmbiguousInvalid)
+                            {
+                                upcIssueMessage = (riskNote != null ? riskNote + "  " : string.Empty) +
+                                    "UPC check digit does not validate — verify the item scans.";
+                            }
+                            else
+                            {
+                                upcIssueMessage = riskNote;
+                            }
                         }
                     }
 
@@ -228,7 +241,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
                     string statusTooltip;
                     if (isNotSold && hasUpcIssue)
                     {
-                        statusText = "Not sold · UPC issue";
+                        statusText = "Not sold · " + upcIssueLabel;
                         statusTooltip = "Marked Not Sold (won't ring up at the register). " + upcIssueMessage;
                     }
                     else if (isNotSold)
@@ -238,7 +251,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
                     }
                     else if (hasUpcIssue)
                     {
-                        statusText = "UPC issue";
+                        statusText = upcIssueLabel;
                         statusTooltip = upcIssueMessage;
                     }
                     else
@@ -294,6 +307,25 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
                 this.allItems = rows;
                 this.TotalCount = rows.Count;
                 this.SelectedCount = 0;
+
+                // Update the Sold / Not Sold / All counts on the dropdown options.
+                var notSoldCount = rows.Count(x => x.IsNotSold);
+                var soldCount = rows.Count - notSoldCount;
+                foreach (var opt in this.NotSoldFilterOptions)
+                {
+                    switch (opt.Mode)
+                    {
+                        case NotSoldFilter.Sold:
+                            opt.Count = soldCount;
+                            break;
+                        case NotSoldFilter.NotSold:
+                            opt.Count = notSoldCount;
+                            break;
+                        case NotSoldFilter.All:
+                            opt.Count = rows.Count;
+                            break;
+                    }
+                }
 
                 this.DepartmentNames = new ObservableCollection<string>(
                     new[] { AllDepartmentsOption }.Concat(sortedDepartmentNames));
@@ -360,10 +392,19 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
                 query = query.Where(x => x.IsAgeRestricted);
             }
 
-            // Hide Not Sold items by default; toggle to include them.
-            if (!this.ShowNotSold)
+            // Sold-only by default; Not-Sold-only or All on operator request.
+            var notSoldMode = this.SelectedNotSoldFilter?.Mode ?? NotSoldFilter.Sold;
+            switch (notSoldMode)
             {
-                query = query.Where(x => !x.IsNotSold);
+                case NotSoldFilter.Sold:
+                    query = query.Where(x => !x.IsNotSold);
+                    break;
+                case NotSoldFilter.NotSold:
+                    query = query.Where(x => x.IsNotSold);
+                    break;
+                case NotSoldFilter.All:
+                    // No filter.
+                    break;
             }
 
             // Audit filter: show only PLUs whose stored upc is risky / has a bad check digit.
@@ -479,6 +520,45 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
     }
 
 #pragma warning disable SA1402 // File may only contain a single type
+
+    public partial class NotSoldFilterOptionVm : ObservableObject
+    {
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(Label))]
+        private int count;
+
+        public NotSoldFilterOptionVm(NotSoldFilter mode)
+        {
+            this.Mode = mode;
+        }
+
+        public NotSoldFilter Mode { get; }
+
+        public string Label
+        {
+            get
+            {
+                string baseLabel;
+                switch (this.Mode)
+                {
+                    case NotSoldFilter.Sold:
+                        baseLabel = "Sold";
+                        break;
+                    case NotSoldFilter.NotSold:
+                        baseLabel = "Not Sold";
+                        break;
+                    case NotSoldFilter.All:
+                        baseLabel = "All";
+                        break;
+                    default:
+                        baseLabel = "?";
+                        break;
+                }
+
+                return baseLabel + " (" + this.Count + ")";
+            }
+        }
+    }
 
     public partial class ItemRowVm : ObservableObject
     {

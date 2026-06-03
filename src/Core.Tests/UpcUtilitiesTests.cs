@@ -191,6 +191,46 @@ namespace VerifoneCommander.PriceBookManager.Core.Tests
             Assert.False(r.Success);
         }
 
+        // ---- issue labels (UI tags) --------------------------------------------
+        [Fact]
+        public void GetIssueLabel_ValidCode_ReturnsNull()
+        {
+            var c = ClassifyUpc("036000291452"); // valid UPC-A
+            Assert.Null(GetIssueLabel(c));
+        }
+
+        [Fact]
+        public void GetIssueLabel_RandomWeight()
+        {
+            // Valid UPC-A with NS=2 (random-weight). Padded to GTIN-14, check stays valid.
+            var c = ClassifyUpc("201234567899");
+            Assert.Equal("Random-weight", GetIssueLabel(c));
+        }
+
+        [Theory]
+        [InlineData("501234567890", "Coupon (NS=5)")]
+        [InlineData("901234567898", "Coupon (NS=9)")]
+        public void GetIssueLabel_Coupon_IncludesNumberSystem(string code, string expected)
+        {
+            Assert.Equal(expected, GetIssueLabel(ClassifyUpc(code)));
+        }
+
+        [Fact]
+        public void GetIssueLabel_BadCheckDigit()
+        {
+            // 12-digit code with a bad check, no risky NS
+            var c = ClassifyUpc("036000291451");
+            Assert.Equal("Bad check digit", GetIssueLabel(c));
+        }
+
+        [Fact]
+        public void GetIssueLabel_CombinesRiskAndBadCheck()
+        {
+            // NS=2 random-weight AND bad check digit
+            var c = ClassifyUpc("200000000001");
+            Assert.Equal("Random-weight · Bad check digit", GetIssueLabel(c));
+        }
+
         // ---- the H2 corruption guard -------------------------------------------
         [Theory]
         [InlineData("036000291452")] // 12 (UPC-A)
