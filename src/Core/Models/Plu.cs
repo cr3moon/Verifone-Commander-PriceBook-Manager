@@ -36,6 +36,13 @@ namespace VerifoneCommander.PriceBookManager.Core.Models
 
         public double MaxQuantityPerTransaction { get; set; }
 
+        /// <summary>
+        /// Gets a value indicating whether this PLU is marked Not Sold (flag sysid 2).
+        /// A Not Sold item remains in the catalog but won't ring up at the register —
+        /// it's the reversible alternative to deletion when neutralizing an item.
+        /// </summary>
+        public bool IsNotSold => this.FlagIds != null && this.FlagIds.Contains(PluFlags.NotSold);
+
         public static ISet<int> GenerateDefaultFeeIds()
         {
             return new HashSet<int>() { 0 };

@@ -18,6 +18,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
     using CommunityToolkit.Mvvm.Input;
     using CommunityToolkit.Mvvm.Messaging;
     using Microsoft.Extensions.Logging;
+    using VerifoneCommander.PriceBookManager.Core;
     using VerifoneCommander.PriceBookManager.Core.Models;
     using VerifoneCommander.PriceBookManager.DesktopApp.Models;
     using VerifoneCommander.PriceBookManager.DesktopApp.ViewModels.Models;
@@ -55,6 +56,12 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
         [ObservableProperty]
         private bool ageRestrictedOnly;
+
+        [ObservableProperty]
+        private bool showNotSold;
+
+        [ObservableProperty]
+        private bool upcIssuesOnly;
 
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(RefreshCommand))]
@@ -131,6 +138,10 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
         partial void OnAgeRestrictedOnlyChanged(bool value) => this.ApplyFilter();
 
+        partial void OnShowNotSoldChanged(bool value) => this.ApplyFilter();
+
+        partial void OnUpcIssuesOnlyChanged(bool value) => this.ApplyFilter();
+
         partial void OnIsBusyChanged(bool value)
         {
             this.OnPropertyChanged(nameof(this.Summary));
@@ -185,17 +196,73 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
                 .ToDictionary(g => g.Key, g => g.First().Name);
 
             var rows = plus
-                .Select(plu => new ItemRowVm
+                .Select(plu =>
                 {
-                    Ean13 = plu.Ean13,
-                    Modifier = plu.Modifier,
-                    Description = plu.Description,
-                    Price = plu.Price,
-                    DepartmentName = departmentNamesById.TryGetValue(plu.DepartmentId, out var name) ? name : string.Empty,
-                    AllowsFoodStamps = plu.FlagIds.Contains(PluFlags.FoodStamps),
-                    IsAgeRestricted = plu.AgeValidationIds.Count > 0,
-                    EditCommand = new RelayCommand(() =>
-                        this.Messenger.Send(new LoadProductForEditMessage(plu.Ean13, plu.Modifier))),
+                    // Read-only UPC quality audit. We never normalize, pad, or recompute a
+                    // check digit — the upc field is the literal scan code (see
+                    // docs/reference/upc-handling.md). A code with ≤5 significant digits is a
+                    // legitimate short internal PLU and is treated as fine, not flagged.
+                    var ean14 = plu.Ean13.ToString("D14");
+                    var significantDigits = ean14.TrimStart('0').Length;
+                    var hasUpcIssue = false;
+                    string upcIssueMessage = null;
+                    if (significantDigits > 5)
+                    {
+                        var classification = UpcUtilities.ClassifyUpc(ean14);
+                        var riskNote = UpcUtilities.RiskNote(classification.Risk);
+                        if (classification.Class == UpcUtilities.UpcClass.AmbiguousInvalid)
+                        {
+                            hasUpcIssue = true;
+                            upcIssueMessage = (riskNote != null ? riskNote + "  " : string.Empty) +
+                                "UPC check digit does not validate — verify the item scans.";
+                        }
+                        else if (riskNote != null)
+                        {
+                            hasUpcIssue = true;
+                            upcIssueMessage = riskNote;
+                        }
+                    }
+
+                    var isNotSold = plu.IsNotSold;
+                    string statusText;
+                    string statusTooltip;
+                    if (isNotSold && hasUpcIssue)
+                    {
+                        statusText = "Not sold · UPC issue";
+                        statusTooltip = "Marked Not Sold (won't ring up at the register). " + upcIssueMessage;
+                    }
+                    else if (isNotSold)
+                    {
+                        statusText = "Not sold";
+                        statusTooltip = "Marked Not Sold (won't ring up at the register).";
+                    }
+                    else if (hasUpcIssue)
+                    {
+                        statusText = "UPC issue";
+                        statusTooltip = upcIssueMessage;
+                    }
+                    else
+                    {
+                        statusText = string.Empty;
+                        statusTooltip = string.Empty;
+                    }
+
+                    return new ItemRowVm
+                    {
+                        Ean13 = plu.Ean13,
+                        Modifier = plu.Modifier,
+                        Description = plu.Description,
+                        Price = plu.Price,
+                        DepartmentName = departmentNamesById.TryGetValue(plu.DepartmentId, out var name) ? name : string.Empty,
+                        AllowsFoodStamps = plu.FlagIds.Contains(PluFlags.FoodStamps),
+                        IsAgeRestricted = plu.AgeValidationIds.Count > 0,
+                        IsNotSold = isNotSold,
+                        HasUpcIssue = hasUpcIssue,
+                        StatusText = statusText,
+                        StatusTooltip = statusTooltip,
+                        EditCommand = new RelayCommand(() =>
+                            this.Messenger.Send(new LoadProductForEditMessage(plu.Ean13, plu.Modifier))),
+                    };
                 })
                 .OrderBy(x => x.Ean13)
                 .ThenBy(x => x.Modifier)
@@ -291,6 +358,18 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
             if (this.AgeRestrictedOnly)
             {
                 query = query.Where(x => x.IsAgeRestricted);
+            }
+
+            // Hide Not Sold items by default; toggle to include them.
+            if (!this.ShowNotSold)
+            {
+                query = query.Where(x => !x.IsNotSold);
+            }
+
+            // Audit filter: show only PLUs whose stored upc is risky / has a bad check digit.
+            if (this.UpcIssuesOnly)
+            {
+                query = query.Where(x => x.HasUpcIssue);
             }
 
             this.Items = new ObservableCollection<ItemRowVm>(query);
@@ -426,6 +505,18 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
         [ObservableProperty]
         private bool isAgeRestricted;
+
+        [ObservableProperty]
+        private bool isNotSold;
+
+        [ObservableProperty]
+        private bool hasUpcIssue;
+
+        [ObservableProperty]
+        private string statusText;
+
+        [ObservableProperty]
+        private string statusTooltip;
 
         [ObservableProperty]
         private ICommand editCommand;

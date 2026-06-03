@@ -46,6 +46,12 @@
             <CheckBox Content="Age-restricted"
                       VerticalAlignment="Bottom"
                       IsChecked="{x:Bind ViewModel.AgeRestrictedOnly, Mode=TwoWay}" />
+            <CheckBox Content="Show not-sold items"
+                      VerticalAlignment="Bottom"
+                      IsChecked="{x:Bind ViewModel.ShowNotSold, Mode=TwoWay}" />
+            <CheckBox Content="Show only UPC issues"
+                      VerticalAlignment="Bottom"
+                      IsChecked="{x:Bind ViewModel.UpcIssuesOnly, Mode=TwoWay}" />
             <Button VerticalAlignment="Bottom"
                     Command="{x:Bind ViewModel.RefreshCommand}">
                 <StackPanel Orientation="Horizontal">
@@ -84,7 +90,8 @@
                     <ColumnDefinition Width="150" />
                     <ColumnDefinition Width="70" />
                     <ColumnDefinition Width="90" />
-                    <ColumnDefinition Width="170" />
+                    <ColumnDefinition Width="160" />
+                    <ColumnDefinition Width="140" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
                 <TextBlock Grid.Column="1" Text="" FontWeight="SemiBold" />
@@ -92,7 +99,8 @@
                 <TextBlock Grid.Column="3" Text="Modifier" FontWeight="SemiBold" />
                 <TextBlock Grid.Column="4" Text="Price" FontWeight="SemiBold" HorizontalTextAlignment="Right" />
                 <TextBlock Grid.Column="5" Text="Department" FontWeight="SemiBold" Margin="12,0,0,0" />
-                <TextBlock Grid.Column="6" Text="Description" FontWeight="SemiBold" Margin="12,0,0,0" />
+                <TextBlock Grid.Column="6" Text="Status" FontWeight="SemiBold" Margin="12,0,0,0" />
+                <TextBlock Grid.Column="7" Text="Description" FontWeight="SemiBold" Margin="12,0,0,0" />
             </Grid>
         </Border>
 
@@ -113,7 +121,8 @@
                                 <ColumnDefinition Width="150" />
                                 <ColumnDefinition Width="70" />
                                 <ColumnDefinition Width="90" />
-                                <ColumnDefinition Width="170" />
+                                <ColumnDefinition Width="160" />
+                                <ColumnDefinition Width="140" />
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
@@ -146,6 +155,13 @@
                                        Margin="12,0,0,0"
                                        Text="{x:Bind DepartmentName, Mode=OneWay}" />
                             <TextBlock Grid.Column="6"
+                                       VerticalAlignment="Center"
+                                       Margin="12,0,0,0"
+                                       FontWeight="SemiBold"
+                                       TextTrimming="CharacterEllipsis"
+                                       ToolTipService.ToolTip="{x:Bind StatusTooltip, Mode=OneWay}"
+                                       Text="{x:Bind StatusText, Mode=OneWay}" />
+                            <TextBlock Grid.Column="7"
                                        VerticalAlignment="Center"
                                        Margin="12,0,0,0"
                                        TextTrimming="CharacterEllipsis"
