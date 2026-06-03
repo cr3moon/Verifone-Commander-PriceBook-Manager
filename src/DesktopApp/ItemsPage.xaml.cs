@@ -59,9 +59,14 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp
                 return;
             }
 
-            if (sender is FrameworkElement el && el.DataContext is ItemRowVm row)
+            // ItemsRepeater doesn't propagate DataContext to realized children the way
+            // ListView does, so the row identity comes from Tag (bound via x:Bind).
+            if (sender is FrameworkElement el && el.Tag is ItemRowVm row)
             {
-                this.ViewModel.SelectedDuplicateRow = row.IsPossibleDuplicate ? row : null;
+                // Selecting a row with duplicates reveals the borders on its matches and
+                // opens the panel; a row with no duplicates clears any prior selection.
+                var hasDuplicates = row.PossibleDuplicates != null && row.PossibleDuplicates.Count > 0;
+                this.ViewModel.SelectedDuplicateRow = hasDuplicates ? row : null;
                 e.Handled = true;
             }
         }

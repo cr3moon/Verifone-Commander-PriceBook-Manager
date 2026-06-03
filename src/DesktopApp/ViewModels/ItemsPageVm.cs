@@ -183,14 +183,31 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
         partial void OnShowPossibleDuplicatesChanged(bool value)
         {
+            // Rebuild each row's duplicate list (or wipe it when toggling off). Borders
+            // and the detail panel stay hidden until the operator actually taps a row —
+            // turning the toggle on never highlights anything on its own.
             this.RecomputeDuplicates();
-            if (!value)
+            this.SelectedDuplicateRow = null;
+            this.OnPropertyChanged(nameof(this.ShowDuplicateDetailsPanel));
+        }
+
+        partial void OnSelectedDuplicateRowChanged(ItemRowVm value)
+        {
+            // Reveal the blue border only on the OTHER rows that are possible duplicates
+            // of the tapped row. Clearing the selection (tap-away, or a row with no
+            // duplicates) clears every border.
+            foreach (var row in this.allItems)
             {
-                // Toggling off also dismisses any open detail panel.
-                this.SelectedDuplicateRow = null;
+                row.IsPossibleDuplicate = false;
             }
 
-            this.OnPropertyChanged(nameof(this.ShowDuplicateDetailsPanel));
+            if (value?.PossibleDuplicates != null)
+            {
+                foreach (var duplicate in value.PossibleDuplicates)
+                {
+                    duplicate.IsPossibleDuplicate = true;
+                }
+            }
         }
 
         partial void OnIsBusyChanged(bool value)
@@ -431,9 +448,11 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
                 this.suppressFilter = false;
                 this.ApplyFilter();
 
-                // Refresh the duplicate flags against the new catalog (matching the
-                // current toggle state). A no-op when the toggle is off.
+                // Rebuild the duplicate match lists against the new catalog (matching the
+                // current toggle state). A no-op when the toggle is off. Any prior tapped
+                // selection is stale now, so drop it (also clears leftover borders).
                 this.RecomputeDuplicates();
+                this.SelectedDuplicateRow = null;
 
                 this.IsBusy = false;
             }).ConfigureAwait(false);
@@ -453,6 +472,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
             this.AgeRestrictedOnly = false;
             this.TotalCount = 0;
             this.SelectedCount = 0;
+            this.SelectedDuplicateRow = null;
         }
 
         private void ApplyFilter()
@@ -602,7 +622,8 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
                     if (related.Count > 0)
                     {
-                        row.IsPossibleDuplicate = true;
+                        // Store the match list now; the borders are only painted later,
+                        // for the specific row the operator taps (OnSelectedDuplicateRowChanged).
                         row.PossibleDuplicates = related.OrderBy(x => x.Ean13).ThenBy(x => x.Modifier).ToList();
                     }
                 }

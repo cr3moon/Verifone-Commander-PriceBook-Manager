@@ -138,6 +138,7 @@
                     <Border Background="{ThemeResource SystemChromeLowColor}"
                             BorderBrush="{StaticResource PossibleDuplicateBorderBrush}"
                             BorderThickness="{x:Bind IsPossibleDuplicate, Mode=OneWay, Converter={StaticResource BoolToBorderThicknessConverter}, ConverterParameter=2}"
+                            Tag="{x:Bind}"
                             Tapped="ItemRow_Tapped">
                         <Grid Padding="12,8">
                             <Grid.ColumnDefinitions>
