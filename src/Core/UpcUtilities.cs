@@ -54,6 +54,22 @@ namespace VerifoneCommander.PriceBookManager.Core
             InStore,
         }
 
+        // Severity of a UPC classification, for color-coding UI status displays.
+        public enum UpcSeverity
+        {
+            /// <summary>Code is fine.</summary>
+            None,
+
+            /// <summary>Informational note (NDC, in-store code). Won't block scanning.</summary>
+            Info,
+
+            /// <summary>Reserved for future use.</summary>
+            Warning,
+
+            /// <summary>Won't ring up correctly or violates GS1 prefix spec (bad check digit, coupon, random-weight).</summary>
+            Error,
+        }
+
         // Outcome of classifying one raw CSV upc value (per the forward-import
         // pipeline §8.1 of the empirical reference doc).
         public enum UpcClass
@@ -368,6 +384,32 @@ namespace VerifoneCommander.PriceBookManager.Core
             }
 
             return riskLabel + " · Bad check digit";
+        }
+
+        // Maps a classification to a severity bucket used for color-coding.
+        // Bad check digit (won't scan correctly) and risky GS1 prefixes that violate
+        // the routing convention (random-weight, coupon) are Error. NDC and in-store
+        // are informational. None otherwise.
+        public static UpcSeverity GetSeverity(UpcClassification classification)
+        {
+            if (classification == null)
+            {
+                return UpcSeverity.None;
+            }
+
+            bool badCheck = classification.Class == UpcClass.AmbiguousInvalid;
+
+            switch (classification.Risk)
+            {
+                case UpcRisk.RandomWeight:
+                case UpcRisk.Coupon:
+                    return UpcSeverity.Error;
+                case UpcRisk.Ndc:
+                case UpcRisk.InStore:
+                    return badCheck ? UpcSeverity.Error : UpcSeverity.Info;
+                default:
+                    return badCheck ? UpcSeverity.Error : UpcSeverity.None;
+            }
         }
 
         // Human-readable risk note (null when no risk). Phrasing matches the

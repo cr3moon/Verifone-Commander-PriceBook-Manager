@@ -68,7 +68,8 @@
             <TextBlock Text="{x:Bind ViewModel.UpcStatusText, Mode=OneWay}"
                         Visibility="{x:Bind ViewModel.HasUpcStatus, Mode=OneWay}"
                         ToolTipService.ToolTip="{x:Bind ViewModel.UpcStatusTooltip, Mode=OneWay}"
-                        FontWeight="SemiBold"
+                        Foreground="{x:Bind ViewModel.UpcStatusSeverity, Mode=OneWay, Converter={StaticResource UpcSeverityToBrushConverter}}"
+                        FontWeight="Bold"
                         TextWrapping="WrapWholeWords" />
             <TextBlock Text="{x:Bind ViewModel.Modifier.Error, Mode=OneWay}"
                         Visibility="{x:Bind ViewModel.Modifier.HasError, Mode=OneWay}"

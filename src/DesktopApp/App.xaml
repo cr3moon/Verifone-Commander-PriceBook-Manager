@@ -15,6 +15,14 @@
             <converters:IntToSymbolConverter x:Key="IntToSymbolConverter" />
             <converters:StringFormatConverter x:Key="StringFormatConverter" />
             <converters:InfoBarSeverityConverter x:Key="InfoBarSeverityConverter" />
+            <converters:UpcSeverityToBrushConverter x:Key="UpcSeverityToBrushConverter" />
+            <converters:BoolToBorderThicknessConverter x:Key="BoolToBorderThicknessConverter" />
+
+            <!-- UPC issue severity brushes (color choices visible in both themes). -->
+            <SolidColorBrush x:Key="UpcErrorBrush" Color="#D32F2F" />
+            <SolidColorBrush x:Key="UpcWarningBrush" Color="#F57C00" />
+            <SolidColorBrush x:Key="UpcInfoBrush" Color="#1976D2" />
+            <SolidColorBrush x:Key="PossibleDuplicateBorderBrush" Color="#1976D2" />
 
             <Thickness x:Key="HeaderTextBoxMargin">0,0,0,10</Thickness>
             <Thickness x:Key="IconWithRightTextMargin">0,0,10,0</Thickness>

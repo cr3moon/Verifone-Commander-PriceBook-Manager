@@ -27,6 +27,8 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
     {
         private const string AllDepartmentsOption = "All Departments";
 
+        private static readonly char[] DescriptionDelimiters = new[] { ' ', '-', '_', '.', ',', '/', '\\', '(', ')', '\t' };
+
         private readonly ICachingSapphireClient sapphireClient;
 
         private List<ItemRowVm> allItems = new List<ItemRowVm>();
@@ -64,7 +66,17 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
         private NotSoldFilterOptionVm selectedNotSoldFilter;
 
         [ObservableProperty]
-        private bool upcIssuesOnly;
+        private ObservableCollection<UpcStatusFilterOptionVm> upcStatusFilterOptions = new ObservableCollection<UpcStatusFilterOptionVm>();
+
+        [ObservableProperty]
+        private UpcStatusFilterOptionVm selectedUpcStatusFilter;
+
+        [ObservableProperty]
+        private bool showPossibleDuplicates;
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(ShowDuplicateDetailsPanel))]
+        private ItemRowVm selectedDuplicateRow;
 
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(RefreshCommand))]
@@ -100,6 +112,18 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
             this.NotSoldFilterOptions.Add(new NotSoldFilterOptionVm(NotSoldFilter.All));
             this.SelectedNotSoldFilter = this.NotSoldFilterOptions[0];
 
+            // UPC quality dropdown — default "All".
+            this.UpcStatusFilterOptions.Add(new UpcStatusFilterOptionVm(UpcStatusFilter.All));
+            this.UpcStatusFilterOptions.Add(new UpcStatusFilterOptionVm(UpcStatusFilter.Valid));
+            this.UpcStatusFilterOptions.Add(new UpcStatusFilterOptionVm(UpcStatusFilter.AnyIssue));
+            this.UpcStatusFilterOptions.Add(new UpcStatusFilterOptionVm(UpcStatusFilter.BadCheckDigit));
+            this.UpcStatusFilterOptions.Add(new UpcStatusFilterOptionVm(UpcStatusFilter.RandomWeight));
+            this.UpcStatusFilterOptions.Add(new UpcStatusFilterOptionVm(UpcStatusFilter.CouponNs5));
+            this.UpcStatusFilterOptions.Add(new UpcStatusFilterOptionVm(UpcStatusFilter.CouponNs9));
+            this.UpcStatusFilterOptions.Add(new UpcStatusFilterOptionVm(UpcStatusFilter.Ndc));
+            this.UpcStatusFilterOptions.Add(new UpcStatusFilterOptionVm(UpcStatusFilter.InStore));
+            this.SelectedUpcStatusFilter = this.UpcStatusFilterOptions[0];
+
             this.Messenger.Register<LoginStateChangedMessage>(this);
         }
 
@@ -126,6 +150,12 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
             ? "Loading…"
             : $"Showing {this.Items.Count} of {this.TotalCount} items";
 
+        public bool ShowDuplicateDetailsPanel =>
+            this.ShowPossibleDuplicates &&
+            this.SelectedDuplicateRow != null &&
+            this.SelectedDuplicateRow.PossibleDuplicates != null &&
+            this.SelectedDuplicateRow.PossibleDuplicates.Count > 0;
+
         void IRecipient<LoginStateChangedMessage>.Receive(LoginStateChangedMessage message)
         {
             if (message.State == LoginState.LoggedIn)
@@ -149,7 +179,19 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
         partial void OnSelectedNotSoldFilterChanged(NotSoldFilterOptionVm value) => this.ApplyFilter();
 
-        partial void OnUpcIssuesOnlyChanged(bool value) => this.ApplyFilter();
+        partial void OnSelectedUpcStatusFilterChanged(UpcStatusFilterOptionVm value) => this.ApplyFilter();
+
+        partial void OnShowPossibleDuplicatesChanged(bool value)
+        {
+            this.RecomputeDuplicates();
+            if (!value)
+            {
+                // Toggling off also dismisses any open detail panel.
+                this.SelectedDuplicateRow = null;
+            }
+
+            this.OnPropertyChanged(nameof(this.ShowDuplicateDetailsPanel));
+        }
 
         partial void OnIsBusyChanged(bool value)
         {
@@ -216,10 +258,41 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
                     var hasUpcIssue = false;
                     string upcIssueLabel = null;
                     string upcIssueMessage = null;
+                    var severity = UpcUtilities.UpcSeverity.None;
+                    var filterKey = UpcStatusFilter.Valid;
                     if (significantDigits > 5)
                     {
                         var classification = UpcUtilities.ClassifyUpc(ean14);
                         upcIssueLabel = UpcUtilities.GetIssueLabel(classification);
+                        severity = UpcUtilities.GetSeverity(classification);
+
+                        // Primary filter bucket: risky NS wins over bad-check-digit
+                        // so "Random-weight + bad check" still appears under RandomWeight.
+                        switch (classification.Risk)
+                        {
+                            case UpcUtilities.UpcRisk.RandomWeight:
+                                filterKey = UpcStatusFilter.RandomWeight;
+                                break;
+                            case UpcUtilities.UpcRisk.Coupon:
+                                filterKey = classification.NumberSystemDigit == "9"
+                                    ? UpcStatusFilter.CouponNs9
+                                    : UpcStatusFilter.CouponNs5;
+                                break;
+                            case UpcUtilities.UpcRisk.Ndc:
+                                filterKey = UpcStatusFilter.Ndc;
+                                break;
+                            case UpcUtilities.UpcRisk.InStore:
+                                filterKey = UpcStatusFilter.InStore;
+                                break;
+                            default:
+                                if (classification.Class == UpcUtilities.UpcClass.AmbiguousInvalid)
+                                {
+                                    filterKey = UpcStatusFilter.BadCheckDigit;
+                                }
+
+                                break;
+                        }
+
                         if (upcIssueLabel != null)
                         {
                             hasUpcIssue = true;
@@ -271,6 +344,9 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
                         IsAgeRestricted = plu.AgeValidationIds.Count > 0,
                         IsNotSold = isNotSold,
                         HasUpcIssue = hasUpcIssue,
+                        UpcIssueLabel = upcIssueLabel,
+                        Severity = severity,
+                        UpcFilterKey = filterKey,
                         StatusText = statusText,
                         StatusTooltip = statusTooltip,
                         EditCommand = new RelayCommand(() =>
@@ -327,6 +403,23 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
                     }
                 }
 
+                // Update the UPC-status dropdown counts.
+                foreach (var opt in this.UpcStatusFilterOptions)
+                {
+                    switch (opt.Mode)
+                    {
+                        case UpcStatusFilter.All:
+                            opt.Count = rows.Count;
+                            break;
+                        case UpcStatusFilter.AnyIssue:
+                            opt.Count = rows.Count(x => x.UpcFilterKey != UpcStatusFilter.Valid);
+                            break;
+                        default:
+                            opt.Count = rows.Count(x => x.UpcFilterKey == opt.Mode);
+                            break;
+                    }
+                }
+
                 this.DepartmentNames = new ObservableCollection<string>(
                     new[] { AllDepartmentsOption }.Concat(sortedDepartmentNames));
 
@@ -337,6 +430,10 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
                 this.suppressFilter = false;
                 this.ApplyFilter();
+
+                // Refresh the duplicate flags against the new catalog (matching the
+                // current toggle state). A no-op when the toggle is off.
+                this.RecomputeDuplicates();
 
                 this.IsBusy = false;
             }).ConfigureAwait(false);
@@ -407,14 +504,109 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
                     break;
             }
 
-            // Audit filter: show only PLUs whose stored upc is risky / has a bad check digit.
-            if (this.UpcIssuesOnly)
+            // UPC quality dropdown filter.
+            var upcMode = this.SelectedUpcStatusFilter?.Mode ?? UpcStatusFilter.All;
+            switch (upcMode)
             {
-                query = query.Where(x => x.HasUpcIssue);
+                case UpcStatusFilter.All:
+                    break;
+                case UpcStatusFilter.Valid:
+                    query = query.Where(x => x.UpcFilterKey == UpcStatusFilter.Valid);
+                    break;
+                case UpcStatusFilter.AnyIssue:
+                    query = query.Where(x => x.UpcFilterKey != UpcStatusFilter.Valid);
+                    break;
+                default:
+                    query = query.Where(x => x.UpcFilterKey == upcMode);
+                    break;
             }
 
             this.Items = new ObservableCollection<ItemRowVm>(query);
             this.OnPropertyChanged(nameof(this.Summary));
+        }
+
+        private void RecomputeDuplicates()
+        {
+            static HashSet<string> Tokenize(string description)
+            {
+                var set = new HashSet<string>(StringComparer.Ordinal);
+                if (string.IsNullOrWhiteSpace(description))
+                {
+                    return set;
+                }
+
+                foreach (var token in description.Split(DescriptionDelimiters, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    if (token.Length >= 4)
+                    {
+                        set.Add(token.ToUpperInvariant());
+                    }
+                }
+
+                return set;
+            }
+
+            // Always clear the previous state — toggling off (or a fresh catalog)
+            // wipes the highlights.
+            foreach (var row in this.allItems)
+            {
+                row.IsPossibleDuplicate = false;
+                row.PossibleDuplicates = null;
+            }
+
+            if (!this.ShowPossibleDuplicates)
+            {
+                return;
+            }
+
+            // Per department, build a token→rows inverted index and find every row
+            // that shares at least one ≥4-char word with another row.
+            foreach (var deptGroup in this.allItems.GroupBy(x => x.DepartmentName ?? string.Empty))
+            {
+                var tokensByRow = new Dictionary<ItemRowVm, HashSet<string>>();
+                var wordIndex = new Dictionary<string, List<ItemRowVm>>(StringComparer.Ordinal);
+
+                foreach (var row in deptGroup)
+                {
+                    var tokens = Tokenize(row.Description);
+                    tokensByRow[row] = tokens;
+                    foreach (var t in tokens)
+                    {
+                        if (!wordIndex.TryGetValue(t, out var bucket))
+                        {
+                            bucket = new List<ItemRowVm>();
+                            wordIndex[t] = bucket;
+                        }
+
+                        bucket.Add(row);
+                    }
+                }
+
+                foreach (var pair in tokensByRow)
+                {
+                    var row = pair.Key;
+                    var related = new HashSet<ItemRowVm>();
+                    foreach (var t in pair.Value)
+                    {
+                        if (wordIndex.TryGetValue(t, out var bucket))
+                        {
+                            foreach (var other in bucket)
+                            {
+                                if (!ReferenceEquals(other, row))
+                                {
+                                    related.Add(other);
+                                }
+                            }
+                        }
+                    }
+
+                    if (related.Count > 0)
+                    {
+                        row.IsPossibleDuplicate = true;
+                        row.PossibleDuplicates = related.OrderBy(x => x.Ean13).ThenBy(x => x.Modifier).ToList();
+                    }
+                }
+            }
         }
 
         private void OnRowSelectionChanged(object sender, PropertyChangedEventArgs e)
@@ -560,6 +752,63 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
         }
     }
 
+    public partial class UpcStatusFilterOptionVm : ObservableObject
+    {
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(Label))]
+        private int count;
+
+        public UpcStatusFilterOptionVm(UpcStatusFilter mode)
+        {
+            this.Mode = mode;
+        }
+
+        public UpcStatusFilter Mode { get; }
+
+        public string Label
+        {
+            get
+            {
+                string baseLabel;
+                switch (this.Mode)
+                {
+                    case UpcStatusFilter.All:
+                        baseLabel = "All UPC status";
+                        break;
+                    case UpcStatusFilter.Valid:
+                        baseLabel = "Valid";
+                        break;
+                    case UpcStatusFilter.AnyIssue:
+                        baseLabel = "Any UPC issue";
+                        break;
+                    case UpcStatusFilter.BadCheckDigit:
+                        baseLabel = "Bad check digit";
+                        break;
+                    case UpcStatusFilter.RandomWeight:
+                        baseLabel = "Random-weight";
+                        break;
+                    case UpcStatusFilter.CouponNs5:
+                        baseLabel = "Coupon (NS=5)";
+                        break;
+                    case UpcStatusFilter.CouponNs9:
+                        baseLabel = "Coupon (NS=9)";
+                        break;
+                    case UpcStatusFilter.Ndc:
+                        baseLabel = "NDC";
+                        break;
+                    case UpcStatusFilter.InStore:
+                        baseLabel = "In-store";
+                        break;
+                    default:
+                        baseLabel = "?";
+                        break;
+                }
+
+                return baseLabel + " (" + this.Count + ")";
+            }
+        }
+    }
+
     public partial class ItemRowVm : ObservableObject
     {
         [ObservableProperty]
@@ -593,12 +842,28 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
         private bool hasUpcIssue;
 
         [ObservableProperty]
+        private string upcIssueLabel;
+
+        [ObservableProperty]
+        private UpcUtilities.UpcSeverity severity;
+
+        [ObservableProperty]
+        private UpcStatusFilter upcFilterKey;
+
+        [ObservableProperty]
         private string statusText;
 
         [ObservableProperty]
         private string statusTooltip;
 
         [ObservableProperty]
+        private bool isPossibleDuplicate;
+
+        [ObservableProperty]
         private ICommand editCommand;
+
+        // Other rows in the same department whose description overlaps this one.
+        // Populated when the "Possible duplicates" toggle is on.
+        public System.Collections.Generic.List<ItemRowVm> PossibleDuplicates { get; set; }
     }
 }

@@ -76,6 +76,9 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
         [ObservableProperty]
         private string upcStatusTooltip;
 
+        [ObservableProperty]
+        private UpcUtilities.UpcSeverity upcStatusSeverity;
+
         public EditPageVm(
             IUiThreadDispatcher uiThreadDispatcher,
             IMessenger messenger,
@@ -586,6 +589,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
             {
                 this.UpcStatusText = null;
                 this.UpcStatusTooltip = null;
+                this.UpcStatusSeverity = UpcUtilities.UpcSeverity.None;
                 return;
             }
 
@@ -595,11 +599,13 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
             {
                 this.UpcStatusText = null;
                 this.UpcStatusTooltip = null;
+                this.UpcStatusSeverity = UpcUtilities.UpcSeverity.None;
                 return;
             }
 
             var classification = UpcUtilities.ClassifyUpc(text);
             var label = UpcUtilities.GetIssueLabel(classification);
+            this.UpcStatusSeverity = UpcUtilities.GetSeverity(classification);
             if (label == null)
             {
                 this.UpcStatusText = null;
