@@ -9,7 +9,9 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp
     using System;
     using Microsoft.UI.Xaml;
     using Microsoft.UI.Xaml.Controls;
+    using Microsoft.UI.Xaml.Documents;
     using Microsoft.UI.Xaml.Input;
+    using Microsoft.UI.Xaml.Media;
     using VerifoneCommander.PriceBookManager.DesktopApp.ViewModels;
 
     public sealed partial class ItemsPage : Page
@@ -75,6 +77,46 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp
         {
             // Clicking inside the detail panel must not dismiss it.
             e.Handled = true;
+        }
+
+        private void DuplicatesRepeater_ElementPrepared(ItemsRepeater sender, ItemsRepeaterElementPreparedEventArgs args)
+        {
+            // Paint the highlighter-pen ranges over the words of this entry's description
+            // that matched the tapped row. TextHighlighters can't be set via x:Bind, so
+            // they're applied here as each panel element is realized (elements recycle,
+            // hence the unconditional Clear).
+            var entries = this.ViewModel.SelectedRowDuplicates;
+            if (entries == null || args.Index < 0 || args.Index >= entries.Count)
+            {
+                return;
+            }
+
+            if (args.Element is Border border &&
+                border.Child is StackPanel panel &&
+                panel.Children.Count > 0 &&
+                panel.Children[0] is TextBlock description)
+            {
+                description.TextHighlighters.Clear();
+
+                var ranges = entries[args.Index].MatchRanges;
+                if (ranges.Count == 0)
+                {
+                    return;
+                }
+
+                var highlighter = new TextHighlighter
+                {
+                    Background = (Brush)Application.Current.Resources["DuplicateMatchHighlightBrush"],
+                    Foreground = (Brush)Application.Current.Resources["DuplicateMatchHighlightForegroundBrush"],
+                };
+
+                foreach (var range in ranges)
+                {
+                    highlighter.Ranges.Add(range);
+                }
+
+                description.TextHighlighters.Add(highlighter);
+            }
         }
 
         private void PageBackground_Tapped(object sender, TappedRoutedEventArgs e)

@@ -18,6 +18,9 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
     using CommunityToolkit.Mvvm.Input;
     using CommunityToolkit.Mvvm.Messaging;
     using Microsoft.Extensions.Logging;
+    using Microsoft.UI.Xaml;
+    using Microsoft.UI.Xaml.Documents;
+    using Microsoft.UI.Xaml.Media;
     using VerifoneCommander.PriceBookManager.Core;
     using VerifoneCommander.PriceBookManager.Core.Models;
     using VerifoneCommander.PriceBookManager.DesktopApp.Models;
@@ -77,6 +80,11 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(ShowDuplicateDetailsPanel))]
         private ItemRowVm selectedDuplicateRow;
+
+        // The side-panel entries for the currently tapped row: each duplicate row plus
+        // the character ranges of its description that matched the tapped row's tokens.
+        [ObservableProperty]
+        private List<DuplicatePanelEntryVm> selectedRowDuplicates;
 
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(RefreshCommand))]
@@ -193,20 +201,69 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
 
         partial void OnSelectedDuplicateRowChanged(ItemRowVm value)
         {
-            // Reveal the blue border only on the OTHER rows that are possible duplicates
-            // of the tapped row. Clearing the selection (tap-away, or a row with no
-            // duplicates) clears every border.
+            // Finds the character ranges in a duplicate's description that are tokens
+            // shared with the tapped (anchor) row — these get the highlighter-pen
+            // treatment in the side panel.
+            static List<TextRange> FindMatchRanges(string description, ISet<string> anchorTokens)
+            {
+                var ranges = new List<TextRange>();
+                if (string.IsNullOrEmpty(description) || anchorTokens == null)
+                {
+                    return ranges;
+                }
+
+                var i = 0;
+                while (i < description.Length)
+                {
+                    if (Array.IndexOf(DescriptionDelimiters, description[i]) >= 0)
+                    {
+                        i++;
+                        continue;
+                    }
+
+                    var start = i;
+                    while (i < description.Length && Array.IndexOf(DescriptionDelimiters, description[i]) < 0)
+                    {
+                        i++;
+                    }
+
+                    var length = i - start;
+                    if (length >= 4 && anchorTokens.Contains(description.Substring(start, length).ToUpperInvariant()))
+                    {
+                        ranges.Add(new TextRange { StartIndex = start, Length = length });
+                    }
+                }
+
+                return ranges;
+            }
+
+            // Reveal the purple border on the tapped (anchor) row and the blue border on
+            // the OTHER rows that are possible duplicates of it. Clearing the selection
+            // (tap-away, or a row with no duplicates) clears every border and the panel.
             foreach (var row in this.allItems)
             {
                 row.IsPossibleDuplicate = false;
+                row.IsDuplicateAnchor = false;
             }
 
             if (value?.PossibleDuplicates != null)
             {
+                value.IsDuplicateAnchor = true;
+
+                var entries = new List<DuplicatePanelEntryVm>(value.PossibleDuplicates.Count);
                 foreach (var duplicate in value.PossibleDuplicates)
                 {
                     duplicate.IsPossibleDuplicate = true;
+                    entries.Add(new DuplicatePanelEntryVm(
+                        duplicate,
+                        FindMatchRanges(duplicate.Description, value.Tokens)));
                 }
+
+                this.SelectedRowDuplicates = entries;
+            }
+            else
+            {
+                this.SelectedRowDuplicates = null;
             }
         }
 
@@ -571,7 +628,9 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
             foreach (var row in this.allItems)
             {
                 row.IsPossibleDuplicate = false;
+                row.IsDuplicateAnchor = false;
                 row.PossibleDuplicates = null;
+                row.Tokens = null;
             }
 
             if (!this.ShowPossibleDuplicates)
@@ -590,6 +649,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
                 {
                     var tokens = Tokenize(row.Description);
                     tokensByRow[row] = tokens;
+                    row.Tokens = tokens;
                     foreach (var t in tokens)
                     {
                         if (!wordIndex.TryGetValue(t, out var bucket))
@@ -878,7 +938,14 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
         private string statusTooltip;
 
         [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(RowBorderBrush))]
+        [NotifyPropertyChangedFor(nameof(RowBorderThickness))]
         private bool isPossibleDuplicate;
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(RowBorderBrush))]
+        [NotifyPropertyChangedFor(nameof(RowBorderThickness))]
+        private bool isDuplicateAnchor;
 
         [ObservableProperty]
         private ICommand editCommand;
@@ -886,5 +953,37 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.ViewModels
         // Other rows in the same department whose description overlaps this one.
         // Populated when the "Possible duplicates" toggle is on.
         public System.Collections.Generic.List<ItemRowVm> PossibleDuplicates { get; set; }
+
+        // This row's ≥4-char description tokens (uppercased), captured during duplicate
+        // detection so the side panel can compute per-pair matched-word highlights.
+        public System.Collections.Generic.ISet<string> Tokens { get; set; }
+
+        // Purple for the tapped (anchor) row, blue for its possible-duplicate matches.
+        // Purple deliberately implies neither good (green) nor bad (red) — the anchor
+        // may itself be the entry that needs to be removed.
+        public Microsoft.UI.Xaml.Media.Brush RowBorderBrush => this.IsDuplicateAnchor
+            ? (Microsoft.UI.Xaml.Media.Brush)Microsoft.UI.Xaml.Application.Current.Resources["DuplicateAnchorBorderBrush"]
+            : (Microsoft.UI.Xaml.Media.Brush)Microsoft.UI.Xaml.Application.Current.Resources["PossibleDuplicateBorderBrush"];
+
+        public Microsoft.UI.Xaml.Thickness RowBorderThickness => this.IsDuplicateAnchor || this.IsPossibleDuplicate
+            ? new Microsoft.UI.Xaml.Thickness(2)
+            : new Microsoft.UI.Xaml.Thickness(0);
+    }
+
+    // One entry in the possible-duplicates side panel: the duplicate row plus the
+    // character ranges of its description that matched the tapped (anchor) row.
+    public class DuplicatePanelEntryVm
+    {
+        public DuplicatePanelEntryVm(
+            ItemRowVm row,
+            System.Collections.Generic.IReadOnlyList<Microsoft.UI.Xaml.Documents.TextRange> matchRanges)
+        {
+            this.Row = row ?? throw new System.ArgumentNullException(nameof(row));
+            this.MatchRanges = matchRanges ?? throw new System.ArgumentNullException(nameof(matchRanges));
+        }
+
+        public ItemRowVm Row { get; }
+
+        public System.Collections.Generic.IReadOnlyList<Microsoft.UI.Xaml.Documents.TextRange> MatchRanges { get; }
     }
 }

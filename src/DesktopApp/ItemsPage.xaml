@@ -136,8 +136,8 @@
 
                 <DataTemplate x:DataType="vm:ItemRowVm">
                     <Border Background="{ThemeResource SystemChromeLowColor}"
-                            BorderBrush="{StaticResource PossibleDuplicateBorderBrush}"
-                            BorderThickness="{x:Bind IsPossibleDuplicate, Mode=OneWay, Converter={StaticResource BoolToBorderThicknessConverter}, ConverterParameter=2}"
+                            BorderBrush="{x:Bind RowBorderBrush, Mode=OneWay}"
+                            BorderThickness="{x:Bind RowBorderThickness, Mode=OneWay}"
                             Tag="{x:Bind}"
                             Tapped="ItemRow_Tapped">
                         <Grid Padding="12,8">
@@ -214,17 +214,19 @@
                         <TextBlock Text="Possible duplicates of:" FontWeight="Bold" />
                         <TextBlock Text="{x:Bind ViewModel.SelectedDuplicateRow.Description, Mode=OneWay}" FontStyle="Italic" TextWrapping="Wrap" />
                         <TextBlock Text="(same department, shared description word)" Opacity="0.7" FontSize="11" />
-                        <ItemsRepeater ItemsSource="{x:Bind ViewModel.SelectedDuplicateRow.PossibleDuplicates, Mode=OneWay}" Margin="0,6,0,0">
+                        <ItemsRepeater ItemsSource="{x:Bind ViewModel.SelectedRowDuplicates, Mode=OneWay}"
+                                       Margin="0,6,0,0"
+                                       ElementPrepared="DuplicatesRepeater_ElementPrepared">
                             <ItemsRepeater.Layout>
                                 <StackLayout Orientation="Vertical" Spacing="6" />
                             </ItemsRepeater.Layout>
-                            <DataTemplate x:DataType="vm:ItemRowVm">
+                            <DataTemplate x:DataType="vm:DuplicatePanelEntryVm">
                                 <Border Padding="8" Background="{ThemeResource SystemChromeMediumLowColor}">
                                     <StackPanel>
-                                        <TextBlock Text="{x:Bind Description, Mode=OneWay}" FontWeight="SemiBold" TextWrapping="Wrap" />
-                                        <TextBlock Text="{x:Bind Ean13, Mode=OneWay, Converter={StaticResource StringFormatConverter}, ConverterParameter='\{0:D14\}'}" Opacity="0.7" />
-                                        <TextBlock Text="{x:Bind StatusText, Mode=OneWay}"
-                                                   Foreground="{x:Bind Severity, Mode=OneWay, Converter={StaticResource UpcSeverityToBrushConverter}}"
+                                        <TextBlock Text="{x:Bind Row.Description, Mode=OneWay}" FontWeight="SemiBold" TextWrapping="Wrap" />
+                                        <TextBlock Text="{x:Bind Row.Ean13, Mode=OneWay, Converter={StaticResource StringFormatConverter}, ConverterParameter='\{0:D14\}'}" Opacity="0.7" />
+                                        <TextBlock Text="{x:Bind Row.StatusText, Mode=OneWay}"
+                                                   Foreground="{x:Bind Row.Severity, Mode=OneWay, Converter={StaticResource UpcSeverityToBrushConverter}}"
                                                    FontWeight="SemiBold" />
                                     </StackPanel>
                                 </Border>

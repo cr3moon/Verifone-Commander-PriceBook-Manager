@@ -24,6 +24,16 @@
             <SolidColorBrush x:Key="UpcInfoBrush" Color="#1976D2" />
             <SolidColorBrush x:Key="PossibleDuplicateBorderBrush" Color="#1976D2" />
 
+            <!-- Possible-duplicates anchor row (the row the operator tapped). Purple on
+                 purpose: visually distinct from the blue match borders without implying
+                 good (green) or bad (red) — the anchor may itself be the one to remove. -->
+            <SolidColorBrush x:Key="DuplicateAnchorBorderBrush" Color="#AB47BC" />
+
+            <!-- Matched-word highlight in the duplicates side panel (highlighter-pen
+                 yellow + black text, readable in both themes). -->
+            <SolidColorBrush x:Key="DuplicateMatchHighlightBrush" Color="#FFF59D" />
+            <SolidColorBrush x:Key="DuplicateMatchHighlightForegroundBrush" Color="#000000" />
+
             <Thickness x:Key="HeaderTextBoxMargin">0,0,0,10</Thickness>
             <Thickness x:Key="IconWithRightTextMargin">0,0,10,0</Thickness>
 

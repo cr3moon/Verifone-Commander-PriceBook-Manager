@@ -77,7 +77,7 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.Mocks
 
         public MockSapphireClient()
         {
-            this.plus = this.GenerateRandomPlus(10_0);
+            this.plus = GenerateSamplePlus();
         }
 
         public async Task<List<Plu>> GetPriceLookUpsAsync(
@@ -148,46 +148,97 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp.Mocks
             return Task.Delay(500);
         }
 
-        private List<Plu> GenerateRandomPlus(int numToGenerate)
+        // Deterministic demo catalog exercising every Items-page feature:
+        //  - Possible-duplicate clusters (same department, shared ≥4-char words):
+        //    the three BREADs, the two MOUNTAIN DEWs, the two BOUNTY/PAPER/TOWELS
+        //    (multi-word match), the two COUPONs, the two BUDWEISERs, the three
+        //    MARLBOROs. BREAD BOX PLASTIC shares "BREAD" but sits in another
+        //    department, so it must NOT match the grocery breads.
+        //  - UPC severities: bad check digit (MILK), random-weight NS=2 (BANANAS;
+        //    GROUND BEEF also has a bad check), coupons NS=5/NS=9, NDC NS=3
+        //    (TYLENOL; ADVIL also has a bad check → escalates), in-store NS=4
+        //    (BAKERY CAKE), short internal PLU (DELI SANDWICH — never flagged).
+        //  - Not Sold flag (OLD WIDGET, BROKEN BARCODE LABEL) for the Sold/Not
+        //    Sold/All dropdown.
+        private static List<Plu> GenerateSamplePlus()
         {
-            var list = new List<Plu>();
-            var random = new Random();
-
-            for (int i = 0; i < numToGenerate; i++)
+            static Plu Make(
+                long upc,
+                string description,
+                int departmentId,
+                double price,
+                bool foodStamps = false,
+                bool notSold = false,
+                int? ageValidationId = null,
+                bool taxed = false)
             {
-                var departmentId = random.Next(0, this.departments.Count) + 1; // IDs start at 1
-                var price = random.NextDouble() * 100;
-
-                var taxRateIdsToGenerate = random.Next(0, this.taxRates.Count);
-                var taxRateIds = new HashSet<int>();
-                for (int j = 0; j <= taxRateIdsToGenerate; j++)
+                var flagIds = Plu.GenerateDefaultFlagIds();
+                if (foodStamps)
                 {
-                    var id = random.Next(0, this.taxRates.Count) + 1; // IDs start at 1
-                    taxRateIds.Add(id);
+                    flagIds.Add(PluFlags.FoodStamps);
                 }
 
-                var ageValidationsToGenerate = random.Next(0, this.ageValidations.Count);
-                var ageValidationIds = new HashSet<int>();
-                for (int j = 0; j <= ageValidationsToGenerate; j++)
+                if (notSold)
                 {
-                    var id = random.Next(0, this.ageValidations.Count) + 1; // IDs start at 1
-                    ageValidationIds.Add(id);
+                    flagIds.Add(PluFlags.NotSold);
                 }
 
-                list.Add(new Plu
+                return new Plu
                 {
-                    Ean13 = Ean13Helper.ConvertToEan13WithCheckDigit(i),
+                    Ean13 = upc,
                     Modifier = 0,
-                    Description = $"Item #{i}",
+                    Description = description,
                     DepartmentId = departmentId,
                     ProductCodeId = 400,
                     Price = price,
-                    TaxRateIds = taxRateIds,
-                    AgeValidationIds = ageValidationIds,
-                });
+                    FlagIds = flagIds,
+                    TaxRateIds = taxed ? new HashSet<int> { 1, 2 } : new HashSet<int>(),
+                    AgeValidationIds = ageValidationId.HasValue
+                        ? new HashSet<int> { ageValidationId.Value }
+                        : new HashSet<int>(),
+                };
             }
 
-            return list;
+            return new List<Plu>
+            {
+                // GROCERY (1) — duplicate clusters + severity cases.
+                Make(72948000015, "WONDER BREAD WHITE 20OZ", 1, 2.49, foodStamps: true),
+                Make(72948000022, "WONDER BREAD WHEAT 20OZ", 1, 2.49, foodStamps: true),
+                Make(74235000012, "SOURDOUGH BREAD LOAF", 1, 3.99, foodStamps: true),
+                Make(12000001239, "MOUNTAIN DEW 12PK", 1, 6.99, foodStamps: true),
+                Make(12000004568, "MOUNTAIN DEW 2L", 1, 2.79, foodStamps: true),
+                Make(28400023450, "DORITOS NACHO CHEESE", 1, 4.29, foodStamps: true),
+                Make(200123456788, "BANANAS RANDOM WEIGHT", 1, 1.99, foodStamps: true),
+                Make(200987654321, "GROUND BEEF VALUE PACK", 1, 8.49, foodStamps: true),
+                Make(70038123454, "MILK WHOLE GALLON", 1, 3.59, foodStamps: true),
+                Make(501234567890, "STORE COUPON 50C OFF", 1, 0.50),
+                Make(901234567898, "MFR COUPON FREE ITEM", 1, 0.00),
+                Make(4501, "DELI SANDWICH SPECIAL", 1, 5.99, foodStamps: true),
+                Make(49000123456, "OLD WIDGET DISCONTINUED", 1, 1.00, notSold: true),
+                Make(75678123451, "BROKEN BARCODE LABEL", 1, 2.00, notSold: true),
+
+                // NON GROCERY (2) — taxed; NDC / in-store cases; cross-department
+                // "BREAD" that must not match the grocery breads.
+                Make(37000456780, "BOUNTY PAPER TOWELS 6 ROLL", 2, 9.99, taxed: true),
+                Make(37000678908, "PAPER TOWELS BOUNTY SELECT SIZE", 2, 12.49, taxed: true),
+                Make(300450678904, "TYLENOL EXTRA STRENGTH 100CT", 2, 11.99, taxed: true),
+                Make(305730123458, "ADVIL LIQUID GELS 40CT", 2, 9.49, taxed: true),
+                Make(400001234563, "IN STORE BAKERY CAKE", 2, 15.99, taxed: true),
+                Make(37000912347, "DAWN DISH SOAP ORIGINAL", 2, 3.79, taxed: true),
+                Make(98765432105, "BREAD BOX PLASTIC", 2, 14.99, taxed: true),
+
+                // ALCOHOL (3) — age-restricted.
+                Make(18200001239, "BUDWEISER 6PK BOTTLES", 3, 8.99, ageValidationId: 1, taxed: true),
+                Make(18200004568, "BUDWEISER 12PK CANS", 3, 14.99, ageValidationId: 1, taxed: true),
+                Make(75990123459, "CORONA EXTRA 6PK", 3, 9.99, ageValidationId: 1, taxed: true),
+                Make(80660951232, "JACK DANIELS 750ML", 3, 24.99, ageValidationId: 1, taxed: true),
+
+                // TOBACCO (4) — age-restricted.
+                Make(28200111111, "MARLBORO RED BOX", 4, 9.79, ageValidationId: 2, taxed: true),
+                Make(28200222220, "MARLBORO LIGHT BOX", 4, 9.79, ageValidationId: 2, taxed: true),
+                Make(28200333339, "MARLBORO MENTHOL BOX", 4, 9.79, ageValidationId: 2, taxed: true),
+                Make(12300045674, "CAMEL CRUSH KING", 4, 8.99, ageValidationId: 2, taxed: true),
+            };
         }
     }
 }
