@@ -1,0 +1,3 @@
+dept,description,bad_upcs,price,corrected_gtin14,derivation,confidence
+1000,Folgers Coffee- Reg 9.6oz,00025500304010;00255003040106,13.89,00025500304014,fix check digit (mode A),CONFIDENT
+1000,Folgers Coffee - DEC,00025500304020;00255003040205,16.59,00025500304021,fix check digit (mode A),CONFIDENT
