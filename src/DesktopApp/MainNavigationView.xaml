@@ -34,8 +34,10 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <!-- Frame -->
-            <ScrollView Padding="24,24,24,0">
+            <!-- Frame. ContentOrientation is swapped per page in NavView_SelectionChanged:
+                 full-height pages (Items) get None so they fill the viewport and scroll
+                 internally; everything else keeps Vertical host scrolling. -->
+            <ScrollView x:Name="PageScrollHost" Padding="24,24,24,0">
                 <Frame x:Name="NavViewFrame" />
             </ScrollView>
         </Grid>

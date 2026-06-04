@@ -25,34 +25,50 @@ namespace VerifoneCommander.PriceBookManager.DesktopApp
                 return;
             }
 
+            System.Type target = null;
             if (args.SelectedItem.GetType() == typeof(AccountPageVm))
             {
-                this.NavViewFrame.Navigate(typeof(AccountPage));
+                target = typeof(AccountPage);
             }
             else if (args.SelectedItem.GetType() == typeof(BulkOperationsPageVm))
             {
-                this.NavViewFrame.Navigate(typeof(BulkOperationsPage));
+                target = typeof(BulkOperationsPage);
             }
             else if (args.SelectedItem.GetType() == typeof(EditPageVm))
             {
-                this.NavViewFrame.Navigate(typeof(EditPage));
+                target = typeof(EditPage);
             }
             else if (args.SelectedItem.GetType() == typeof(SearchPageVm))
             {
-                this.NavViewFrame.Navigate(typeof(SearchPage));
+                target = typeof(SearchPage);
             }
             else if (args.SelectedItem.GetType() == typeof(ItemsPageVm))
             {
-                this.NavViewFrame.Navigate(typeof(ItemsPage));
+                target = typeof(ItemsPage);
             }
             else if (args.SelectedItem.GetType() == typeof(ImportPageVm))
             {
-                this.NavViewFrame.Navigate(typeof(ImportPage));
+                target = typeof(ImportPage);
             }
             else if (args.SelectedItem.GetType() == typeof(SettingsPageVm))
             {
-                this.NavViewFrame.Navigate(typeof(SettingsPage));
+                target = typeof(SettingsPage);
             }
+
+            if (target == null)
+            {
+                return;
+            }
+
+            // The Items page is a full-height working surface: it must fill the viewport
+            // and scroll its own list internally, so the filter bar and the possible-
+            // duplicates side panel stay on screen while the operator pages through a
+            // long catalog. Every other page keeps host-level vertical scrolling.
+            this.PageScrollHost.ContentOrientation = target == typeof(ItemsPage)
+                ? ScrollingContentOrientation.None
+                : ScrollingContentOrientation.Vertical;
+
+            this.NavViewFrame.Navigate(target);
         }
     }
 }
